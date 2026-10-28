@@ -1,4 +1,5 @@
 import { cacheLife } from "next/cache";
+import { ArrowUp } from "lucide-react";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Monogram } from "@/components/ui/Monogram";
 import { externalSocials, identity } from "@/content/profile";
@@ -38,12 +39,29 @@ export function Footer() {
           </ul>
         </nav>
 
-        <div className="col-span-12 flex flex-col gap-2 text-sm text-steel lg:col-span-4 lg:text-right">
+        <div className="col-span-12 flex flex-col gap-3 text-sm text-steel lg:col-span-4 lg:items-end lg:text-right">
+          <a
+            href="#main"
+            className="group label inline-flex w-fit items-center gap-2.5 border border-line px-3.5 py-2.5 text-steel transition-colors duration-300 ease-out-expo hover:border-ink hover:text-ink"
+          >
+            Retour en haut
+            <ArrowUp
+              aria-hidden="true"
+              className="size-3.5 transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:text-vermilion"
+            />
+          </a>
           <p>
             © <CurrentYear /> {identity.fullName}
           </p>
           <p className="label text-steel">Next.js · TypeScript · Tailwind CSS · Vercel</p>
         </div>
+      </div>
+
+      <div aria-hidden="true" className="pointer-events-none overflow-hidden select-none">
+        <p className="container-page translate-y-[0.16em] bg-gradient-to-b from-ink/25 via-ink/10 to-ink/0 bg-clip-text text-center font-sans text-[clamp(2rem,9vw,8.3rem)] leading-[0.85] font-semibold tracking-[-0.045em] whitespace-nowrap text-transparent">
+          {identity.fullName.toUpperCase()}
+          <span className="text-vermilion">.</span>
+        </p>
       </div>
     </footer>
   );

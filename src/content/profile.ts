@@ -508,4 +508,9 @@ export const contact = {
   title: "Construisons la suite.",
   description:
     "Une question, une opportunité ou simplement envie d'échanger autour du développement logiciel ? N'hésite pas à me contacter.",
+  form: {
+    eyebrow: "Message direct",
+    intro:
+      "Tu préfères passer par un formulaire ? Laisse-moi un message, il arrive directement dans ma boîte mail.",
+  },
 } as const;

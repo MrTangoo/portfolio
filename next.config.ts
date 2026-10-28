@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   cacheComponents: true,
   partialPrefetching: true,
+  serverExternalPackages: ["nodemailer"],
   // Allows HMR when the dev server is reached through a proxy or IP alias.
   allowedDevOrigins: ["127.0.0.1"],
   async redirects() {
