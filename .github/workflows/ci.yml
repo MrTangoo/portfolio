@@ -1,4 +1,4 @@
-# Continuous integration: every pull request and every push to main must pass
+# Continuous integration: every pull request and every push to master must pass
 # formatting, lint, typecheck, unit tests, the production build and the
 # end-to-end suite before it can be merged or deployed.
 name: CI
@@ -6,7 +6,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [master]
 
 # A new push to the same branch/PR cancels the previous run.
 concurrency:

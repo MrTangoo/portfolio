@@ -2,9 +2,9 @@
 # stay disabled for this project so there is a single source of truth).
 #
 # - Pull requests from this repository get a Preview deployment.
-# - Pushes to main are deployed to Production only after the CI workflow
+# - Pushes to master are deployed to Production only after the CI workflow
 #   succeeded on the same commit (workflow_run gate).
-# - A manual dispatch can redeploy main to Production or roll back to a
+# - A manual dispatch can redeploy master to Production or roll back to a
 #   previous deployment.
 #
 # Required secrets (Settings → Secrets and variables → Actions):
@@ -18,11 +18,11 @@ on:
   workflow_run:
     workflows: [CI]
     types: [completed]
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
     inputs:
       rollback_to:
-        description: "Deployment URL or ID to roll back to (leave empty to deploy main)"
+        description: "Deployment URL or ID to roll back to (leave empty to deploy master)"
         required: false
         type: string
 
