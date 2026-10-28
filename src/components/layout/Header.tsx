@@ -1,12 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { ExternalLink } from "@/components/ui/ExternalLink";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { Monogram } from "@/components/ui/Monogram";
 import { NAV_ITEMS } from "@/content/site";
 import { externalSocials, socials } from "@/content/profile";
 import { cn } from "@/lib/utils";
 import { useActiveSection } from "@/components/layout/use-active-section";
+
+const socialIcons = {
+  github: GithubIcon,
+  linkedin: LinkedinIcon,
+} as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -97,12 +102,23 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="hidden items-center gap-6 lg:flex">
-            {externalSocials.map((social) => (
-              <ExternalLink key={social.id} href={social.href}>
-                {social.label}
-              </ExternalLink>
-            ))}
+          <div className="hidden items-center gap-5 lg:flex">
+            {externalSocials.map((social) => {
+              const Icon = socialIcons[social.id as keyof typeof socialIcons];
+              return (
+                <a
+                  key={social.id}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  title={social.label}
+                  className="text-steel transition-colors duration-150 hover:text-ink"
+                >
+                  {Icon ? <Icon className="size-5" /> : social.label}
+                </a>
+              );
+            })}
           </div>
 
           <button

@@ -70,6 +70,8 @@ jobs:
             !.next/cache
           retention-days: 1
           if-no-files-found: error
+          # `.next` is a dotdir — without this the glob finds nothing to upload.
+          include-hidden-files: true
 
   e2e:
     name: End-to-end tests
