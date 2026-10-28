@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode, type RefObject } from "react";
+import { useInView } from "motion/react";
 import { StaggerItem } from "@/components/motion/Reveal";
 import type { Logo, Period } from "@/content/profile";
 import { formatYearMonth, toDateTime } from "@/lib/dates";
@@ -28,13 +31,19 @@ export function TimelineItem({
   children,
   current = false,
 }: TimelineItemProps) {
+  const ref = useRef<HTMLElement | null>(null);
+  /** Hover look while the entry crosses the reading zone of the viewport. */
+  const inView = useInView(ref as RefObject<Element | null>, {
+    margin: "-35% 0px -45% 0px",
+  });
+
   return (
-    <StaggerItem as="li" className="group relative pb-14 pl-8 last:pb-0 lg:pl-12">
+    <StaggerItem ref={ref} as="li" className="group relative pb-14 pl-8 last:pb-0 lg:pl-12">
       <span
         aria-hidden="true"
         className={cn(
           "absolute top-[0.45em] left-0 size-[7px] rounded-full ring-4 ring-paper-deep transition-colors duration-300",
-          current ? "bg-vermilion" : "bg-ink group-hover:bg-vermilion",
+          current || inView ? "bg-vermilion" : "bg-ink group-hover:bg-vermilion",
         )}
       />
       <article className="grid gap-y-4 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-x-10">
@@ -70,7 +79,10 @@ export function TimelineItem({
                 width={logo.width}
                 height={logo.height}
                 sizes="120px"
-                className="logo-mono mt-1 h-6 w-20 shrink-0 object-contain object-right lg:h-8 lg:w-28"
+                className={cn(
+                  "logo-mono mt-1 h-6 w-20 shrink-0 object-contain object-right lg:h-8 lg:w-28",
+                  inView && "logo-mono-current",
+                )}
               />
             )}
           </div>

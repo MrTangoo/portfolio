@@ -94,17 +94,19 @@ export interface ExpertiseArea {
   title: string;
   description: string;
   keywords: readonly string[];
+  /** Lucide icon id, mapped in the section component. */
+  icon?: string;
 }
 
 export interface Principle {
   title: string;
   description: string;
+  /** Lucide icon id, mapped in the section component. */
+  icon?: string;
 }
 
 export interface Language {
   name: string;
-  level: string;
-  /** Path under /public — flag icon. */
   flag?: string;
 }
 
@@ -179,10 +181,10 @@ export const about = {
     "Je m'intéresse particulièrement à React, Next.js, aux architectures modernes et aux outils qui permettent de développer des applications fiables, performantes et évolutives.",
   ],
   facts: [
-    { label: "Basé à", value: "Attalens, Fribourg" },
-    { label: "Actuellement", value: "MICRO Informatic Systems SA" },
-    { label: "Formation en cours", value: "Brevet fédéral — ISEIG" },
-    { label: "Diplôme", value: "CFC Informaticien, dév. d'applications" },
+    { label: "Basé à", value: "Attalens, Fribourg", icon: "map-pin" },
+    { label: "Actuellement", value: "MICRO Informatic Systems SA", icon: "briefcase" },
+    { label: "Formation en cours", value: "Brevet fédéral — ISEIG", icon: "graduation-cap" },
+    { label: "Diplôme", value: "CFC Informaticien, dév. d'applications", icon: "award" },
   ],
 } as const;
 
@@ -194,6 +196,7 @@ export const expertise: readonly ExpertiseArea[] = [
     description:
       "Conception d'interfaces claires et réactives avec React, Next.js et TypeScript. Attention portée à la structure des composants, à l'accessibilité et à la cohérence visuelle.",
     keywords: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+    icon: "monitor",
   },
   {
     id: "application",
@@ -202,6 +205,7 @@ export const expertise: readonly ExpertiseArea[] = [
     description:
       "Développement et évolution d'applications métier : analyse des besoins, implémentation de fonctionnalités, intégration d'API REST et maintenance corrective et évolutive.",
     keywords: ["C# / .NET", "Node.js", "PHP", "API REST"],
+    icon: "app-window",
   },
   {
     id: "data",
@@ -210,6 +214,7 @@ export const expertise: readonly ExpertiseArea[] = [
     description:
       "Modélisation et manipulation de bases de données relationnelles, écriture de requêtes SQL et T-SQL, adaptation de schémas existants et utilisation d'ORM modernes.",
     keywords: ["PostgreSQL", "SQL Server", "Prisma ORM", "Neon"],
+    icon: "database",
   },
   {
     id: "engineering",
@@ -218,6 +223,7 @@ export const expertise: readonly ExpertiseArea[] = [
     description:
       "Qualité logicielle, versionnement, automatisation et méthodes Agile. Un intérêt marqué pour le Clean Code, les tests et les pipelines CI/CD.",
     keywords: ["Git", "GitHub Actions", "Scrum", "Clean Code"],
+    icon: "workflow",
   },
 ];
 
@@ -431,42 +437,47 @@ export const principles: readonly Principle[] = [
     title: "Qualité du code",
     description:
       "Un code lisible, explicite et cohérent vaut mieux qu'un code astucieux. Je m'applique à écrire ce que je serais content de relire dans six mois.",
+    icon: "book-open",
   },
   {
     title: "Maintenabilité",
     description:
       "Les applications vivent longtemps. Séparer les responsabilités et limiter la complexité facilite chaque évolution future.",
+    icon: "wrench",
   },
   {
     title: "Architecture",
     description:
       "Comprendre le besoin avant de choisir la structure. Préférer des solutions simples, cohérentes et adaptées au périmètre réel.",
+    icon: "layers",
   },
   {
     title: "Automatisation",
     description:
       "Ce qui peut être vérifié automatiquement doit l'être : formatage, lint, typage, tests et déploiement, via des pipelines CI/CD.",
+    icon: "bot",
   },
   {
     title: "Tests",
     description:
       "Des tests ciblés, qui protègent les comportements importants sans alourdir le développement.",
+    icon: "flask-conical",
   },
   {
     title: "Amélioration continue",
     description:
       "Apprendre en pratiquant, mesurer, ajuster. Chaque itération est une occasion de faire un peu mieux.",
+    icon: "trending-up",
   },
 ];
 
 export const languages: readonly Language[] = [
-  { name: "Français", level: "Langue principale", flag: "/images/flags/fr.svg" },
+  { name: "Français", flag: "/images/flags/fr.svg" },
   {
     name: "Anglais",
-    level: "Capacité professionnelle fonctionnelle",
     flag: "/images/flags/gb.svg",
   },
-  { name: "Allemand", level: "Notions de base", flag: "/images/flags/de.svg" },
+  { name: "Allemand", flag: "/images/flags/de.svg" },
 ];
 
 export const contact = {

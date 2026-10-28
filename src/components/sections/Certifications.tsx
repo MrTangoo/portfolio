@@ -27,14 +27,24 @@ export function Certifications() {
         {certifications.map((certification, index) => (
           <StaggerItem key={certification.id} as="li" className="group border-b border-line">
             <article className="grid-editorial items-start gap-y-5 py-8 lg:py-10">
-              <p className="label col-span-6 text-steel tabular lg:col-span-2">
-                <time dateTime={toDateTime(certification.obtained)}>
-                  {formatYearMonth(certification.obtained, "long")}
-                </time>
-              </p>
+              {certification.logo && (
+                <Image
+                  src={certification.logo.src}
+                  alt={certification.logo.alt}
+                  width={certification.logo.width}
+                  height={certification.logo.height}
+                  sizes="112px"
+                  className="col-span-3 mt-1 size-20 object-contain sm:col-span-2 sm:size-24 lg:size-28"
+                />
+              )}
 
-              <div className="col-span-12 lg:col-span-6 lg:col-start-4">
-                <h3 className="text-display-sm font-semibold tracking-[-0.02em]">
+              <div className="col-span-9 lg:col-span-7 lg:col-start-4">
+                <p className="label text-steel tabular">
+                  <time dateTime={toDateTime(certification.obtained)}>
+                    {formatYearMonth(certification.obtained, "long")}
+                  </time>
+                </p>
+                <h3 className="mt-3 text-display-sm font-semibold tracking-[-0.02em]">
                   {certification.name}
                   {certification.shortName && (
                     <span className="ml-3 align-middle font-mono text-sm font-medium tracking-[0.08em] text-steel uppercase">
@@ -59,17 +69,7 @@ export function Certifications() {
                 )}
               </div>
 
-              <div className="col-span-6 flex flex-col items-start gap-1 lg:col-span-2 lg:col-start-11 lg:items-end">
-                {certification.logo && (
-                  <Image
-                    src={certification.logo.src}
-                    alt={certification.logo.alt}
-                    width={certification.logo.width}
-                    height={certification.logo.height}
-                    sizes="56px"
-                    className="logo-mono mb-4 size-12 object-contain lg:size-14"
-                  />
-                )}
+              <div className="col-span-9 col-start-4 flex flex-col gap-1 lg:col-span-2 lg:col-start-11 lg:items-end">
                 {certification.score ? (
                   <>
                     <p className="text-display-md font-semibold tracking-[-0.03em] tabular transition-colors duration-300 group-hover:text-vermilion-deep">

@@ -1,9 +1,17 @@
 import Image from "next/image";
+import { Award, Briefcase, GraduationCap, MapPin } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Portrait } from "@/components/ui/Portrait";
 import { Section } from "@/components/ui/Section";
 import { about, identity, languages } from "@/content/profile";
+
+const factIcons = {
+  "map-pin": MapPin,
+  briefcase: Briefcase,
+  "graduation-cap": GraduationCap,
+  award: Award,
+} as const;
 
 export function About() {
   return (
@@ -50,15 +58,21 @@ export function About() {
 
           <Reveal delay={0.1} className="mt-14">
             <dl className="divide-y divide-line border-y border-line">
-              {about.facts.map((fact) => (
-                <div
-                  key={fact.label}
-                  className="grid grid-cols-[minmax(0,10rem)_1fr] gap-4 py-4 sm:grid-cols-[minmax(0,12rem)_1fr]"
-                >
-                  <dt className="label pt-1 text-steel">{fact.label}</dt>
-                  <dd className="text-sm font-medium sm:text-base">{fact.value}</dd>
-                </div>
-              ))}
+              {about.facts.map((fact) => {
+                const Icon = factIcons[fact.icon];
+                return (
+                  <div
+                    key={fact.label}
+                    className="grid grid-cols-[minmax(0,10rem)_1fr] gap-4 py-4 sm:grid-cols-[minmax(0,12rem)_1fr]"
+                  >
+                    <dt className="label flex items-center gap-2.5 pt-1 text-steel">
+                      <Icon aria-hidden="true" className="size-3.5 shrink-0" />
+                      {fact.label}
+                    </dt>
+                    <dd className="text-sm font-medium sm:text-base">{fact.value}</dd>
+                  </div>
+                );
+              })}
             </dl>
           </Reveal>
 
@@ -78,7 +92,6 @@ export function About() {
                     />
                   )}
                   <span className="font-medium">{language.name}</span>
-                  <span className="text-steel">— {language.level}</span>
                 </li>
               ))}
             </ul>

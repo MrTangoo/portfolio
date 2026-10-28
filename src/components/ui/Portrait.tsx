@@ -16,7 +16,6 @@ interface PortraitProps {
   focal?: string;
   sizes?: string;
   preload?: boolean;
-  monochrome?: boolean;
 }
 
 /**
@@ -29,7 +28,6 @@ export function Portrait({
   focal = "70% 30%",
   sizes = "(min-width: 1024px) 40vw, 100vw",
   preload = false,
-  monochrome = true,
 }: PortraitProps) {
   return (
     <figure className={cn("relative overflow-hidden bg-paper-deep", className)}>
@@ -40,7 +38,7 @@ export function Portrait({
           fill
           preload={preload}
           sizes={sizes}
-          className={cn("object-cover", monochrome && "portrait-mono")}
+          className="object-cover"
           style={{ objectPosition: focal }}
         />
       ) : (

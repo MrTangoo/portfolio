@@ -166,16 +166,6 @@
     background-position: 0 100%;
   }
 
-  /* Portrait treatment */
-  .portrait-mono {
-    filter: grayscale(1) contrast(1.05);
-    transition: filter var(--duration-slow) var(--ease-out-expo);
-  }
-
-  .portrait-mono:hover {
-    filter: grayscale(0) contrast(1);
-  }
-
   /* Brand logo treatment in the timeline */
   .logo-mono {
     filter: grayscale(1) opacity(0.55);
@@ -185,7 +175,8 @@
   }
 
   .group:hover .logo-mono,
-  .group:focus-within .logo-mono {
+  .group:focus-within .logo-mono,
+  .logo-mono-current {
     filter: grayscale(0) opacity(1);
   }
 }

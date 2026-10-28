@@ -1,9 +1,26 @@
-import { ArrowUpRight } from "lucide-react";
+import {
+  ArrowUpRight,
+  BookOpen,
+  Bot,
+  FlaskConical,
+  Layers,
+  TrendingUp,
+  Wrench,
+} from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { principles } from "@/content/profile";
 import { GITHUB_REPO } from "@/content/site";
+
+const principleIcons = {
+  "book-open": BookOpen,
+  wrench: Wrench,
+  layers: Layers,
+  bot: Bot,
+  "flask-conical": FlaskConical,
+  "trending-up": TrendingUp,
+} as const;
 
 const SITE_PRACTICES = [
   "Next.js App Router",
@@ -37,7 +54,11 @@ export function Mindset() {
         className="mt-16 grid gap-x-10 gap-y-12 border-t border-line pt-10 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3"
         stagger={0.08}
       >
-        {principles.map((principle, index) => (
+        {principles.map((principle, index) => {
+          const Icon = principle.icon
+            ? principleIcons[principle.icon as keyof typeof principleIcons]
+            : null;
+          return (
           <StaggerItem key={principle.title} as="li" className="group flex flex-col gap-4">
             <p
               aria-hidden="true"
@@ -45,12 +66,16 @@ export function Mindset() {
             >
               {String(index + 1).padStart(2, "0")}
             </p>
-            <h3 className="text-xl font-semibold tracking-[-0.02em] lg:text-2xl">
+            <h3 className="flex items-center gap-3 text-xl font-semibold tracking-[-0.02em] lg:text-2xl">
+              {Icon && (
+                <Icon aria-hidden="true" className="size-6 shrink-0 text-vermilion" />
+              )}
               {principle.title}
             </h3>
             <p className="max-w-[40ch] text-base text-pretty text-steel">{principle.description}</p>
           </StaggerItem>
-        ))}
+          );
+        })}
       </Stagger>
 
       <Reveal className="mt-20 border-t border-line pt-8 lg:mt-24">
