@@ -1,9 +1,15 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, FileText } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { Reveal } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { contact, externalSocials, identity } from "@/content/profile";
+
+const socialIcons = {
+  github: GithubIcon,
+  linkedin: LinkedinIcon,
+} as const;
 
 export function Contact() {
   const [title, period] = contact.title.endsWith(".")
@@ -55,7 +61,9 @@ export function Contact() {
           </a>
 
           <ul className="mt-10 divide-y divide-line-inverse border-y border-line-inverse">
-            {externalSocials.map((social) => (
+            {externalSocials.map((social) => {
+              const Icon = socialIcons[social.id as keyof typeof socialIcons];
+              return (
               <li key={social.id}>
                 <a
                   href={social.href}
@@ -63,8 +71,16 @@ export function Contact() {
                   rel="noopener noreferrer"
                   className="group flex items-center justify-between gap-6 py-5 transition-colors duration-300 hover:text-vermilion"
                 >
-                  <span className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-                    <span className="text-lg font-semibold">{social.label}</span>
+                  <span className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
+                    <span className="flex items-center gap-3">
+                      {Icon && (
+                        <Icon
+                          aria-hidden="true"
+                          className="size-5 shrink-0 text-paper/70 transition-colors duration-300 group-hover:text-vermilion"
+                        />
+                      )}
+                      <span className="text-lg font-semibold">{social.label}</span>
+                    </span>
                     <span className="font-mono text-sm text-paper/65 group-hover:text-paper/85">
                       {social.display}
                     </span>
@@ -75,7 +91,8 @@ export function Contact() {
                   />
                 </a>
               </li>
-            ))}
+              );
+            })}
             <li>
               <a
                 href="/cv.pdf"
@@ -83,8 +100,14 @@ export function Contact() {
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between gap-6 py-5 transition-colors duration-300 hover:text-vermilion"
               >
-                <span className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-                  <span className="text-lg font-semibold">CV</span>
+                <span className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
+                  <span className="flex items-center gap-3">
+                    <FileText
+                      aria-hidden="true"
+                      className="size-5 shrink-0 text-paper/70 transition-colors duration-300 group-hover:text-vermilion"
+                    />
+                    <span className="text-lg font-semibold">CV</span>
+                  </span>
                   <span className="font-mono text-sm text-paper/65 group-hover:text-paper/85">
                     Télécharger le PDF
                   </span>
