@@ -103,6 +103,7 @@ export const CHAPTERS: readonly Chapter[] = [
         title: epsic.degree,
         org: epsic.institution,
         period: formatYearMonth(epsic.period.end!, "long"),
+        detail: `${epsic.location}, Suisse`,
         status: "Diplôme obtenu",
         logo: epsic.logo,
       },
@@ -120,6 +121,7 @@ export const CHAPTERS: readonly Chapter[] = [
         title: iseig.degree,
         org: iseig.institution,
         period: range(iseig.period),
+        detail: `${iseig.location}, Suisse`,
         status: "En cours",
         summary:
           "Formation orientée gestion de projet, analyse des exigences et compréhension des besoins métier.",

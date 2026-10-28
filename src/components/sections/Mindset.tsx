@@ -58,21 +58,21 @@ export function Mindset() {
             ? principleIcons[principle.icon as keyof typeof principleIcons]
             : null;
           return (
-          <StaggerItem key={principle.title} as="li" className="group flex flex-col gap-4">
-            <p
-              aria-hidden="true"
-              className="label text-steel tabular transition-colors duration-300 group-hover:text-vermilion-deep"
-            >
-              {String(index + 1).padStart(2, "0")}
-            </p>
-            <h3 className="flex items-center gap-3 text-xl font-semibold tracking-[-0.02em] lg:text-2xl">
-              {Icon && (
-                <Icon aria-hidden="true" className="size-6 shrink-0 text-vermilion" />
-              )}
-              {principle.title}
-            </h3>
-            <p className="max-w-[40ch] text-base text-pretty text-steel">{principle.description}</p>
-          </StaggerItem>
+            <StaggerItem key={principle.title} as="li" className="group flex flex-col gap-4">
+              <p
+                aria-hidden="true"
+                className="label text-steel tabular transition-colors duration-300 group-hover:text-vermilion-deep"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </p>
+              <h3 className="flex items-center gap-3 text-xl font-semibold tracking-[-0.02em] lg:text-2xl">
+                {Icon && <Icon aria-hidden="true" className="size-6 shrink-0 text-vermilion" />}
+                {principle.title}
+              </h3>
+              <p className="max-w-[40ch] text-base text-pretty text-steel">
+                {principle.description}
+              </p>
+            </StaggerItem>
           );
         })}
       </Stagger>

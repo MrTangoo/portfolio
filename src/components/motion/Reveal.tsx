@@ -83,11 +83,7 @@ export function StaggerItem({
 }) {
   const Component = m[as] as typeof m.div;
   return (
-    <Component
-      ref={ref as Ref<HTMLDivElement>}
-      className={className}
-      variants={itemVariants}
-    >
+    <Component ref={ref as Ref<HTMLDivElement>} className={className} variants={itemVariants}>
       {children}
     </Component>
   );

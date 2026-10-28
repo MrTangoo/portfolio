@@ -49,6 +49,7 @@ export interface Education {
   degree: string;
   institution: string;
   institutionFull?: string;
+  location: string;
   period: Period;
   status: "ongoing" | "completed";
   summary: string;
@@ -264,7 +265,7 @@ export const stack: readonly StackCategory[] = [
     label: "Backend",
     description: "Logique applicative, services et API.",
     technologies: [
-      { name: "Node.js" },
+      { name: "Node.js", favorite: true },
       { name: "C#" },
       { name: ".NET" },
       { name: "PHP" },
@@ -290,9 +291,14 @@ export const stack: readonly StackCategory[] = [
     description: "Versionnement, déploiement et exploitation.",
     technologies: [
       { name: "Git" },
-      { name: "GitHub" },
-      { name: "GitHub Actions", learning: true, note: "Pipelines CI/CD, en apprentissage actif." },
-      { name: "Vercel" },
+      { name: "GitHub", favorite: true },
+      {
+        name: "GitHub Actions",
+        favorite: true,
+        learning: true,
+        note: "Pipelines CI/CD, en apprentissage actif.",
+      },
+      { name: "Vercel", favorite: true },
       { name: "Cloudflare" },
       { name: "Windows Server" },
       { name: "IIS" },
@@ -390,6 +396,7 @@ export const education: readonly Education[] = [
     degree: "Informaticien de gestion avec brevet fédéral",
     institution: "ISEIG",
     institutionFull: "Institut Suisse d'Enseignement de l'Informatique de Gestion",
+    location: "Lausanne, Vaud",
     period: { start: { year: 2026, month: 2 }, end: { year: 2027, month: 4 } },
     status: "ongoing",
     summary:
@@ -413,6 +420,7 @@ export const education: readonly Education[] = [
     id: "epsic",
     degree: "CFC d'informaticien — Développement d'applications",
     institution: "EPSIC",
+    location: "Lausanne, Vaud",
     period: { start: { year: 2021, month: 8 }, end: { year: 2025, month: 7 } },
     status: "completed",
     summary:

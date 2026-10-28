@@ -1,13 +1,18 @@
 /**
  * Site-wide configuration.
  *
- * The public URL is read from `NEXT_PUBLIC_SITE_URL` so that the canonical
- * domain can be set in Vercel once it is known, without touching the code.
+ * The public URL defaults to the production domain so that canonical URLs,
+ * the sitemap and JSON-LD are always correct, even when `NEXT_PUBLIC_SITE_URL`
+ * is not set. Set the variable only to preview the site under another origin.
  */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://maxime-derbigny.ch").replace(
   /\/$/,
   "",
 );
+
+/** Search Console verification token, emitted as a meta tag when set. */
+export const GOOGLE_SITE_VERIFICATION =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined;
 
 /**
  * Optional `owner/repo` of this portfolio on GitHub. When set, the Engineering

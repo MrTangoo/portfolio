@@ -14,16 +14,16 @@ const ENTRY_ICONS: Record<EntryKind, typeof Briefcase> = {
   certification: Award,
 };
 
-function EntryIcon({ kind, className }: { kind: EntryKind; className: string }) {
+export function EntryIcon({ kind, className }: { kind: EntryKind; className: string }) {
   const Icon = ENTRY_ICONS[kind];
   return <Icon aria-hidden="true" className={className} />;
 }
 
 /**
  * THE RED THREAD — scroll-driven journey.
- * Desktop: the stage pins while a scrubbed timeline plays the five chapters —
- * monumental year + chapter title on top, events left-aligned across both
- * columns below.
+ * Wide screens (xl+): the stage pins while a scrubbed timeline plays the five
+ * chapters — monumental year + chapter title on top, events left-aligned
+ * across both columns below.
  * Fallback: scenes render as a static stacked list — readable without JS.
  */
 export function RedThread() {
@@ -31,7 +31,7 @@ export function RedThread() {
   useRedThread(scopeRef);
 
   return (
-    <div ref={scopeRef} className="mt-14 hidden lg:mt-20 lg:block">
+    <div ref={scopeRef} className="mt-14 hidden xl:mt-20 xl:block">
       <div data-rt-stage className="relative">
         {/* Zone A — meta + progression, kept clear of the fixed header */}
         <div className="pointer-events-none absolute top-24 left-[5%] z-30">
@@ -107,7 +107,7 @@ export function RedThread() {
                       <p
                         aria-hidden="true"
                         data-rt-year
-                        className="font-semibold tracking-[-0.035em] text-[clamp(6rem,15vw,14rem)] leading-none"
+                        className="text-[clamp(6rem,15vw,14rem)] leading-none font-semibold tracking-[-0.035em]"
                       >
                         {chapter.year}
                       </p>
@@ -116,25 +116,20 @@ export function RedThread() {
                     {primary && (
                       <>
                         <div data-rt-content className="mt-6 flex items-center gap-4">
-                          <span
-                            aria-hidden="true"
-                            className="block h-px w-14 bg-steel-soft"
-                          />
+                          <span aria-hidden="true" className="block h-px w-14 bg-steel-soft" />
                           <span aria-hidden="true" className="block size-1.5 bg-vermilion" />
                         </div>
                         <div data-rt-content className="mt-6">
                           <div className="flex items-center gap-10">
                             <div className="min-w-0">
-                              <p className="flex items-center gap-3.5 text-2xl font-semibold tracking-[-0.015em] lg:text-3xl">
+                              <p className="flex items-center gap-3.5 text-2xl font-semibold tracking-[-0.015em] xl:text-3xl">
                                 <EntryIcon
                                   kind={primary.icon}
                                   className="size-6 shrink-0 text-vermilion"
                                 />
                                 {primary.title}
                               </p>
-                              <p className="mt-2 text-lg font-medium text-steel">
-                                {primary.org}
-                              </p>
+                              <p className="mt-2 text-lg font-medium text-steel">{primary.org}</p>
                             </div>
                             {primary.logo && (
                               <Image
@@ -184,10 +179,7 @@ export function RedThread() {
                                   className="size-4 shrink-0 self-center text-vermilion"
                                 />
                                 {entry.title}
-                                <span className="font-normal text-steel">
-                                  {" "}
-                                  — {entry.org}
-                                </span>
+                                <span className="font-normal text-steel"> — {entry.org}</span>
                               </p>
                               {entry.logo && (
                                 <Image
@@ -211,12 +203,15 @@ export function RedThread() {
                                 </span>
                               )}
                               <span className="inline-flex items-center gap-2 text-steel">
-                                <Calendar
-                                  aria-hidden="true"
-                                  className="size-3.5 text-vermilion"
-                                />
+                                <Calendar aria-hidden="true" className="size-3.5 text-vermilion" />
                                 {entry.period}
                               </span>
+                              {entry.detail && (
+                                <span className="inline-flex items-center gap-2 text-steel">
+                                  <MapPin aria-hidden="true" className="size-3.5 text-vermilion" />
+                                  {entry.detail}
+                                </span>
+                              )}
                             </p>
                           </div>
                         ))}

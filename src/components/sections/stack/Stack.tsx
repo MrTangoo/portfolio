@@ -49,7 +49,7 @@ export function Stack() {
             aria-hidden="true"
             width={140}
             height={98}
-            className="pointer-events-none col-span-2 hidden select-none justify-self-end lg:block"
+            className="pointer-events-none col-span-2 hidden justify-self-end select-none lg:block"
           />
         </aside>
       </Reveal>
