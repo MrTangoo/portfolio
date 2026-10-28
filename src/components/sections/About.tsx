@@ -1,0 +1,79 @@
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Portrait } from "@/components/ui/Portrait";
+import { Section } from "@/components/ui/Section";
+import { about, identity, languages } from "@/content/profile";
+
+export function About() {
+  return (
+    <Section id="a-propos">
+      <div className="grid-editorial gap-y-12">
+        <div className="col-span-12 lg:col-span-5">
+          <div className="lg:sticky lg:top-28">
+            <Reveal y={12}>
+              <Eyebrow index="01">{about.eyebrow}</Eyebrow>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <h2
+                id="a-propos-title"
+                className="mt-8 max-w-[14ch] text-display-md font-semibold text-balance"
+              >
+                {about.title}
+              </h2>
+            </Reveal>
+            <Reveal delay={0.2} className="mt-12">
+              <div className="relative">
+                <Portrait
+                  source={identity.portraitSecondary}
+                  focal="50% 35%"
+                  sizes="(min-width: 1024px) 36vw, 100vw"
+                  className="aspect-[6/5] w-full"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute top-0 -left-px h-16 w-px bg-vermilion"
+                />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+
+        <div className="col-span-12 lg:col-span-6 lg:col-start-7">
+          <Stagger className="flex flex-col gap-6 text-lead text-pretty" stagger={0.1}>
+            {about.paragraphs.map((paragraph, index) => (
+              <StaggerItem key={paragraph}>
+                <p className={index === 0 ? "text-ink" : "text-steel"}>{paragraph}</p>
+              </StaggerItem>
+            ))}
+          </Stagger>
+
+          <Reveal delay={0.1} className="mt-14">
+            <dl className="divide-y divide-line border-y border-line">
+              {about.facts.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="grid grid-cols-[minmax(0,10rem)_1fr] gap-4 py-4 sm:grid-cols-[minmax(0,12rem)_1fr]"
+                >
+                  <dt className="label pt-1 text-steel">{fact.label}</dt>
+                  <dd className="text-sm font-medium sm:text-base">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+
+          <Reveal delay={0.15} className="mt-10">
+            <p className="label text-steel">Langues</p>
+            <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-sm">
+              {languages.map((language) => (
+                <li key={language.name} className="flex items-baseline gap-2">
+                  <span className="font-medium">{language.name}</span>
+                  <span className="text-steel">— {language.level}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </div>
+    </Section>
+  );
+}

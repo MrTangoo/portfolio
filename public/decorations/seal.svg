@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 140" fill="none">
+  <!-- Ribbon tails -->
+  <path d="M64 78 L54 112 L68 105 L76 118" stroke="#111111" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M96 78 L106 112 L92 105 L84 118" stroke="#111111" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Medal -->
+  <circle cx="80" cy="54" r="30" stroke="#111111" stroke-width="1.5"/>
+  <!-- Inner dashed ring, slow rotation -->
+  <circle cx="80" cy="54" r="22" stroke="#9A9A9A" stroke-width="1.5" stroke-dasharray="4 5">
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      from="0 80 54"
+      to="360 80 54"
+      dur="30s"
+      repeatCount="indefinite"
+    />
+  </circle>
+  <!-- Verified check -->
+  <path
+    d="M68 55 l8 8 l16 -17"
+    stroke="#E34234"
+    stroke-width="2.5"
+    stroke-linecap="square"
+    stroke-linejoin="round"
+  />
+</svg>

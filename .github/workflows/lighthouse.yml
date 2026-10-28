@@ -1,0 +1,37 @@
+# Web quality gate: measures the production build with Lighthouse in a
+# reproducible, headless environment. Thresholds live in lighthouserc.json.
+name: Lighthouse
+
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Every Monday at 07:00 UTC — catches regressions from dependency updates.
+    - cron: "0 7 * * 1"
+
+concurrency:
+  group: lighthouse-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  lighthouse:
+    name: Lighthouse audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
+      - name: Build
+        run: pnpm build
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@3e7e23fb74242897f95c0ba9cabad3d0227b9b18 # v12.6.2
+        with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: false
