@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Portrait } from "@/components/ui/Portrait";
@@ -66,6 +67,16 @@ export function About() {
             <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-sm">
               {languages.map((language) => (
                 <li key={language.name} className="flex items-baseline gap-2">
+                  {language.flag && (
+                    <Image
+                      src={language.flag}
+                      alt=""
+                      aria-hidden="true"
+                      width={18}
+                      height={12}
+                      className="self-center border border-line"
+                    />
+                  )}
                   <span className="font-medium">{language.name}</span>
                   <span className="text-steel">— {language.level}</span>
                 </li>

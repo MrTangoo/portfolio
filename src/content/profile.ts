@@ -104,6 +104,8 @@ export interface Principle {
 export interface Language {
   name: string;
   level: string;
+  /** Path under /public — flag icon. */
+  flag?: string;
 }
 
 export const identity = {
@@ -458,9 +460,13 @@ export const principles: readonly Principle[] = [
 ];
 
 export const languages: readonly Language[] = [
-  { name: "Français", level: "Langue principale" },
-  { name: "Anglais", level: "Capacité professionnelle fonctionnelle" },
-  { name: "Allemand", level: "Notions de base" },
+  { name: "Français", level: "Langue principale", flag: "/images/flags/fr.svg" },
+  {
+    name: "Anglais",
+    level: "Capacité professionnelle fonctionnelle",
+    flag: "/images/flags/gb.svg",
+  },
+  { name: "Allemand", level: "Notions de base", flag: "/images/flags/de.svg" },
 ];
 
 export const contact = {
