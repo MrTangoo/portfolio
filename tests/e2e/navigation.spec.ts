@@ -1,9 +1,21 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+/**
+ * The Journey section's pinned scroll timeline (GSAP ScrollTrigger) reshapes
+ * the document when it initializes — scenes collapse from a stacked layout to
+ * absolute overlays, moving every anchor target below them. Anchor clicks must
+ * wait for the `.pin-spacer` wrapper ScrollTrigger creates, or the smooth
+ * scroll lands where the section used to be.
+ */
+async function waitForPinnedJourney(page: Page) {
+  await expect(page.locator(".pin-spacer")).toHaveCount(1);
+}
 
 test.describe("Navigation", () => {
   test("desktop anchors scroll to their sections", async ({ page, isMobile }) => {
     test.skip(isMobile, "Desktop navigation is hidden on small viewports");
     await page.goto("/");
+    await waitForPinnedJourney(page);
 
     const nav = page.getByRole("navigation", { name: "Navigation principale" });
     await nav.getByRole("link", { name: "Parcours" }).click();
@@ -14,12 +26,18 @@ test.describe("Navigation", () => {
     await expect(page.locator("section#contact")).toBeInViewport();
   });
 
-  test("hero call-to-actions lead to the journey and contact sections", async ({ page }) => {
+  test("hero call-to-actions lead to the journey and contact sections", async ({
+    page,
+    isMobile,
+  }) => {
     await page.goto("/");
+    // The pin only exists at xl+; the mobile layout never shifts.
+    if (!isMobile) await waitForPinnedJourney(page);
     await page.getByRole("link", { name: "Découvrir mon parcours" }).click();
     await expect(page.locator("section#parcours")).toBeInViewport();
 
     await page.goto("/");
+    if (!isMobile) await waitForPinnedJourney(page);
     await page.getByRole("link", { name: "Me contacter" }).click();
     await expect(page.locator("section#contact")).toBeInViewport();
   });
