@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import * as m from "motion/react-m";
 import { cn } from "@/lib/utils";
 
@@ -74,14 +74,20 @@ export function StaggerItem({
   children,
   className,
   as = "div",
+  ref,
 }: {
   children: ReactNode;
   className?: string;
   as?: "div" | "li" | "article";
+  ref?: Ref<HTMLElement>;
 }) {
-  const Component = m[as];
+  const Component = m[as] as typeof m.div;
   return (
-    <Component className={className} variants={itemVariants}>
+    <Component
+      ref={ref as Ref<HTMLDivElement>}
+      className={className}
+      variants={itemVariants}
+    >
       {children}
     </Component>
   );

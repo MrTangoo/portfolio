@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import Link from "next/link";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Monogram } from "@/components/ui/Monogram";
 import { NAV_ITEMS } from "@/content/site";
@@ -68,9 +67,13 @@ export function Header() {
         )}
       >
         <div className="container-page flex h-16 items-center justify-between lg:h-20">
-          <Link href="#top" className="text-xl leading-none" onClick={close}>
+          <a
+            href="#top"
+            className="inline-block text-xl leading-none transition-transform duration-300 ease-out-expo hover:scale-110"
+            onClick={close}
+          >
             <Monogram srLabel="Maxime Derbigny — retour en haut de page" />
-          </Link>
+          </a>
 
           <nav aria-label="Navigation principale" className="hidden lg:block">
             <ul className="flex items-center gap-8">

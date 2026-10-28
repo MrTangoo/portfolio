@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
@@ -7,6 +8,39 @@ import type { StackCategory, StackCategoryId } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Technologies with a Simple Icons mark in /images/tech/. */
+const TECH_ICONS: Record<string, string> = {
+  React: "react",
+  "Next.js": "nextdotjs",
+  TypeScript: "typescript",
+  JavaScript: "javascript",
+  HTML5: "html5",
+  CSS3: "css",
+  "Tailwind CSS": "tailwindcss",
+  Bootstrap: "bootstrap",
+  AngularJS: "angularjs",
+  "Node.js": "nodedotjs",
+  "C#": "csharp",
+  ".NET": "dotnet",
+  PHP: "php",
+  "API REST": "api",
+  PostgreSQL: "postgresql",
+  "Prisma ORM": "prisma",
+  Neon: "neon",
+  "Microsoft SQL Server": "microsoftsqlserver",
+  "T-SQL": "microsoftsqlserver",
+  MySQL: "mysql",
+  Git: "git",
+  GitHub: "github",
+  "GitHub Actions": "githubactions",
+  Vercel: "vercel",
+  Cloudflare: "cloudflare",
+  "Windows Server": "windows",
+  IIS: "iis",
+  PM2: "pm2",
+  PowerShell: "powershell",
+};
 
 interface StackExplorerProps {
   categories: readonly StackCategory[];
@@ -120,6 +154,16 @@ export function StackExplorer({ categories }: StackExplorerProps) {
                   className="group/tech flex flex-col gap-1 border-b border-line py-4 lg:py-5"
                 >
                   <div className="flex items-center gap-3">
+                    {TECH_ICONS[technology.name] && (
+                      <Image
+                        src={`/images/tech/${TECH_ICONS[technology.name]}.svg`}
+                        alt=""
+                        aria-hidden="true"
+                        width={20}
+                        height={20}
+                        className="size-5 shrink-0 transition duration-300"
+                      />
+                    )}
                     <span
                       className={cn(
                         "text-xl font-semibold tracking-[-0.02em] transition-colors duration-300 ease-out-expo lg:text-2xl",

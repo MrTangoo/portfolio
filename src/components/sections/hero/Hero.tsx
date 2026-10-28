@@ -1,4 +1,4 @@
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Briefcase, MapPin } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
 import { ExternalLink } from "@/components/ui/ExternalLink";
@@ -64,13 +64,19 @@ export function Hero() {
               <span aria-hidden="true" className="absolute top-0 -left-px h-16 w-px bg-vermilion" />
               <dl className="mt-4 grid grid-cols-2 gap-4 text-meta">
                 <div>
-                  <dt className="label text-steel">Basé à</dt>
+                  <dt className="label flex items-center gap-2.5 text-steel">
+                    <MapPin aria-hidden="true" className="size-3.5 shrink-0" />
+                    Basé à
+                  </dt>
                   <dd className="mt-1 font-medium">
                     {identity.location.city}, {identity.location.region}
                   </dd>
                 </div>
                 <div>
-                  <dt className="label text-steel">Actuellement</dt>
+                  <dt className="label flex items-center gap-2.5 text-steel">
+                    <Briefcase aria-hidden="true" className="size-3.5 shrink-0" />
+                    Actuellement
+                  </dt>
                   <dd className="mt-1 font-medium">{identity.employer}</dd>
                 </div>
               </dl>
