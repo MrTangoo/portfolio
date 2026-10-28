@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Award, Briefcase, GraduationCap, MapPin } from "lucide-react";
+import { ArrowUpRight, Award, Briefcase, GraduationCap, MapPin } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Portrait } from "@/components/ui/Portrait";
@@ -17,8 +17,8 @@ export function About() {
   return (
     <Section id="a-propos">
       <div className="grid-editorial gap-y-12">
-        <div className="col-span-12 lg:col-span-5">
-          <div className="lg:sticky lg:top-28">
+        <div className="col-span-12 lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
+          <div>
             <Reveal y={12}>
               <Eyebrow index="01">{about.eyebrow}</Eyebrow>
             </Reveal>
@@ -69,7 +69,24 @@ export function About() {
                       <Icon aria-hidden="true" className="size-3.5 shrink-0" />
                       {fact.label}
                     </dt>
-                    <dd className="text-sm font-medium sm:text-base">{fact.value}</dd>
+                    <dd className="text-sm font-medium sm:text-base">
+                      {"href" in fact && fact.href ? (
+                        <a
+                          href={fact.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group inline-flex items-center gap-1.5 underline decoration-line underline-offset-4 transition-colors hover:text-vermilion-deep hover:decoration-vermilion"
+                        >
+                          {fact.value}
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="size-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          />
+                        </a>
+                      ) : (
+                        fact.value
+                      )}
+                    </dd>
                   </div>
                 );
               })}

@@ -181,9 +181,24 @@ export const about = {
     "Je m'intéresse particulièrement à React, Next.js, aux architectures modernes et aux outils qui permettent de développer des applications fiables, performantes et évolutives.",
   ],
   facts: [
-    { label: "Basé à", value: "Attalens, Fribourg", icon: "map-pin" },
-    { label: "Actuellement", value: "MICRO Informatic Systems SA", icon: "briefcase" },
-    { label: "Formation en cours", value: "Brevet fédéral — ISEIG", icon: "graduation-cap" },
+    {
+      label: "Basé à",
+      value: "Attalens, Fribourg",
+      icon: "map-pin",
+      href: "https://www.google.com/maps/search/?api=1&query=Attalens%2C+FR%2C+Suisse",
+    },
+    {
+      label: "Actuellement",
+      value: "MICRO Informatic Systems SA",
+      icon: "briefcase",
+      href: "https://www.microinformatic.ch/",
+    },
+    {
+      label: "Formation en cours",
+      value: "Brevet fédéral — ISEIG",
+      icon: "graduation-cap",
+      href: "https://iseig.ch",
+    },
     { label: "Diplôme", value: "CFC Informaticien, dév. d'applications", icon: "award" },
   ],
 } as const;
@@ -195,7 +210,7 @@ export const expertise: readonly ExpertiseArea[] = [
     title: "Frontend Development",
     description:
       "Conception d'interfaces claires et réactives avec React, Next.js et TypeScript. Attention portée à la structure des composants, à l'accessibilité et à la cohérence visuelle.",
-    keywords: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+    keywords: ["React", "Next.js", "AngularJS", "TypeScript", "JavaScript", "Tailwind CSS"],
     icon: "monitor",
   },
   {
@@ -213,7 +228,7 @@ export const expertise: readonly ExpertiseArea[] = [
     title: "Databases & Data",
     description:
       "Modélisation et manipulation de bases de données relationnelles, écriture de requêtes SQL et T-SQL, adaptation de schémas existants et utilisation d'ORM modernes.",
-    keywords: ["PostgreSQL", "SQL Server", "Prisma ORM", "Neon"],
+    keywords: ["PostgreSQL", "SQL Server", "MySQL", "Prisma ORM", "Neon"],
     icon: "database",
   },
   {

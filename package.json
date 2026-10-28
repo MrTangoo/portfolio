@@ -21,6 +21,8 @@
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
   },
   "dependencies": {
+    "@gsap/react": "2.1.2",
+    "gsap": "3.13.0",
     "lucide-react": "1.60.0",
     "motion": "14.4.0",
     "next": "16.4.3",
