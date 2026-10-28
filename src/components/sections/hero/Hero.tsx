@@ -12,7 +12,7 @@ export function Hero() {
     <section
       id="top"
       aria-label="Introduction"
-      className="relative flex min-h-svh flex-col justify-end bg-paper pt-28 pb-8 lg:pt-36 lg:pb-10"
+      className="relative flex min-h-svh flex-col justify-center bg-paper pt-28 pb-8 lg:pt-36 lg:pb-10 xl:justify-end"
     >
       <div className="container-page">
         <div className="grid-editorial gap-y-12">

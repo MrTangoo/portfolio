@@ -27,15 +27,7 @@ export function DevScreen() {
   return (
     <svg viewBox="0 0 340 268" fill="none" aria-hidden="true" className="h-auto w-full">
       {/* screen */}
-      <rect
-        x="40"
-        y="32"
-        width="260"
-        height="172"
-        fill="#F5F4F0"
-        stroke={ink}
-        strokeWidth="1.5"
-      />
+      <rect x="40" y="32" width="260" height="172" fill="#F5F4F0" stroke={ink} strokeWidth="1.5" />
       {/* window controls */}
       <rect x="52" y="44" width="6" height="6" stroke={ink} strokeWidth="1.5" />
       <rect x="62" y="44" width="6" height="6" stroke={ink} strokeWidth="1.5" />
@@ -43,14 +35,7 @@ export function DevScreen() {
 
       {/* typing code lines — each sweeps 0 → width during its window of the loop */}
       {lines.map((line, i) => (
-        <rect
-          key={i}
-          x={line.x}
-          y={line.y}
-          height="4"
-          width={line.w}
-          fill={line.c}
-        >
+        <rect key={i} x={line.x} y={line.y} height="4" width={line.w} fill={line.c}>
           <animate
             attributeName="width"
             values={`0;0;${line.w};${line.w}`}

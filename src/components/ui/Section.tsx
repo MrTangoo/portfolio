@@ -20,7 +20,11 @@ export function Section({ id, tone = "paper", className, children, ...rest }: Se
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className={cn("scroll-mt-[calc(4rem_-_var(--spacing-section))] py-section", tones[tone], className)}
+      className={cn(
+        "scroll-mt-[calc(4rem_-_var(--spacing-section))] py-section",
+        tones[tone],
+        className,
+      )}
       {...rest}
     >
       <div className="container-page">{children}</div>

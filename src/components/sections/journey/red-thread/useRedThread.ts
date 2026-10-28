@@ -15,8 +15,8 @@ const OUT = 0.55;
 /**
  * Orchestrates THE RED THREAD: one scrubbed GSAP timeline pinned to the stage —
  * each chapter reveals a monumental year (masked rise) then its content card.
- * Only runs on desktop with motion allowed; otherwise the stacked scenes stay
- * statically readable.
+ * Only runs on xl screens with motion allowed; otherwise the stacked scenes
+ * stay statically readable.
  */
 export function useRedThread(scopeRef: RefObject<HTMLDivElement | null>) {
   const scope = useRef<HTMLDivElement | null>(null);
@@ -28,7 +28,7 @@ export function useRedThread(scopeRef: RefObject<HTMLDivElement | null>) {
 
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      mm.add("(min-width: 1280px) and (prefers-reduced-motion: no-preference)", () => {
         const root = scope.current!;
         const stage = root.querySelector<HTMLElement>("[data-rt-stage]")!;
         const counter = stage.querySelector<HTMLElement>("[data-rt-counter]")!;

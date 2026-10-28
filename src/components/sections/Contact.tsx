@@ -64,33 +64,33 @@ export function Contact() {
             {externalSocials.map((social) => {
               const Icon = socialIcons[social.id as keyof typeof socialIcons];
               return (
-              <li key={social.id}>
-                <a
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-between gap-6 py-5 transition-colors duration-300 hover:text-vermilion"
-                >
-                  <span className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
-                    <span className="flex items-center gap-3">
-                      {Icon && (
-                        <Icon
-                          aria-hidden="true"
-                          className="size-5 shrink-0 text-paper/70 transition-colors duration-300 group-hover:text-vermilion"
-                        />
-                      )}
-                      <span className="text-lg font-semibold">{social.label}</span>
+                <li key={social.id}>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-6 py-5 transition-colors duration-300 hover:text-vermilion"
+                  >
+                    <span className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
+                      <span className="flex items-center gap-3">
+                        {Icon && (
+                          <Icon
+                            aria-hidden="true"
+                            className="size-5 shrink-0 text-paper/70 transition-colors duration-300 group-hover:text-vermilion"
+                          />
+                        )}
+                        <span className="text-lg font-semibold">{social.label}</span>
+                      </span>
+                      <span className="font-mono text-sm text-paper/65 group-hover:text-paper/85">
+                        {social.display}
+                      </span>
                     </span>
-                    <span className="font-mono text-sm text-paper/65 group-hover:text-paper/85">
-                      {social.display}
-                    </span>
-                  </span>
-                  <ArrowUpRight
-                    aria-hidden="true"
-                    className="size-5 shrink-0 transition-transform duration-300 ease-out-expo group-hover:translate-x-1 group-hover:-translate-y-1"
-                  />
-                </a>
-              </li>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="size-5 shrink-0 transition-transform duration-300 ease-out-expo group-hover:translate-x-1 group-hover:-translate-y-1"
+                    />
+                  </a>
+                </li>
               );
             })}
             <li>

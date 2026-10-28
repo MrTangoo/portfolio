@@ -41,9 +41,7 @@ export function Expertise() {
                   {area.index}
                 </p>
                 <h3 className="col-span-10 flex items-center gap-3 text-display-sm font-semibold lg:col-span-4">
-                  {Icon && (
-                    <Icon aria-hidden="true" className="size-6 shrink-0 text-vermilion" />
-                  )}
+                  {Icon && <Icon aria-hidden="true" className="size-6 shrink-0 text-vermilion" />}
                   {area.title}
                 </h3>
                 <div className="col-span-12 lg:col-span-6 lg:col-start-7">

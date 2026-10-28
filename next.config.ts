@@ -7,6 +7,17 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // Allows HMR when the dev server is reached through a proxy or IP alias.
   allowedDevOrigins: ["127.0.0.1"],
+  async redirects() {
+    return [
+      // Single canonical host: www.maxime-derbigny.ch → maxime-derbigny.ch
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.maxime-derbigny.ch" }],
+        destination: "https://maxime-derbigny.ch/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
@@ -16,6 +27,10 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
         ],
       },
     ];
