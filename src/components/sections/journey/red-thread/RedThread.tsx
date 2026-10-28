@@ -104,13 +104,14 @@ export function RedThread() {
                   {/* Year + events — stacked directly below, events span both columns */}
                   <div className="absolute top-[19%] right-[6%] left-[7%]">
                     {chapter.year && (
-                      <p
-                        aria-hidden="true"
-                        data-rt-year
-                        className="text-[clamp(6rem,15vw,14rem)] leading-none font-semibold tracking-[-0.035em]"
-                      >
-                        {chapter.year}
-                      </p>
+                      <div aria-hidden="true" className="overflow-hidden">
+                        <p
+                          data-rt-year
+                          className="text-[clamp(6rem,15vw,14rem)] leading-none font-semibold tracking-[-0.035em]"
+                        >
+                          {chapter.year}
+                        </p>
+                      </div>
                     )}
 
                     {primary && (

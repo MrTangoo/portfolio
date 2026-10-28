@@ -1,11 +1,19 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { InteractiveProvider } from "@/components/interactive/InteractiveProvider";
 import { Header } from "@/components/layout/Header";
 import { NAV_ITEMS } from "@/content/site";
 
+const renderHeader = () =>
+  render(
+    <InteractiveProvider>
+      <Header />
+    </InteractiveProvider>,
+  );
+
 describe("Header", () => {
   it("renders every navigation anchor", () => {
-    render(<Header />);
+    renderHeader();
     const nav = screen.getByRole("navigation", { name: "Navigation principale" });
     for (const item of NAV_ITEMS) {
       const link = nav.querySelector(`a[href="#${item.id}"]`);
@@ -15,7 +23,7 @@ describe("Header", () => {
   });
 
   it("toggles the mobile menu and closes it with Escape", () => {
-    render(<Header />);
+    renderHeader();
     const toggle = screen.getByRole("button", { name: "Ouvrir le menu" });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
 

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowUpRight, FileText } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { Reveal } from "@/components/motion/Reveal";
+import { ContactForm } from "@/components/sections/contact/ContactForm";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
 import { contact, externalSocials, identity } from "@/content/profile";
@@ -121,6 +122,28 @@ export function Contact() {
           </ul>
         </Reveal>
       </div>
+
+      <Reveal delay={0.2} className="mt-16 lg:mt-24">
+        <div className="grid-editorial gap-y-10 border-t border-line-inverse pt-12 lg:pt-16">
+          <div className="col-span-12 lg:col-span-4">
+            <Eyebrow inverse>{contact.form.eyebrow}</Eyebrow>
+            <p className="mt-5 max-w-[36ch] text-sm text-pretty text-paper/60">
+              {contact.form.intro}
+            </p>
+            <Image
+              src="/decorations/send.svg"
+              alt=""
+              aria-hidden="true"
+              width={200}
+              height={142}
+              className="pointer-events-none mt-12 hidden select-none lg:block"
+            />
+          </div>
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
+            <ContactForm />
+          </div>
+        </div>
+      </Reveal>
     </Section>
   );
 }

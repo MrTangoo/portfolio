@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { Search } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
+import { useInteractive } from "@/components/interactive/InteractiveProvider";
 import { Monogram } from "@/components/ui/Monogram";
 import { NAV_ITEMS } from "@/content/site";
 import { externalSocials, socials } from "@/content/profile";
@@ -20,6 +22,15 @@ export function Header() {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const active = useActiveSection(NAV_ITEMS.map((item) => item.id));
+  const { openPalette } = useInteractive();
+
+  // ⌘ on Apple platforms, Ctrl elsewhere — the server snapshot keeps the
+  // hydration consistent and the client value replaces it after mount.
+  const modKey = useSyncExternalStore(
+    () => () => {},
+    () => (/Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl"),
+    () => "Ctrl",
+  );
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -103,6 +114,16 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-5 lg:flex">
+            <button
+              type="button"
+              onClick={openPalette}
+              aria-label="Ouvrir la palette de commandes"
+              aria-keyshortcuts="Control+K Meta+K"
+              className="flex items-center gap-2 border border-line px-3 py-1.5 text-steel transition-colors duration-150 hover:border-line-strong hover:text-ink"
+            >
+              <Search aria-hidden="true" className="size-3.5" />
+              <kbd className="font-mono text-[10px] leading-none">{modKey} K</kbd>
+            </button>
             {externalSocials.map((social) => {
               const Icon = socialIcons[social.id as keyof typeof socialIcons];
               return (
@@ -121,30 +142,41 @@ export function Header() {
             })}
           </div>
 
-          <button
-            ref={toggleRef}
-            type="button"
-            className="-mr-2 flex size-12 flex-col items-center justify-center gap-1.5 lg:hidden"
-            aria-expanded={open}
-            aria-controls={menuId}
-            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-            onClick={() => setOpen((value) => !value)}
-          >
-            <span
-              aria-hidden="true"
-              className={cn(
-                "block h-px w-6 bg-ink transition-transform duration-300 ease-out-expo",
-                open && "translate-y-[3.5px] rotate-45",
-              )}
-            />
-            <span
-              aria-hidden="true"
-              className={cn(
-                "block h-px w-6 bg-ink transition-transform duration-300 ease-out-expo",
-                open && "-translate-y-[3.5px] -rotate-45",
-              )}
-            />
-          </button>
+          <div className="flex items-center lg:hidden">
+            <button
+              type="button"
+              onClick={openPalette}
+              aria-label="Ouvrir la palette de commandes"
+              aria-keyshortcuts="Control+K Meta+K"
+              className="flex size-12 items-center justify-center text-ink"
+            >
+              <Search aria-hidden="true" className="size-5" />
+            </button>
+            <button
+              ref={toggleRef}
+              type="button"
+              className="-mr-2 flex size-12 flex-col items-center justify-center gap-1.5"
+              aria-expanded={open}
+              aria-controls={menuId}
+              aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+              onClick={() => setOpen((value) => !value)}
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "block h-px w-6 bg-ink transition-transform duration-300 ease-out-expo",
+                  open && "translate-y-[3.5px] rotate-45",
+                )}
+              />
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "block h-px w-6 bg-ink transition-transform duration-300 ease-out-expo",
+                  open && "-translate-y-[3.5px] -rotate-45",
+                )}
+              />
+            </button>
+          </div>
         </div>
       </div>
 

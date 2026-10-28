@@ -54,7 +54,7 @@ export function useRedThread(scopeRef: RefObject<HTMLDivElement | null>) {
           scrollTrigger: {
             trigger: stage,
             start: "top top",
-            end: "+=420%",
+            end: "+=340%",
             pin: true,
             scrub: 0.8,
             invalidateOnRefresh: true,
@@ -114,15 +114,22 @@ export function useRedThread(scopeRef: RefObject<HTMLDivElement | null>) {
             }
           }
 
-          tl.to({}, { duration: id === "2025" ? HOLD * 1.3 : HOLD });
+          tl.to(
+            {},
+            {
+              duration: id === "2025" ? HOLD * 1.3 : i === scenes.length - 1 ? HOLD * 0.5 : HOLD,
+            },
+          );
           if (i < scenes.length - 1) {
             tl.to(scene, { autoAlpha: 0, duration: OUT });
           }
         });
 
-        // Zone A rail mirrors the whole journey.
-        tl.to(
+        // Zone A rail mirrors the whole journey — fromTo pins the start at 0
+        // so a ScrollTrigger refresh can't re-record a partially filled state.
+        tl.fromTo(
           fill,
+          { scaleY: 0 },
           { scaleY: 1, ease: "none", duration: tl.duration(), immediateRender: false },
           0,
         );

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import { InteractiveProvider } from "@/components/interactive/InteractiveProvider";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import {
   GOOGLE_SITE_VERIFICATION,
@@ -98,7 +100,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Aller au contenu
         </a>
-        <MotionProvider>{children}</MotionProvider>
+        <MotionProvider>
+          <InteractiveProvider>{children}</InteractiveProvider>
+        </MotionProvider>
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );
