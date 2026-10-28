@@ -31,7 +31,7 @@ test.describe("Home page", () => {
     await expect(heading).toContainText("Développer avec intention.");
     await expect(page.getByText("Je suis Maxime Derbigny", { exact: false })).toBeVisible();
 
-    const portrait = page.getByRole("img", { name: /Portrait de Maxime Derbigny/ });
+    const portrait = page.getByRole("img", { name: /Portrait.*Maxime Derbigny/ });
     await expect(portrait).toBeVisible();
 
     expect(errors, errors.join("\n")).toEqual([]);
@@ -56,7 +56,15 @@ test.describe("Home page", () => {
     await expect(stack.getByRole("tabpanel")).toContainText("Next.js");
     await expect(stack.getByRole("tabpanel")).toContainText("TypeScript");
 
-    await stack.getByRole("tab", { name: /Database & ORM/ }).click();
+    // Retry the click: on a cold page it can land before hydration wires up
+    // the tab's event handlers.
+    await expect(async () => {
+      await stack.getByRole("tab", { name: /Database & ORM/ }).click();
+      await expect(stack.getByRole("tab", { name: /Database & ORM/ })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+    }).toPass({ timeout: 10_000 });
     await expect(stack.getByRole("tabpanel")).toContainText("PostgreSQL");
     await expect(stack.getByRole("tabpanel")).toContainText("Prisma ORM");
 
@@ -122,8 +130,9 @@ test.describe("Home page", () => {
 
     const jsonLd = await page.locator('script[type="application/ld+json"]').textContent();
     const data = JSON.parse(jsonLd ?? "{}");
-    expect(data["@type"]).toBe("Person");
-    expect(data.name).toBe("Maxime Derbigny");
+    const nodes = Array.isArray(data["@graph"]) ? data["@graph"] : [data];
+    const person = nodes.find((node: { "@type"?: string }) => node["@type"] === "Person");
+    expect(person?.name).toBe("Maxime Derbigny");
 
     const sitemap = await request.get("/sitemap.xml");
     expect(sitemap.ok()).toBe(true);

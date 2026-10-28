@@ -13,6 +13,9 @@ test.describe("Accessibility", () => {
       }
       window.scrollTo(0, 0);
     });
+    // Let reveal animations (opacity/transform) finish so axe audits the
+    // settled page, not transient semi-transparent states.
+    await page.waitForTimeout(1500);
 
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])

@@ -4,7 +4,6 @@
 
 <img width="1588" height="970" alt="image" src="https://github.com/user-attachments/assets/56dbc599-118f-4cff-8ba5-d1901c5ead69" />
 
-
 Portfolio personnel de Maxime Derbigny, développeur d'applications en Suisse
 romande. Une seule page éditoriale : hero, à propos, expertise, stack,
 parcours, certifications, approche et contact.
