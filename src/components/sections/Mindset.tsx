@@ -38,7 +38,6 @@ export function Mindset() {
           sectionId="approche"
           index="06"
           eyebrow="Approche"
-
           size="md"
           title={
             <>

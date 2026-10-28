@@ -38,16 +38,16 @@ export function TimelineItem({
   });
 
   return (
-    <StaggerItem ref={ref} as="li" className="group relative pb-14 pl-8 last:pb-0 lg:pl-12">
+    <StaggerItem ref={ref} as="li" className="group relative border-b border-line">
       <span
         aria-hidden="true"
         className={cn(
-          "absolute top-[0.45em] left-0 size-[7px] rounded-full ring-4 ring-paper-deep transition-colors duration-300",
-          current || inView ? "bg-vermilion" : "bg-ink group-hover:bg-vermilion",
+          "absolute top-11 -left-0.5 z-10 size-3 transition-all duration-500 ease-out-expo lg:top-15",
+          current || inView ? "scale-110 bg-vermilion" : "bg-ink/40",
         )}
       />
-      <article className="grid gap-y-4 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-x-10">
-        <div className="flex flex-col gap-2">
+      <article className="grid-editorial items-start gap-y-4 py-10 pl-5 lg:py-14 lg:pl-6">
+        <div className="col-span-12 flex flex-col gap-2 lg:col-span-3">
           <p className="label text-steel tabular">
             <time dateTime={toDateTime(period.start)}>{formatYearMonth(period.start)}</time>
             <span aria-hidden="true"> — </span>
@@ -61,14 +61,16 @@ export function TimelineItem({
           {location && <p className="text-meta text-steel">{location}</p>}
         </div>
 
-        <div>
+        <div className="col-span-12 lg:col-span-9">
           <div className="flex items-start justify-between gap-6">
             <div className="min-w-0">
-              <h4 className="text-display-sm font-semibold tracking-[-0.02em]">{title}</h4>
+              <h4 className="text-display-md font-semibold tracking-[-0.02em]">{title}</h4>
               <p className="mt-1 text-base font-medium text-steel">
                 {organisation}
                 {organisationDetail && (
-                  <span className="block text-sm font-normal text-steel">{organisationDetail}</span>
+                  <span className="block text-base font-normal text-steel">
+                    {organisationDetail}
+                  </span>
                 )}
               </p>
             </div>
@@ -78,9 +80,9 @@ export function TimelineItem({
                 alt={logo.alt}
                 width={logo.width}
                 height={logo.height}
-                sizes="120px"
+                sizes="160px"
                 className={cn(
-                  "logo-mono mt-1 h-6 w-20 shrink-0 object-contain object-right lg:h-8 lg:w-28",
+                  "logo-mono mt-1 h-9 w-28 shrink-0 object-contain object-right lg:h-12 lg:w-40",
                   inView && "logo-mono-current",
                 )}
               />

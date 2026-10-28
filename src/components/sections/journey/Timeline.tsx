@@ -10,15 +10,15 @@ interface TimelineProps {
 }
 
 /**
- * Ordered list with a thin vertical rule that draws itself as the user scrolls
- * through the entries. Purely decorative — the list is fully readable without it.
+ * Ordered list with a vertical spine that draws itself in vermilion as the user
+ * scrolls through the entries. Purely decorative — the list is readable without it.
  * Direct children are expected to be `StaggerItem`s so they animate in sequence.
  */
 export function Timeline({ children, label }: TimelineProps) {
   const ref = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 75%", "end 60%"],
+    offset: ["start 70%", "end 55%"],
   });
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
   const scaleY = useTransform(progress, [0, 1], [0, 1]);
@@ -27,7 +27,7 @@ export function Timeline({ children, label }: TimelineProps) {
     <m.ol
       ref={ref}
       aria-label={label}
-      className="relative"
+      className="relative border-t border-line"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "0px 0px -10% 0px" }}
@@ -36,7 +36,7 @@ export function Timeline({ children, label }: TimelineProps) {
       <span aria-hidden="true" className="absolute top-0 bottom-0 left-[3px] w-px bg-line" />
       <m.span
         aria-hidden="true"
-        className="absolute top-0 bottom-0 left-[3px] w-px origin-top bg-ink"
+        className="absolute top-0 bottom-0 left-[3px] w-0.5 origin-top bg-vermilion"
         style={{ scaleY }}
       />
       {children}
