@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Maxime Derbigny
 
-## Getting Started
+Portfolio personnel de Maxime Derbigny, développeur d'applications en Suisse
+romande. Une seule page éditoriale : hero, à propos, expertise, stack,
+parcours, certifications, approche et contact.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, Cache Components, Turbopack) + **React 19**
+- **TypeScript** strict (`noUncheckedIndexedAccess`, `noFallthroughCasesInSwitch`)
+- **Tailwind CSS 4** avec design tokens définis dans `src/app/globals.css`
+- **Motion** (`LazyMotion` + `MotionConfig reducedMotion="user"`)
+- **Vitest** + Testing Library pour les tests unitaires, **Playwright** + axe-core pour l'e2e et l'accessibilité
+
+## Démarrer
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Variables d'environnement : voir [`.env.example`](.env.example)
+(`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GITHUB_REPO` optionnel).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Commande         | Rôle                                                      |
+| ---------------- | --------------------------------------------------------- |
+| `pnpm dev`       | Serveur de développement                                  |
+| `pnpm build`     | Build de production                                       |
+| `pnpm start`     | Sert le build de production                               |
+| `pnpm lint`      | ESLint                                                    |
+| `pnpm typecheck` | `next typegen` + `tsc --noEmit`                           |
+| `pnpm test`      | Tests unitaires (Vitest)                                  |
+| `pnpm test:e2e`  | Tests end-to-end (Playwright, build de production requis) |
+| `pnpm format`    | Formate avec Prettier (+ tri des classes Tailwind)        |
+| `pnpm check`     | `format:check` + `lint` + `typecheck` + `test`            |
 
-## Learn More
+## Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/              Routes, layout, metadata, og-image, sitemap, robots
+  components/
+    layout/         Header, Footer, scroll-spy
+    motion/         MotionProvider, Reveal / Stagger
+    sections/       Une section de page par dossier/fichier
+    seo/            JSON-LD Person (schema.org)
+    ui/             Primitives : Section, Eyebrow, Button, Portrait…
+  content/          profile.ts (tout le contenu) + site.ts (config)
+  lib/              dates.ts, utils.ts
+public/images/      portraits/ et logo/ (grayscale → couleur au survol)
+tests/              unit/ (Vitest) et e2e/ (Playwright + axe)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Tout le contenu se modifie dans `src/content/profile.ts`** — les sections ne
+contiennent aucune donnée en dur.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Qualité & CI
 
-## Deploy on Vercel
+- `.github/workflows/ci.yml` — format, lint, typecheck, tests unitaires,
+  build, e2e. Gate unique `CI passed` pour la protection de branche.
+- `deploy.yml` — previews Vercel sur PR, production gated par la CI, rollback manuel.
+- `lighthouse.yml` — audit hebdomadaire + sur PR (seuils dans `lighthouserc.json`).
+- `security.yml` — `pnpm audit --prod` et dependency-review sur les changements de dépendances.
+- Dependabot : mises à jour groupées (next / testing / tooling / actions),
+  actions pinnées par SHA.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Déploiement
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Déployé sur **Vercel** via GitHub Actions (l'intégration Git Vercel est
+désactivée — le workflow `deploy.yml` est la source de vérité). Secrets requis :
+`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
