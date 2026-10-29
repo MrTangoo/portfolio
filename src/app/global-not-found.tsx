@@ -8,7 +8,7 @@ import { matchLocale } from "@/i18n/locales";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "404 — Maxime Derbigny",
+  title: "404 - Maxime Derbigny",
   robots: { index: false },
 };
 
@@ -18,7 +18,7 @@ function NotFoundContent({ dict }: { dict: Dictionary }) {
     <main className="container-page flex min-h-svh flex-col justify-between py-8">
       <Monogram className="text-xl" />
       <div>
-        <p className="label text-vermilion-deep">404 — {notFound.title}</p>
+        <p className="label text-vermilion-deep">404 - {notFound.title}</p>
         <h1 className="mt-8 max-w-[14ch] text-display-lg font-semibold text-balance">
           {notFound.heading}
           <span className="text-vermilion">.</span>

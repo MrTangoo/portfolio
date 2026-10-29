@@ -141,7 +141,7 @@ export async function POST(request: Request) {
 
   try {
     await transporter.sendMail({
-      from: `"Portfolio — ${headerName}" <${SMTP_USER}>`,
+      from: `"Portfolio - ${headerName}" <${SMTP_USER}>`,
       to: CONTACT_EMAIL || SMTP_USER,
       replyTo: email,
       subject: subject

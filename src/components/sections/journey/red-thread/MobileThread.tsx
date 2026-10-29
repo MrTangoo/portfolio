@@ -50,7 +50,7 @@ export function MobileThread({ chapters, timelineLabel, todayLabel }: MobileThre
           >
             <ChapterDot />
             <article
-              aria-label={`${chapter.kind} — ${chapter.year || todayLabel}`}
+              aria-label={`${chapter.kind} - ${chapter.year || todayLabel}`}
               className="py-10 pl-6"
             >
               {chapter.final ? (
@@ -129,7 +129,7 @@ export function MobileThread({ chapters, timelineLabel, todayLabel }: MobileThre
                       {(entry.status || entry.badge) && (
                         <p className="label mt-3 inline-flex items-center gap-3 text-vermilion-deep">
                           <span aria-hidden="true" className="block size-1.5 bg-vermilion" />
-                          {[entry.status, entry.badge].filter(Boolean).join(" — ")}
+                          {[entry.status, entry.badge].filter(Boolean).join(" - ")}
                         </p>
                       )}
                       {entry.summary && (
