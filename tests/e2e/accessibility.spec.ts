@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility", () => {
   test("home page has no WCAG 2.2 A/AA violations", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/fr");
     // Make every scroll-revealed element visible before auditing.
     await page.evaluate(async () => {
       const step = window.innerHeight / 2;
@@ -31,7 +31,7 @@ test.describe("Accessibility", () => {
 
   test("respects prefers-reduced-motion by rendering content immediately", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/fr");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("link", { name: "Découvrir mon parcours" })).toBeVisible();
   });

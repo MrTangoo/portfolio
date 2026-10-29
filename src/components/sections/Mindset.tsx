@@ -10,7 +10,7 @@ import {
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { principles } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 import { GITHUB_REPO } from "@/content/site";
 
 const principleIcons = {
@@ -22,29 +22,23 @@ const principleIcons = {
   "trending-up": TrendingUp,
 } as const;
 
-const SITE_PRACTICES = [
-  "Next.js App Router",
-  "TypeScript strict",
-  "Tests Vitest & Playwright",
-  "CI GitHub Actions",
-  "Déploiement Vercel",
-] as const;
+export function Mindset({ dict }: { dict: Dictionary }) {
+  const { mindset } = dict;
 
-export function Mindset() {
   return (
     <Section id="approche" tone="white">
       <Reveal>
         <SectionHeading
           sectionId="approche"
           index="06"
-          eyebrow="Approche"
+          eyebrow={mindset.eyebrow}
           size="md"
           title={
             <>
-              Une ingénierie <span className="text-steel">qui dure.</span>
+              {mindset.titleA} <span className="text-steel">{mindset.titleB}</span>
             </>
           }
-          description="Des pratiques que je cherche à appliquer au quotidien et à approfondir, plus que des certitudes."
+          description={mindset.description}
         />
       </Reveal>
 
@@ -53,7 +47,7 @@ export function Mindset() {
         className="mt-16 grid gap-x-10 gap-y-12 border-t border-line pt-10 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3"
         stagger={0.08}
       >
-        {principles.map((principle, index) => {
+        {mindset.principles.map((principle, index) => {
           const Icon = principle.icon
             ? principleIcons[principle.icon as keyof typeof principleIcons]
             : null;
@@ -79,11 +73,9 @@ export function Mindset() {
 
       <Reveal className="mt-20 border-t border-line pt-8 lg:mt-24">
         <div className="grid-editorial gap-y-4">
-          <p className="label col-span-12 text-steel lg:col-span-3">
-            Ce site applique ces principes
-          </p>
+          <p className="label col-span-12 text-steel lg:col-span-3">{mindset.practicesLabel}</p>
           <div className="col-span-12 flex flex-wrap items-center gap-x-6 gap-y-3 lg:col-span-9">
-            {SITE_PRACTICES.map((practice) => (
+            {mindset.practices.map((practice) => (
               <span key={practice} className="text-sm font-medium text-ink">
                 {practice}
               </span>
@@ -98,7 +90,7 @@ export function Mindset() {
                 {/* eslint-disable-next-line @next/next/no-img-element -- external status badge, intentionally unoptimised */}
                 <img
                   src={`https://github.com/${GITHUB_REPO}/actions/workflows/ci.yml/badge.svg`}
-                  alt="Statut du workflow CI"
+                  alt={mindset.ciBadgeAlt}
                   height={20}
                   width={90}
                   loading="lazy"

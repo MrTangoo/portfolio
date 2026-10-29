@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { buildPersonJsonLd } from "@/components/seo/JsonLd";
+import { fr } from "@/i18n/dictionaries/fr";
 
 describe("buildPersonJsonLd", () => {
-  const data = buildPersonJsonLd();
+  const data = buildPersonJsonLd(fr);
 
   it("describes a schema.org Person", () => {
     expect(data["@context"]).toBe("https://schema.org");

@@ -7,7 +7,7 @@ import { useInView } from "motion/react";
 import { StaggerItem } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils";
 import { Timeline } from "../Timeline";
-import { CHAPTERS } from "./chapters";
+import type { Chapter } from "./chapters";
 import { EntryIcon } from "./RedThread";
 
 /** Square on the spine — turns vermilion while the chapter crosses the reading zone. */
@@ -32,11 +32,17 @@ function ChapterDot() {
  * Mobile / fallback rendering of THE RED THREAD — same chapters as the
  * desktop pinned version, stacked per year for small screens.
  */
-export function MobileThread() {
+interface MobileThreadProps {
+  chapters: readonly Chapter[];
+  timelineLabel: string;
+  todayLabel: string;
+}
+
+export function MobileThread({ chapters, timelineLabel, todayLabel }: MobileThreadProps) {
   return (
     <div className="mt-14 xl:hidden">
-      <Timeline label="Parcours">
-        {CHAPTERS.map((chapter) => (
+      <Timeline label={timelineLabel}>
+        {chapters.map((chapter) => (
           <StaggerItem
             as="li"
             key={chapter.id}
@@ -44,7 +50,7 @@ export function MobileThread() {
           >
             <ChapterDot />
             <article
-              aria-label={`${chapter.kind} — ${chapter.year || "Aujourd'hui"}`}
+              aria-label={`${chapter.kind} — ${chapter.year || todayLabel}`}
               className="py-10 pl-6"
             >
               {chapter.final ? (

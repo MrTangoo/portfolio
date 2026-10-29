@@ -3,28 +3,30 @@ import { ArrowUpRight } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { certifications } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 import { formatYearMonth, toDateTime } from "@/lib/dates";
 
-export function Certifications() {
+export function Certifications({ dict }: { dict: Dictionary }) {
+  const { certifications } = dict;
+
   return (
     <Section id="certifications">
       <Reveal>
         <SectionHeading
           sectionId="certifications"
           index="05"
-          eyebrow="Certifications"
+          eyebrow={certifications.eyebrow}
           size="md"
           title={
             <>
-              Des acquis <span className="text-steel">vérifiés.</span>
+              {certifications.titleA} <span className="text-steel">{certifications.titleB}</span>
             </>
           }
         />
       </Reveal>
 
       <Stagger as="ol" className="mt-16 border-t border-line lg:mt-20" stagger={0.12}>
-        {certifications.map((certification, index) => (
+        {certifications.items.map((certification, index) => (
           <StaggerItem key={certification.id} as="li" className="group border-b border-line">
             <article className="grid-editorial items-start gap-y-5 py-8 lg:py-10">
               {certification.logo && (
@@ -41,7 +43,7 @@ export function Certifications() {
               <div className="col-span-9 lg:col-span-7 lg:col-start-4">
                 <p className="label text-steel tabular">
                   <time dateTime={toDateTime(certification.obtained)}>
-                    {formatYearMonth(certification.obtained, "long")}
+                    {formatYearMonth(certification.obtained, "long", dict.locale)}
                   </time>
                 </p>
                 <h3 className="mt-3 text-display-sm font-semibold tracking-[-0.02em]">
@@ -63,7 +65,7 @@ export function Certifications() {
                     rel="noopener noreferrer"
                     className="link-reveal mt-5 inline-flex items-center gap-1 text-sm font-medium"
                   >
-                    Vérifier la certification
+                    {certifications.verifyLabel}
                     <ArrowUpRight aria-hidden="true" className="size-3.5" />
                   </a>
                 )}
@@ -75,7 +77,7 @@ export function Certifications() {
                     <p className="text-display-md font-semibold tracking-[-0.03em] tabular transition-colors duration-300 group-hover:text-vermilion-deep">
                       {certification.score}
                     </p>
-                    <p className="label text-steel">Résultat</p>
+                    <p className="label text-steel">{certifications.resultLabel}</p>
                   </>
                 ) : (
                   <p aria-hidden="true" className="label text-steel tabular">

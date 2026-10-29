@@ -4,14 +4,17 @@ import { ButtonLink } from "@/components/ui/Button";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Portrait } from "@/components/ui/Portrait";
-import { externalSocials, hero, identity } from "@/content/profile";
+import { externalSocials, identity } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 import { HeroTitle } from "./HeroTitle";
 
-export function Hero() {
+export function Hero({ dict }: { dict: Dictionary }) {
+  const { hero } = dict;
+
   return (
     <section
       id="top"
-      aria-label="Introduction"
+      aria-label={hero.ariaLabel}
       className="relative flex min-h-svh flex-col justify-center bg-paper pt-28 pb-8 lg:pt-36 lg:pb-10 xl:justify-end"
     >
       <div className="container-page">
@@ -43,7 +46,7 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Télécharger mon CV
+                {hero.cvLabel}
               </ButtonLink>
             </Reveal>
           </div>
@@ -55,7 +58,7 @@ export function Hero() {
           >
             <div className="relative">
               <Portrait
-                source={identity.portrait}
+                source={dict.identity.portrait}
                 preload
                 focal="68% 28%"
                 sizes="(min-width: 1024px) 38vw, (min-width: 640px) 80vw, 100vw"
@@ -66,16 +69,16 @@ export function Hero() {
                 <div>
                   <dt className="label flex items-center gap-2.5 text-steel">
                     <MapPin aria-hidden="true" className="size-3.5 shrink-0" />
-                    Basé à
+                    {hero.basedLabel}
                   </dt>
                   <dd className="mt-1 font-medium">
-                    {identity.location.city}, {identity.location.region}
+                    {dict.identity.location.city}, {dict.identity.location.region}
                   </dd>
                 </div>
                 <div>
                   <dt className="label flex items-center gap-2.5 text-steel">
                     <Briefcase aria-hidden="true" className="size-3.5 shrink-0" />
-                    Actuellement
+                    {hero.currentlyLabel}
                   </dt>
                   <dd className="mt-1 font-medium">{identity.employer}</dd>
                 </div>
@@ -89,7 +92,7 @@ export function Hero() {
           y={0}
           className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5 lg:mt-20"
         >
-          <p className="label text-steel">CFC Informaticien · Brevet fédéral en cours</p>
+          <p className="label text-steel">{hero.credentialLine}</p>
           <ul className="flex items-center gap-6">
             {externalSocials.map((social) => (
               <li key={social.id}>
@@ -101,7 +104,7 @@ export function Hero() {
             href="#a-propos"
             className="label group hidden items-center gap-2 text-steel transition-colors hover:text-ink sm:inline-flex"
           >
-            Défiler
+            {hero.scrollLabel}
             <ArrowDown
               aria-hidden="true"
               className="size-3 transition-transform duration-300 ease-out-expo group-hover:translate-y-0.5"

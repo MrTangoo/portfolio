@@ -4,11 +4,14 @@ import { Fragment, useEffect, useId, useMemo, useRef, useState, type KeyboardEve
 import * as m from "motion/react-m";
 import { CornerDownLeft, Search, X } from "lucide-react";
 import {
+  buildPaletteCommands,
   filterCommands,
   PALETTE_CATEGORY_ORDER,
   type PaletteCommand,
   type PaletteCommandContext,
 } from "@/components/interactive/commands";
+import { format } from "@/i18n/format";
+import { useDictionary } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 
 interface CommandPaletteProps {
@@ -31,21 +34,24 @@ function Kbd({ children }: { children: string }) {
  * parent wraps it in `AnimatePresence` for the exit transition.
  */
 export function CommandPalette({ onClose, context }: CommandPaletteProps) {
+  const dict = useDictionary();
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const visible = useMemo(() => filterCommands(query), [query]);
+  const commands = useMemo(() => buildPaletteCommands(dict), [dict]);
+  const visible = useMemo(() => filterCommands(commands, dict, query), [commands, dict, query]);
 
   const grouped = useMemo(
     () =>
       PALETTE_CATEGORY_ORDER.map((category) => ({
         category,
+        label: dict.palette.categories[category],
         commands: visible.filter((command) => command.category === category),
       })).filter((group) => group.commands.length > 0),
-    [visible],
+    [visible, dict],
   );
 
   // Stable listbox index for every visible command (for aria-activedescendant).
@@ -135,7 +141,7 @@ export function CommandPalette({ onClose, context }: CommandPaletteProps) {
     <m.div
       role="dialog"
       aria-modal="true"
-      aria-label="Palette de commandes"
+      aria-label={dict.palette.ariaLabel}
       className="fixed inset-0 z-[90]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -166,7 +172,7 @@ export function CommandPalette({ onClose, context }: CommandPaletteProps) {
             aria-expanded="true"
             aria-controls={listId}
             aria-activedescendant={visible.length ? `${listId}-option-${activeIndex}` : undefined}
-            aria-label="Rechercher une commande"
+            aria-label={dict.palette.searchAria}
             autoComplete="off"
             spellCheck={false}
             value={query}
@@ -174,13 +180,13 @@ export function CommandPalette({ onClose, context }: CommandPaletteProps) {
               setQuery(event.target.value);
               setActiveIndex(0);
             }}
-            placeholder="Rechercher une commande…"
+            placeholder={dict.palette.placeholder}
             className="h-13 min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-steel-soft"
           />
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fermer la palette de commandes"
+            aria-label={dict.palette.closeAria}
             className="-mr-2 flex size-10 items-center justify-center text-steel transition-colors duration-150 hover:text-ink"
           >
             <X aria-hidden="true" className="size-4" />
@@ -190,7 +196,7 @@ export function CommandPalette({ onClose, context }: CommandPaletteProps) {
         <ul
           id={listId}
           role="listbox"
-          aria-label="Commandes"
+          aria-label={dict.palette.listAria}
           className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"
         >
           {grouped.map((group) => (
@@ -199,7 +205,7 @@ export function CommandPalette({ onClose, context }: CommandPaletteProps) {
                 role="presentation"
                 className="label px-4 pt-3 pb-1.5 text-steel-soft first:pt-1.5"
               >
-                {group.category}
+                {group.label}
               </li>
               {group.commands.map((command) => {
                 const index = optionIndices.get(command) ?? 0;
@@ -239,7 +245,7 @@ export function CommandPalette({ onClose, context }: CommandPaletteProps) {
 
           {visible.length === 0 && (
             <li role="presentation" className="px-4 py-10 text-center text-sm text-steel">
-              Aucun résultat pour «&nbsp;{query}&nbsp;»
+              {format(dict.palette.empty, { query })}
             </li>
           )}
         </ul>
@@ -248,15 +254,15 @@ export function CommandPalette({ onClose, context }: CommandPaletteProps) {
           <span className="flex items-center gap-1.5 text-xs">
             <Kbd>↑</Kbd>
             <Kbd>↓</Kbd>
-            naviguer
+            {dict.palette.hints.navigate}
           </span>
           <span className="flex items-center gap-1.5 text-xs">
             <Kbd>↵</Kbd>
-            exécuter
+            {dict.palette.hints.execute}
           </span>
           <span className="ml-auto flex items-center gap-1.5 text-xs">
             <Kbd>esc</Kbd>
-            fermer
+            {dict.palette.hints.close}
           </span>
         </div>
       </m.div>

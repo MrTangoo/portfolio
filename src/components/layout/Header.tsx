@@ -1,12 +1,14 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { Search } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { useInteractive } from "@/components/interactive/InteractiveProvider";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Monogram } from "@/components/ui/Monogram";
-import { NAV_ITEMS } from "@/content/site";
 import { externalSocials, socials } from "@/content/profile";
+import { useDictionary, useLocale } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 import { useActiveSection } from "@/components/layout/use-active-section";
 
@@ -16,12 +18,18 @@ const socialIcons = {
 } as const;
 
 export function Header() {
+  const dict = useDictionary();
+  const locale = useLocale();
+  // Section anchors only exist on the home page — point back to it otherwise.
+  const pathname = usePathname() ?? `/${locale}`;
+  const onHome = pathname === `/${locale}`;
+  const sectionHref = (id: string) => (onHome ? `#${id}` : `/${locale}#${id}`);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
-  const active = useActiveSection(NAV_ITEMS.map((item) => item.id));
+  const active = useActiveSection(dict.nav.map((item) => item.id));
   const { openPalette } = useInteractive();
 
   // ⌘ on Apple platforms, Ctrl elsewhere — the server snapshot keeps the
@@ -84,21 +92,21 @@ export function Header() {
       >
         <div className="container-page flex h-16 items-center justify-between lg:h-20">
           <a
-            href="#top"
+            href={onHome ? "#top" : `/${locale}`}
             className="inline-block text-xl leading-none transition-transform duration-300 ease-out-expo hover:scale-110"
             onClick={close}
           >
-            <Monogram srLabel="Maxime Derbigny — retour en haut de page" />
+            <Monogram srLabel={dict.header.monogramLabel} />
           </a>
 
-          <nav aria-label="Navigation principale" className="hidden lg:block">
+          <nav aria-label={dict.header.navAriaLabel} className="hidden lg:block">
             <ul className="flex items-center gap-8">
-              {NAV_ITEMS.map((item) => {
+              {dict.nav.map((item) => {
                 const isActive = active === item.id;
                 return (
                   <li key={item.id}>
                     <a
-                      href={`#${item.id}`}
+                      href={sectionHref(item.id)}
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
                         "link-reveal py-2 text-sm font-medium tracking-[-0.005em] transition-colors duration-150",
@@ -117,7 +125,7 @@ export function Header() {
             <button
               type="button"
               onClick={openPalette}
-              aria-label="Ouvrir la palette de commandes"
+              aria-label={dict.header.openPalette}
               aria-keyshortcuts="Control+K Meta+K"
               className="flex items-center gap-2 border border-line px-3 py-1.5 text-steel transition-colors duration-150 hover:border-line-strong hover:text-ink"
             >
@@ -140,13 +148,15 @@ export function Header() {
                 </a>
               );
             })}
+            <LanguageSwitcher />
           </div>
 
           <div className="flex items-center lg:hidden">
+            <LanguageSwitcher />
             <button
               type="button"
               onClick={openPalette}
-              aria-label="Ouvrir la palette de commandes"
+              aria-label={dict.header.openPalette}
               aria-keyshortcuts="Control+K Meta+K"
               className="flex size-12 items-center justify-center text-ink"
             >
@@ -158,7 +168,7 @@ export function Header() {
               className="-mr-2 flex size-12 flex-col items-center justify-center gap-1.5"
               aria-expanded={open}
               aria-controls={menuId}
-              aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-label={open ? dict.header.closeMenu : dict.header.openMenu}
               onClick={() => setOpen((value) => !value)}
             >
               <span
@@ -192,13 +202,13 @@ export function Header() {
         aria-hidden={!open}
         inert={!open}
       >
-        <nav aria-label="Navigation mobile" className="container-page flex-1 pt-6">
+        <nav aria-label={dict.header.mobileNavAriaLabel} className="container-page flex-1 pt-6">
           <ol className="divide-y divide-line border-y border-line">
-            {NAV_ITEMS.map((item, index) => (
+            {dict.nav.map((item, index) => (
               <li key={item.id}>
                 <a
                   ref={index === 0 ? firstLinkRef : undefined}
-                  href={`#${item.id}`}
+                  href={sectionHref(item.id)}
                   onClick={close}
                   className="group flex items-baseline justify-between py-5"
                 >

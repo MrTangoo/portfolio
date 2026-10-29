@@ -54,7 +54,7 @@ export function buildEmailHtml(
                 MD<span style="color: #e34234;">.</span>
               </td>
               <td align="right" style="${mono} color: rgba(245,244,240,0.65);">
-                Contact — Formulaire
+                Contact - Formulaire
               </td>
             </tr>
           </table>
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return Response.json({ ok: false, error: "Requête invalide." }, { status: 400 });
+    return Response.json({ ok: false, error: "invalid" }, { status: 400 });
   }
 
   // Honeypot filled or instant submit → silently pretend success.
@@ -121,19 +121,13 @@ export async function POST(request: Request) {
   const message = sanitize(body.message, MAX_MESSAGE);
 
   if (!name || !EMAIL_PATTERN.test(email) || message.length < 10) {
-    return Response.json(
-      { ok: false, error: "Merci de vérifier les champs du formulaire." },
-      { status: 400 },
-    );
+    return Response.json({ ok: false, error: "invalid" }, { status: 400 });
   }
 
   const { SMTP_USER, SMTP_PASS, CONTACT_EMAIL } = process.env;
   if (!SMTP_USER || !SMTP_PASS) {
     console.error("[contact] SMTP_USER / SMTP_PASS manquants");
-    return Response.json(
-      { ok: false, error: "Le service d'envoi n'est pas configuré." },
-      { status: 500 },
-    );
+    return Response.json({ ok: false, error: "unconfigured" }, { status: 500 });
   }
 
   const transporter = nodemailer.createTransport({
@@ -156,13 +150,10 @@ export async function POST(request: Request) {
       text: `Nom : ${name}\nEmail : ${email}\n\n${message}`,
       html: buildEmailHtml(name, email, subject, message),
     });
-    console.info(`[contact] Message envoyé de ${name} <${email}>`);
+    console.info("[contact] Message envoyé");
   } catch (error) {
     console.error("[contact] Échec d'envoi SMTP :", error);
-    return Response.json(
-      { ok: false, error: "L'envoi a échoué. Réessaie dans un instant." },
-      { status: 502 },
-    );
+    return Response.json({ ok: false, error: "send_failed" }, { status: 502 });
   }
 
   return Response.json({ ok: true });

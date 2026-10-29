@@ -1,17 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { InteractiveProvider } from "@/components/interactive/InteractiveProvider";
 import { MotionProvider } from "@/components/motion/MotionProvider";
-import {
-  GOOGLE_SITE_VERIFICATION,
-  SITE_DESCRIPTION,
-  SITE_LOCALE,
-  SITE_NAME,
-  SITE_TITLE,
-  SITE_URL,
-} from "@/content/site";
-import "./globals.css";
+import { DictionaryProvider } from "@/i18n/provider";
+import { getDictionaryFor } from "@/i18n";
+import { hasLocale, LOCALE_META, LOCALES } from "@/i18n/locales";
+import { GOOGLE_SITE_VERIFICATION, SITE_NAME, SITE_URL } from "@/content/site";
+import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,63 +22,73 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: SITE_TITLE,
-    template: `%s — ${SITE_NAME}`,
-  },
-  description: SITE_DESCRIPTION,
-  applicationName: SITE_NAME,
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
-  creator: SITE_NAME,
-  keywords: [
-    "Maxime Derbigny",
-    "développeur d'applications",
-    "software developer",
-    "Suisse romande",
-    "Fribourg",
-    "React",
-    "Next.js",
-    "TypeScript",
-    "PostgreSQL",
-  ],
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "profile",
-    locale: SITE_LOCALE,
-    url: SITE_URL,
-    siteName: SITE_NAME,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    firstName: "Maxime",
-    lastName: "Derbigny",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export function generateStaticParams() {
+  return LOCALES.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = getDictionaryFor(lang);
+  const meta = LOCALE_META[lang];
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: dict.meta.title,
+      template: `%s — ${SITE_NAME}`,
+    },
+    description: dict.meta.description,
+    applicationName: SITE_NAME,
+    authors: [{ name: SITE_NAME, url: SITE_URL }],
+    creator: SITE_NAME,
+    keywords: [...dict.meta.keywords],
+    alternates: {
+      canonical: `/${lang}`,
+      languages: {
+        fr: "/fr",
+        en: "/en",
+        de: "/de",
+        "x-default": "/fr",
+      },
+    },
+    openGraph: {
+      type: "profile",
+      locale: meta.ogLocale,
+      alternateLocale: LOCALES.filter((l) => l !== lang).map((l) => LOCALE_META[l].ogLocale),
+      url: `${SITE_URL}/${lang}`,
+      siteName: SITE_NAME,
+      title: dict.meta.title,
+      description: dict.meta.description,
+      firstName: "Maxime",
+      lastName: "Derbigny",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dict.meta.title,
+      description: dict.meta.description,
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  publisher: SITE_NAME,
-  formatDetection: { email: false, address: false, telephone: false },
-  appleWebApp: {
-    capable: true,
-    title: SITE_NAME,
-    statusBarStyle: "default",
-  },
-  verification: GOOGLE_SITE_VERIFICATION ? { google: GOOGLE_SITE_VERIFICATION } : undefined,
-};
+    publisher: SITE_NAME,
+    formatDetection: { email: false, address: false, telephone: false },
+    appleWebApp: {
+      capable: true,
+      title: SITE_NAME,
+      statusBarStyle: "default",
+    },
+    verification: GOOGLE_SITE_VERIFICATION ? { google: GOOGLE_SITE_VERIFICATION } : undefined,
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#F5F4F0",
@@ -90,18 +97,27 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const dict = getDictionaryFor(lang);
+
   return (
-    <html lang="fr-CH" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
+    <html
+      lang={LOCALE_META[lang].htmlLang}
+      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+    >
       <body className="flex min-h-full flex-col">
         <a
           href="#main"
           className="label fixed top-3 left-3 z-[100] -translate-y-24 bg-ink px-4 py-3 text-paper transition-transform focus:translate-y-0"
         >
-          Aller au contenu
+          {dict.meta.skipLink}
         </a>
         <MotionProvider>
-          <InteractiveProvider>{children}</InteractiveProvider>
+          <DictionaryProvider dict={dict}>
+            <InteractiveProvider>{children}</InteractiveProvider>
+          </DictionaryProvider>
         </MotionProvider>
         <Toaster position="bottom-right" />
       </body>

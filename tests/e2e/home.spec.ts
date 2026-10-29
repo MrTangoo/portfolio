@@ -22,7 +22,7 @@ async function collectConsoleErrors(page: Page) {
 test.describe("Home page", () => {
   test("loads with the hero and no runtime errors", async ({ page }) => {
     const errors = await collectConsoleErrors(page);
-    const response = await page.goto("/");
+    const response = await page.goto("/fr");
     expect(response?.ok()).toBe(true);
 
     await expect(page).toHaveTitle(/Maxime Derbigny/);
@@ -38,7 +38,7 @@ test.describe("Home page", () => {
   });
 
   test("renders every section with an accessible heading", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/fr");
     for (const id of SECTION_IDS) {
       const section = page.locator(`section#${id}`);
       await expect(section).toHaveCount(1);
@@ -48,7 +48,7 @@ test.describe("Home page", () => {
   });
 
   test("shows skills, experiences and certifications from the profile", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/fr");
 
     const stack = page.locator("section#stack");
     await stack.scrollIntoViewIfNeeded();
@@ -83,7 +83,7 @@ test.describe("Home page", () => {
   });
 
   test("exposes working contact links", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/fr");
     const contact = page.locator("section#contact");
     await contact.scrollIntoViewIfNeeded();
 
@@ -100,7 +100,7 @@ test.describe("Home page", () => {
   });
 
   test("never shows a projects section", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/fr");
     const headings = await page.getByRole("heading").allInnerTexts();
     for (const heading of headings) {
       expect(heading.toLowerCase()).not.toMatch(/projets?|projects?|case stud|réalisations?/);
@@ -109,7 +109,7 @@ test.describe("Home page", () => {
   });
 
   test("has no unintended horizontal overflow", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/fr");
     const { scrollWidth, clientWidth } = await page.evaluate(() => ({
       scrollWidth: document.documentElement.scrollWidth,
       clientWidth: document.documentElement.clientWidth,
@@ -118,7 +118,7 @@ test.describe("Home page", () => {
   });
 
   test("serves SEO metadata, structured data, sitemap and robots", async ({ page, request }) => {
-    await page.goto("/");
+    await page.goto("/fr");
 
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       "content",
@@ -142,7 +142,7 @@ test.describe("Home page", () => {
     expect(robots.ok()).toBe(true);
     expect(await robots.text()).toContain("Sitemap:");
 
-    const og = await request.get("/opengraph-image");
+    const og = await request.get("/fr/opengraph-image");
     expect(og.ok()).toBe(true);
     expect(og.headers()["content-type"]).toContain("image/png");
   });

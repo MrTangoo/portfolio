@@ -1,4 +1,4 @@
-import { certifications, education, experiences } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 import type { Logo, Period } from "@/content/profile";
 import { formatYearMonth } from "@/lib/dates";
 
@@ -30,123 +30,128 @@ export interface Chapter {
   final?: { label: string; title: string; text: string; sub: string };
 }
 
-const sbb = experiences.find((e) => e.id === "sbb")!;
-const gri = experiences.find((e) => e.id === "gri")!;
-const micro = experiences.find((e) => e.id === "micro")!;
-const epsic = education.find((e) => e.id === "epsic")!;
-const iseig = education.find((e) => e.id === "iseig")!;
-const psm = certifications[0]!;
+/** Assembles the Red Thread chapters for the active locale. */
+export function getChapters(dict: Dictionary): readonly Chapter[] {
+  const { experiences, education, certifications, journey } = dict;
 
-function range(period: Period): string {
-  const start = formatYearMonth(period.start, "long");
-  const end = period.end ? formatYearMonth(period.end, "long") : "Aujourd'hui";
-  return `${start} — ${end}`;
-}
+  const sbb = experiences.find((e) => e.id === "sbb")!;
+  const gri = experiences.find((e) => e.id === "gri")!;
+  const micro = experiences.find((e) => e.id === "micro")!;
+  const epsic = education.find((e) => e.id === "epsic")!;
+  const iseig = education.find((e) => e.id === "iseig")!;
+  const psm = certifications.items[0]!;
 
-export const CHAPTERS: readonly Chapter[] = [
-  {
-    id: "2021",
-    index: "01",
-    year: "2021",
-    kind: "Les fondations",
-    editorial: "Poser les fondations.",
-    entries: [
-      {
-        icon: "work",
-        title: sbb.role,
-        org: sbb.company,
-        period: range(sbb.period),
-        detail: `${sbb.location}, Suisse`,
-        summary: sbb.summary,
-        logo: sbb.logo,
-      },
-    ],
-  },
-  {
-    id: "2024",
-    index: "02",
-    year: "2024",
-    kind: "L'évolution",
-    editorial: "Consolider la pratique.",
-    entries: [
-      {
-        icon: "work",
-        title: gri.role,
-        org: gri.company,
-        period: range(gri.period),
-        detail: `${gri.location}, Suisse`,
-        summary: gri.summary,
-        logo: gri.logo,
-      },
-    ],
-  },
-  {
-    id: "2025",
-    index: "03",
-    year: "2025",
-    kind: "Le tournant",
-    editorial: "Un nouveau chapitre.",
-    entries: [
-      {
-        icon: "work",
-        title: micro.role,
-        org: micro.company,
-        period: range(micro.period),
-        detail: `${micro.location}, Suisse`,
-        status: "Poste actuel",
-        summary:
-          "Développement et évolution d'applications métier, du frontend aux bases de données SQL.",
-        logo: micro.logo,
-      },
-      {
-        icon: "education",
-        title: epsic.degree,
-        org: epsic.institution,
-        period: formatYearMonth(epsic.period.end!, "long"),
-        detail: `${epsic.location}, Suisse`,
-        status: "Diplôme obtenu",
-        logo: epsic.logo,
-      },
-    ],
-  },
-  {
-    id: "2026",
-    index: "04",
-    year: "2026",
-    kind: "Élargir les perspectives",
-    editorial: "Élargir les perspectives.",
-    entries: [
-      {
-        icon: "education",
-        title: iseig.degree,
-        org: iseig.institution,
-        period: range(iseig.period),
-        detail: `${iseig.location}, Suisse`,
-        status: "En cours",
-        summary:
-          "Formation orientée gestion de projet, analyse des exigences et compréhension des besoins métier.",
-        logo: iseig.logo,
-      },
-      {
-        icon: "certification",
-        title: psm.name,
-        org: psm.issuer,
-        period: formatYearMonth(psm.obtained, "long"),
-        logo: psm.logo,
-      },
-    ],
-  },
-  {
-    id: "final",
-    index: "05",
-    year: "",
-    kind: "Next chapter",
-    entries: [],
-    final: {
-      label: "NEXT CHAPTER_",
-      title: "La suite reste à écrire...",
-      text: "Continuer à apprendre. Construire avec exigence. Évoluer.",
-      sub: "Aujourd'hui, je poursuis mon évolution dans le développement logiciel, avec un intérêt croissant pour l'architecture, la qualité et les responsabilités techniques.",
+  const range = (period: Period): string => {
+    const start = formatYearMonth(period.start, "long", dict.locale);
+    const end = period.end
+      ? formatYearMonth(period.end, "long", dict.locale)
+      : journey.statuses.today;
+    return `${start} — ${end}`;
+  };
+
+  const detail = (location: string) => `${location}, ${dict.identity.location.country}`;
+
+  const narratives = new Map(journey.chapters.map((chapter) => [chapter.id, chapter]));
+  const narrative = (id: string) => narratives.get(id)!;
+
+  return [
+    {
+      id: "2021",
+      index: narrative("2021").index,
+      year: "2021",
+      kind: narrative("2021").kind,
+      editorial: narrative("2021").editorial,
+      entries: [
+        {
+          icon: "work",
+          title: sbb.role,
+          org: sbb.company,
+          period: range(sbb.period),
+          detail: detail(sbb.location),
+          summary: sbb.summary,
+          logo: sbb.logo,
+        },
+      ],
     },
-  },
-];
+    {
+      id: "2024",
+      index: narrative("2024").index,
+      year: "2024",
+      kind: narrative("2024").kind,
+      editorial: narrative("2024").editorial,
+      entries: [
+        {
+          icon: "work",
+          title: gri.role,
+          org: gri.company,
+          period: range(gri.period),
+          detail: detail(gri.location),
+          summary: gri.summary,
+          logo: gri.logo,
+        },
+      ],
+    },
+    {
+      id: "2025",
+      index: narrative("2025").index,
+      year: "2025",
+      kind: narrative("2025").kind,
+      editorial: narrative("2025").editorial,
+      entries: [
+        {
+          icon: "work",
+          title: micro.role,
+          org: micro.company,
+          period: range(micro.period),
+          detail: detail(micro.location),
+          status: journey.statuses.current,
+          summary: journey.chapterSummaries.micro,
+          logo: micro.logo,
+        },
+        {
+          icon: "education",
+          title: epsic.degree,
+          org: epsic.institution,
+          period: formatYearMonth(epsic.period.end!, "long", dict.locale),
+          detail: detail(epsic.location),
+          status: journey.statuses.completed,
+          logo: epsic.logo,
+        },
+      ],
+    },
+    {
+      id: "2026",
+      index: narrative("2026").index,
+      year: "2026",
+      kind: narrative("2026").kind,
+      editorial: narrative("2026").editorial,
+      entries: [
+        {
+          icon: "education",
+          title: iseig.degree,
+          org: iseig.institution,
+          period: range(iseig.period),
+          detail: detail(iseig.location),
+          status: journey.statuses.ongoing,
+          summary: journey.chapterSummaries.iseig,
+          logo: iseig.logo,
+        },
+        {
+          icon: "certification",
+          title: psm.name,
+          org: psm.issuer,
+          period: formatYearMonth(psm.obtained, "long", dict.locale),
+          logo: psm.logo,
+        },
+      ],
+    },
+    {
+      id: "final",
+      index: narrative("final").index,
+      year: "",
+      kind: narrative("final").kind,
+      entries: [],
+      final: journey.final,
+    },
+  ];
+}

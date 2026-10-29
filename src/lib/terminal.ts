@@ -7,7 +7,10 @@
  * HTML — so no input can inject markup or execute code.
  */
 
-import { about, experiences, externalSocials, identity, stack } from "@/content/profile";
+import { externalSocials, identity } from "@/content/profile";
+import { format } from "@/i18n/format";
+import type { Dictionary } from "@/i18n";
+import { LOCALE_META } from "@/i18n/locales";
 import { formatYearMonth } from "@/lib/dates";
 
 export interface Segment {
@@ -34,23 +37,21 @@ export interface CommandDef {
   description: string;
 }
 
-/** Allow-list — also used for `help` and Tab completion. */
-export const TERMINAL_COMMANDS: readonly CommandDef[] = [
-  { name: "help", description: "Liste les commandes disponibles" },
-  { name: "about", description: "Présentation du site et de son auteur" },
-  { name: "projects", description: "Projets publiés" },
-  { name: "stack", description: "Technologies utilisées" },
-  { name: "experience", description: "Expériences professionnelles" },
-  { name: "contact", description: "Moyens de contact" },
-  { name: "cv", description: "Ouvre le CV au format PDF" },
-  { name: "date", description: "Affiche la date et l'heure locales" },
-  { name: "whoami", description: "Qui suis-je ?" },
-  { name: "echo", description: "echo <texte> — réaffiche le texte fourni" },
-  { name: "clear", description: "Efface l'historique du terminal" },
-  { name: "exit", description: "Ferme le terminal" },
-];
-
-export const TERMINAL_COMMAND_NAMES = TERMINAL_COMMANDS.map((command) => command.name);
+/** Command names — the fixed allow-list, localized descriptions live in the dictionary. */
+export const TERMINAL_COMMAND_NAMES = [
+  "help",
+  "about",
+  "projects",
+  "stack",
+  "experience",
+  "contact",
+  "cv",
+  "date",
+  "whoami",
+  "echo",
+  "clear",
+  "exit",
+] as const;
 
 const MAX_ARGUMENT_LENGTH = 500;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,15 +60,11 @@ function text(value: string): Segment[] {
   return [{ text: value }];
 }
 
-function formatPeriod(start: Parameters<typeof formatYearMonth>[0], end: typeof start | null) {
-  return `${formatYearMonth(start)} → ${end ? formatYearMonth(end) : "aujourd'hui"}`;
-}
-
 const BLANK: OutputLine = [{ text: " " }];
 
-function helpLines(): OutputLine[] {
-  const width = Math.max(...TERMINAL_COMMANDS.map((command) => command.name.length));
-  return TERMINAL_COMMANDS.map((command) => [
+function helpLines(dict: Dictionary): OutputLine[] {
+  const width = Math.max(...dict.terminal.commands.map((command) => command.name.length));
+  return dict.terminal.commands.map((command) => [
     { text: `  ${command.name.padEnd(width)}`, tone: "strong" },
     { text: `  ${command.description}`, tone: "muted" },
   ]);
@@ -105,9 +102,9 @@ function wrapItems(
   return lines;
 }
 
-function stackLines(): OutputLine[] {
+function stackLines(dict: Dictionary): OutputLine[] {
   const lines: OutputLine[] = [];
-  for (const category of stack) {
+  for (const category of dict.stack.categories) {
     lines.push([{ text: `  ${category.label}`, tone: "strong" }]);
     lines.push(
       ...wrapItems(
@@ -122,33 +119,48 @@ function stackLines(): OutputLine[] {
     );
     lines.push(BLANK);
   }
-  lines.push([{ text: "  * technologie de prédilection", tone: "muted" }]);
+  lines.push([{ text: `  ${dict.terminal.outputs.favoriteNote}`, tone: "muted" }]);
   return lines;
 }
 
-function experienceLines(): OutputLine[] {
+function formatPeriod(
+  dict: Dictionary,
+  start: Parameters<typeof formatYearMonth>[0],
+  end: typeof start | null,
+) {
+  return `${formatYearMonth(start, "short", dict.locale)} → ${end ? formatYearMonth(end, "short", dict.locale) : dict.dates.today}`;
+}
+
+function experienceLines(dict: Dictionary): OutputLine[] {
   const lines: OutputLine[] = [];
-  for (const exp of experiences) {
+  for (const exp of dict.experiences) {
     lines.push([{ text: `  ${exp.role}`, tone: "strong" }]);
     lines.push([
       {
-        text: `  ${exp.company} · ${formatPeriod(exp.period.start, exp.period.end)}`,
+        text: `  ${exp.company} · ${formatPeriod(dict, exp.period.start, exp.period.end)}`,
         tone: "muted",
       },
     ]);
     lines.push(BLANK);
   }
-  lines.push([{ text: "  → Détails dans la section " }, { text: "Parcours", href: "#parcours" }]);
+  const journey = dict.nav.find((item) => item.id === "parcours");
+  lines.push([
+    { text: `  ${dict.terminal.outputs.experienceFooter}` },
+    { text: journey?.label ?? "Journey", href: "#parcours" },
+  ]);
   return lines;
 }
 
-function contactLines(): OutputLine[] {
+function contactLines(dict: Dictionary): OutputLine[] {
   const width = Math.max(
-    ...["Email", ...externalSocials.map((social) => social.label)].map((l) => l.length),
+    ...[dict.terminal.outputs.emailLabel, ...externalSocials.map((social) => social.label)].map(
+      (l) => l.length,
+    ),
   );
+  const contact = dict.nav.find((item) => item.id === "contact");
   const lines: OutputLine[] = [
     [
-      { text: `  ${"Email".padEnd(width)}`, tone: "strong" },
+      { text: `  ${dict.terminal.outputs.emailLabel.padEnd(width)}`, tone: "strong" },
       { text: `  ${identity.email}`, href: `mailto:${identity.email}` },
     ],
     ...externalSocials.map((social): OutputLine => [
@@ -156,27 +168,28 @@ function contactLines(): OutputLine[] {
       { text: `  ${social.display}`, href: social.href },
     ]),
     BLANK,
-    [{ text: "  → Section " }, { text: "Contact", href: "#contact" }],
+    [
+      { text: `  ${dict.terminal.outputs.sectionLink}` },
+      { text: contact?.label ?? "Contact", href: "#contact" },
+    ],
   ];
   return lines;
 }
 
-function projectsLines(): OutputLine[] {
+function projectsLines(dict: Dictionary): OutputLine[] {
   const github = externalSocials.find((social) => social.id === "github");
-  const lines: OutputLine[] = [
-    text("  Aucun projet n'est encore publié sur ce site — section en préparation."),
-  ];
+  const lines: OutputLine[] = [text(`  ${dict.terminal.outputs.noProjects}`)];
   if (github) {
     lines.push([
-      { text: "  En attendant, mes dépôts sont sur " },
+      { text: `  ${dict.terminal.outputs.githubMeanwhile}` },
       { text: github.display, href: github.href },
     ]);
   }
   return lines;
 }
 
-function dateLine(): OutputLine[] {
-  const formatted = new Intl.DateTimeFormat("fr-CH", {
+function dateLine(dict: Dictionary): OutputLine[] {
+  const formatted = new Intl.DateTimeFormat(LOCALE_META[dict.locale].htmlLang, {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -191,7 +204,7 @@ function dateLine(): OutputLine[] {
  * Executes one input line against the allow-list.
  * Returns the output lines and an optional side-effect action for the UI.
  */
-export function execute(rawInput: string): ExecResult {
+export function execute(rawInput: string, dict: Dictionary): ExecResult {
   const input = rawInput.trim().replace(/\s+/g, " ");
   if (!input) return { lines: [] };
 
@@ -199,31 +212,42 @@ export function execute(rawInput: string): ExecResult {
   const command = (spaceIndex === -1 ? input : input.slice(0, spaceIndex)).toLowerCase();
   const args = spaceIndex === -1 ? "" : input.slice(spaceIndex + 1).slice(0, MAX_ARGUMENT_LENGTH);
 
+  const about = dict.nav.find((item) => item.id === "a-propos");
+
   switch (command) {
     case "help":
-      return { lines: helpLines() };
+      return { lines: helpLines(dict) };
     case "about":
       return {
         lines: [
-          text(`  ${about.paragraphs[0]}`),
-          [{ text: "  → Section " }, { text: "À propos", href: "#a-propos" }],
+          text(`  ${dict.about.paragraphs[0]}`),
+          [
+            { text: `  ${dict.terminal.outputs.sectionLink}` },
+            { text: about?.label ?? "About", href: "#a-propos" },
+          ],
         ],
       };
     case "projects":
-      return { lines: projectsLines() };
+      return { lines: projectsLines(dict) };
     case "stack":
-      return { lines: stackLines() };
+      return { lines: stackLines(dict) };
     case "experience":
-      return { lines: experienceLines() };
+      return { lines: experienceLines(dict) };
     case "contact":
-      return { lines: contactLines() };
+      return { lines: contactLines(dict) };
     case "cv":
       return {
-        lines: [[{ text: "  Ouverture de " }, { text: "cv.pdf", href: "/cv.pdf" }, { text: " …" }]],
+        lines: [
+          [
+            { text: `  ${dict.terminal.outputs.openingCv}` },
+            { text: "cv.pdf", href: "/cv.pdf" },
+            { text: " …" },
+          ],
+        ],
         action: "open-cv",
       };
     case "date":
-      return { lines: dateLine() };
+      return { lines: dateLine(dict) };
     case "whoami":
       return {
         lines: [
@@ -231,8 +255,8 @@ export function execute(rawInput: string): ExecResult {
             { text: `  ${identity.fullName}`, tone: "strong" },
             {
               text:
-                ` — ${identity.jobTitle}, ${identity.location.display}. ` +
-                `Actuellement chez ${identity.employer}.`,
+                ` — ${dict.identity.jobTitle}, ${dict.identity.location.display}. ` +
+                `${dict.terminal.outputs.atEmployer} ${identity.employer}.`,
             },
           ],
         ],
@@ -245,16 +269,14 @@ export function execute(rawInput: string): ExecResult {
     case "exit":
       return { lines: [], action: "close" };
     case "sudo":
-      return { lines: [text("  Permission refusée : ce terminal est une simulation.")] };
+      return { lines: [text(`  ${dict.terminal.outputs.sudoDenied}`)] };
     default: {
       // A bare e-mail or URL typed by mistake still gets a helpful answer.
       if (EMAIL_PATTERN.test(command)) {
-        return {
-          lines: [text(`  Pour m'écrire : « contact » ou « echo » pour afficher du texte.`)],
-        };
+        return { lines: [text(`  ${dict.terminal.outputs.emailHint}`)] };
       }
       return {
-        lines: [text(`  commande introuvable : « ${command} » — tapez « help ».`)],
+        lines: [text(`  ${format(dict.terminal.outputs.commandNotFound, { command })}`)],
         error: true,
       };
     }
@@ -262,13 +284,10 @@ export function execute(rawInput: string): ExecResult {
 }
 
 /** Welcome block shown when the terminal opens. */
-export const WELCOME_LINES: OutputLine[] = [
-  [{ text: `  ${identity.fullName} — portfolio`, tone: "strong" }],
-  [
-    {
-      text: "  Terminal simulé — les commandes sont limitées à une liste prédéfinie.",
-      tone: "muted",
-    },
-  ],
-  text("  Tapez « help » pour les découvrir, « exit » pour quitter."),
-];
+export function getWelcomeLines(dict: Dictionary): OutputLine[] {
+  return [
+    [{ text: `  ${identity.fullName} — portfolio`, tone: "strong" }],
+    [{ text: `  ${dict.terminal.welcome.intro}`, tone: "muted" }],
+    text(`  ${dict.terminal.welcome.hint}`),
+  ];
+}

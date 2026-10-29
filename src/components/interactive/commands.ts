@@ -2,14 +2,15 @@ import type { ComponentType } from "react";
 import { Copy, Download, Hash, Mail, SquareTerminal } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { externalSocials, identity } from "@/content/profile";
-import { NAV_ITEMS } from "@/content/site";
+import { format } from "@/i18n/format";
+import type { Dictionary } from "@/i18n";
 
-export type PaletteCategory = "Navigation" | "Actions" | "Liens externes";
+export type PaletteCategory = "navigation" | "actions" | "links";
 
 export const PALETTE_CATEGORY_ORDER: readonly PaletteCategory[] = [
-  "Navigation",
-  "Actions",
-  "Liens externes",
+  "navigation",
+  "actions",
+  "links",
 ];
 
 export interface PaletteCommandContext {
@@ -63,104 +64,106 @@ async function copyText(value: string): Promise<boolean> {
   }
 }
 
-const navigationCommands: PaletteCommand[] = [
-  {
-    id: "nav-top",
-    label: "Accueil",
-    category: "Navigation",
-    icon: Hash,
-    keywords: ["top", "haut", "hero", "home"],
-    run: () =>
-      window.scrollTo({
-        top: 0,
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-      }),
-  },
-  ...NAV_ITEMS.map((item): PaletteCommand => ({
-    id: `nav-${item.id}`,
-    label: item.label,
-    category: "Navigation",
-    icon: Hash,
-    keywords: [`#${item.id}`, "section", "aller"],
-    run: () => scrollToSection(item.id),
-  })),
-];
-
-const actionCommands: PaletteCommand[] = [
-  {
-    id: "action-cv",
-    label: "Télécharger le CV",
-    category: "Actions",
-    icon: Download,
-    keywords: ["cv", "pdf", "resume", "curriculum"],
-    run: () => openExternal("/cv.pdf"),
-  },
-  {
-    id: "action-send-email",
-    label: "M'envoyer un email",
-    category: "Actions",
-    icon: Mail,
-    keywords: ["email", "mail", "message", "contact", "formulaire", "écrire", "envoyer"],
-    run: () => {
-      const form = document.getElementById("contact-form");
-      if (!form) {
-        scrollToSection("contact");
-        return;
-      }
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      form.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
-      setTimeout(
-        () => document.getElementById("contact-name")?.focus({ preventScroll: true }),
-        reduce ? 50 : 550,
-      );
-    },
-  },
-  {
-    id: "action-copy-email",
-    label: "Copier l'adresse email",
-    category: "Actions",
-    icon: Copy,
-    keywords: ["email", "mail", "copier", "contact", identity.email],
-    run: async ({ notify }) => {
-      const ok = await copyText(identity.email);
-      notify(ok ? `Copié : ${identity.email}` : "La copie a échoué — réessayez.");
-    },
-  },
-  {
-    id: "action-terminal",
-    label: "Ouvrir le terminal",
-    category: "Actions",
-    icon: SquareTerminal,
-    keywords: ["terminal", "console", "shell", "cli", "commande"],
-    hint: "help",
-    run: ({ openTerminal }) => openTerminal(),
-  },
-];
-
 const socialIcons = {
   github: GithubIcon,
   linkedin: LinkedinIcon,
 } as const;
 
-const socialKeywords: Record<string, readonly string[]> = {
-  github: ["code", "repo", "profil"],
-  linkedin: ["profil", "réseau"],
-};
+/** Builds the palette's commands for the active locale. */
+export function buildPaletteCommands(dict: Dictionary): PaletteCommand[] {
+  const strings = dict.palette.commands;
 
-const externalCommands: PaletteCommand[] = externalSocials.map((social) => ({
-  id: `link-${social.id}`,
-  label: social.label,
-  category: "Liens externes",
-  icon: socialIcons[social.id as keyof typeof socialIcons] ?? Hash,
-  keywords: [social.id, social.display, ...(socialKeywords[social.id] ?? [])],
-  run: () => openExternal(social.href),
-}));
+  const navigationCommands: PaletteCommand[] = [
+    {
+      id: "nav-top",
+      label: strings.home.label,
+      category: "navigation",
+      icon: Hash,
+      keywords: strings.home.keywords,
+      run: () =>
+        window.scrollTo({
+          top: 0,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
+        }),
+    },
+    ...dict.nav.map((item): PaletteCommand => ({
+      id: `nav-${item.id}`,
+      label: item.label,
+      category: "navigation",
+      icon: Hash,
+      keywords: [`#${item.id}`, ...strings.sectionKeywords],
+      run: () => scrollToSection(item.id),
+    })),
+  ];
 
-export const PALETTE_COMMANDS: readonly PaletteCommand[] = [
-  ...navigationCommands,
-  ...actionCommands,
-  ...externalCommands,
-];
+  const actionCommands: PaletteCommand[] = [
+    {
+      id: "action-cv",
+      label: strings.downloadCv.label,
+      category: "actions",
+      icon: Download,
+      keywords: strings.downloadCv.keywords,
+      run: () => openExternal("/cv.pdf"),
+    },
+    {
+      id: "action-send-email",
+      label: strings.sendEmail.label,
+      category: "actions",
+      icon: Mail,
+      keywords: strings.sendEmail.keywords,
+      run: () => {
+        const form = document.getElementById("contact-form");
+        if (!form) {
+          scrollToSection("contact");
+          return;
+        }
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        form.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+        setTimeout(
+          () => document.getElementById("contact-name")?.focus({ preventScroll: true }),
+          reduce ? 50 : 550,
+        );
+      },
+    },
+    {
+      id: "action-copy-email",
+      label: strings.copyEmail.label,
+      category: "actions",
+      icon: Copy,
+      keywords: [...strings.copyEmail.keywords, identity.email],
+      run: async ({ notify }) => {
+        const ok = await copyText(identity.email);
+        notify(ok ? format(strings.copySuccess, { value: identity.email }) : strings.copyFailure);
+      },
+    },
+    {
+      id: "action-terminal",
+      label: strings.openTerminal.label,
+      category: "actions",
+      icon: SquareTerminal,
+      keywords: strings.openTerminal.keywords,
+      hint: "help",
+      run: ({ openTerminal }) => openTerminal(),
+    },
+  ];
+
+  const externalCommands: PaletteCommand[] = externalSocials.map((social) => ({
+    id: `link-${social.id}`,
+    label: social.label,
+    category: "links",
+    icon: socialIcons[social.id as keyof typeof socialIcons] ?? Hash,
+    keywords: [
+      social.id,
+      social.display,
+      ...((strings.socialKeywords as Record<string, readonly string[]>)[social.id] ?? []),
+    ],
+    run: () => openExternal(social.href),
+  }));
+
+  return [...navigationCommands, ...actionCommands, ...externalCommands];
+}
 
 const normalize = (value: string) =>
   value
@@ -169,15 +172,20 @@ const normalize = (value: string) =>
     .replace(/[\u0300-\u036f]/g, "");
 
 /** Accent- and case-insensitive filter, best match first. */
-export function filterCommands(query: string): PaletteCommand[] {
+export function filterCommands(
+  commands: readonly PaletteCommand[],
+  dict: Dictionary,
+  query: string,
+): PaletteCommand[] {
   const q = normalize(query.trim());
-  if (!q) return [...PALETTE_COMMANDS];
+  if (!q) return [...commands];
 
+  const categoryLabels = dict.palette.categories;
   const scored: { command: PaletteCommand; score: number }[] = [];
-  for (const command of PALETTE_COMMANDS) {
+  for (const command of commands) {
     const label = normalize(command.label);
     const haystack = normalize(
-      [command.label, command.category, ...(command.keywords ?? [])].join(" "),
+      [command.label, categoryLabels[command.category], ...(command.keywords ?? [])].join(" "),
     );
     let score = -1;
     if (label.startsWith(q)) score = 0;
@@ -186,10 +194,6 @@ export function filterCommands(query: string): PaletteCommand[] {
     if (score >= 0) scored.push({ command, score });
   }
   return scored
-    .sort(
-      (a, b) =>
-        a.score - b.score ||
-        PALETTE_COMMANDS.indexOf(a.command) - PALETTE_COMMANDS.indexOf(b.command),
-    )
+    .sort((a, b) => a.score - b.score || commands.indexOf(a.command) - commands.indexOf(b.command))
     .map((entry) => entry.command);
 }

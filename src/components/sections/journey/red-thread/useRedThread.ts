@@ -57,7 +57,9 @@ export function useRedThread(scopeRef: RefObject<HTMLDivElement | null>) {
             end: "+=340%",
             pin: true,
             scrub: 0.8,
-            invalidateOnRefresh: true,
+            // No invalidateOnRefresh: every tween here is relative (yPercent,
+            // opacity, clipPath), and invalidating mid-scrub freezes them in
+            // their "from" state after a remount (locale switch, reload).
           },
         });
 

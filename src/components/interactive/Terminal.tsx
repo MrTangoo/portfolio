@@ -12,11 +12,12 @@ import * as m from "motion/react-m";
 import { X } from "lucide-react";
 import {
   execute,
+  getWelcomeLines,
   TERMINAL_COMMAND_NAMES,
-  WELCOME_LINES,
   type OutputLine,
   type Segment,
 } from "@/lib/terminal";
+import { useDictionary } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -38,7 +39,8 @@ const makeLine = (kind: TermLine["kind"], segments: OutputLine): TermLine => ({
   segments,
 });
 
-const initialLines = (): TermLine[] => WELCOME_LINES.map((segments) => makeLine("out", segments));
+const initialLines = (dict: Parameters<typeof getWelcomeLines>[0]): TermLine[] =>
+  getWelcomeLines(dict).map((segments) => makeLine("out", segments));
 
 interface TerminalProps {
   onClose: () => void;
@@ -56,7 +58,8 @@ const clamp = (value: number, min: number, max: number) => Math.min(Math.max(val
  * interpreter in `@/lib/terminal` — nothing is ever executed.
  */
 export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
-  const [lines, setLines] = useState<TermLine[]>(initialLines);
+  const dict = useDictionary();
+  const [lines, setLines] = useState<TermLine[]>(() => initialLines(dict));
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number | null>(null);
@@ -226,7 +229,7 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
   const submit = (raw: string) => {
     const value = raw.slice(0, MAX_INPUT);
     const echoed = makeLine("in", [{ text: value }]);
-    const result = execute(value);
+    const result = execute(value, dict);
 
     setHistory((h) => (value.trim() ? [...h, value].slice(-MAX_HISTORY) : h));
     setHistoryIndex(null);
@@ -359,7 +362,7 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
         ref={containerRef}
         role="dialog"
         aria-modal="false"
-        aria-label="Terminal simulé"
+        aria-label={dict.terminal.dialogAria}
         style={{
           ...(pos && !maximized ? { left: pos.x, top: pos.y, right: "auto", bottom: "auto" } : {}),
           ...(size && !maximized && !minimized ? { width: size.w } : {}),
@@ -399,12 +402,12 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
               maximized ? "cursor-default" : dragging ? "cursor-grabbing" : "cursor-grab",
             )}
           >
-            <span className="flex gap-2" role="group" aria-label="Contrôles de la fenêtre">
+            <span className="flex gap-2" role="group" aria-label={dict.terminal.controlsAria}>
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Fermer le terminal"
-                title="Fermer"
+                aria-label={dict.terminal.closeTerminal}
+                title={dict.terminal.close}
                 className="group relative size-3 rounded-full bg-[#ff5f57] transition-transform duration-150 hover:scale-125"
               >
                 <span
@@ -417,8 +420,8 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
               <button
                 type="button"
                 onClick={() => onMinimize(true)}
-                aria-label="Réduire le terminal"
-                title="Réduire"
+                aria-label={dict.terminal.minimizeTerminal}
+                title={dict.terminal.minimize}
                 className="group relative size-3 rounded-full bg-[#febc2e] transition-transform duration-150 hover:scale-125"
               >
                 <span
@@ -431,8 +434,8 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
               <button
                 type="button"
                 onClick={toggleMaximize}
-                aria-label={maximized ? "Restaurer la taille" : "Agrandir le terminal"}
-                title={maximized ? "Restaurer" : "Agrandir"}
+                aria-label={maximized ? dict.terminal.restoreSize : dict.terminal.maximizeTerminal}
+                title={maximized ? dict.terminal.restore : dict.terminal.maximize}
                 className="group relative size-3 rounded-full bg-[#28c840] transition-transform duration-150 hover:scale-125"
               >
                 <span
@@ -449,7 +452,7 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
             <button
               type="button"
               onClick={onClose}
-              aria-label="Fermer le terminal"
+              aria-label={dict.terminal.closeTerminal}
               className="-mr-1 flex size-8 items-center justify-center text-paper/60 transition-colors duration-150 hover:text-paper"
             >
               <X aria-hidden="true" className="size-4" />
@@ -499,9 +502,9 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck={false}
-                aria-label="Saisir une commande — tapez « help » pour la liste"
+                aria-label={dict.terminal.inputAria}
                 className="min-w-0 flex-1 border-none bg-transparent p-0 font-mono text-[13px] text-paper caret-[#28c840] outline-none placeholder:text-paper/40"
-                placeholder="tapez « help »…"
+                placeholder={dict.terminal.inputPlaceholder}
               />
             </div>
           </div>
@@ -531,7 +534,7 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
         <button
           type="button"
           onClick={() => onMinimize(false)}
-          aria-label="Restaurer le terminal"
+          aria-label={dict.terminal.restoreTerminal}
           className="fixed right-2 bottom-2 z-[80] flex items-center gap-2.5 border border-line-inverse bg-ink px-4 py-2.5 font-mono text-xs text-paper shadow-2xl transition-colors duration-150 hover:border-line-inverse-strong sm:right-6 sm:bottom-6"
         >
           <span aria-hidden="true" className="flex gap-1.5">

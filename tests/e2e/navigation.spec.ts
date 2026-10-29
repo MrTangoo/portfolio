@@ -14,7 +14,7 @@ async function waitForPinnedJourney(page: Page) {
 test.describe("Navigation", () => {
   test("desktop anchors scroll to their sections", async ({ page, isMobile }) => {
     test.skip(isMobile, "Desktop navigation is hidden on small viewports");
-    await page.goto("/");
+    await page.goto("/fr");
     await waitForPinnedJourney(page);
 
     const nav = page.getByRole("navigation", { name: "Navigation principale" });
@@ -30,13 +30,13 @@ test.describe("Navigation", () => {
     page,
     isMobile,
   }) => {
-    await page.goto("/");
+    await page.goto("/fr");
     // The pin only exists at xl+; the mobile layout never shifts.
     if (!isMobile) await waitForPinnedJourney(page);
     await page.getByRole("link", { name: "Découvrir mon parcours" }).click();
     await expect(page.locator("section#parcours")).toBeInViewport();
 
-    await page.goto("/");
+    await page.goto("/fr");
     if (!isMobile) await waitForPinnedJourney(page);
     await page.getByRole("link", { name: "Me contacter" }).click();
     await expect(page.locator("section#contact")).toBeInViewport();
@@ -44,7 +44,7 @@ test.describe("Navigation", () => {
 
   test("mobile menu opens, navigates and closes with Escape", async ({ page, isMobile }) => {
     test.skip(!isMobile, "Mobile navigation is only rendered on small viewports");
-    await page.goto("/");
+    await page.goto("/fr");
 
     const toggle = page.getByRole("button", { name: /le menu/ });
     await expect(toggle).toBeVisible();
@@ -66,7 +66,7 @@ test.describe("Navigation", () => {
   });
 
   test("skip link moves focus to the main content", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/fr");
     await page.keyboard.press("Tab");
     const skipLink = page.getByRole("link", { name: "Aller au contenu" });
     await expect(skipLink).toBeFocused();
