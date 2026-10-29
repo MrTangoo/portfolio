@@ -3,8 +3,7 @@
 import Image from "next/image";
 import { Award, Briefcase, Calendar, GraduationCap, MapPin } from "lucide-react";
 import { useRef } from "react";
-import { CHAPTERS } from "./chapters";
-import type { EntryKind } from "./chapters";
+import type { Chapter, EntryKind } from "./chapters";
 import { DevScreen } from "./DevScreen";
 import { useRedThread } from "./useRedThread";
 
@@ -26,7 +25,13 @@ export function EntryIcon({ kind, className }: { kind: EntryKind; className: str
  * across both columns below.
  * Fallback: scenes render as a static stacked list — readable without JS.
  */
-export function RedThread() {
+interface RedThreadProps {
+  chapters: readonly Chapter[];
+  threadLabel: string;
+  todayLabel: string;
+}
+
+export function RedThread({ chapters, threadLabel, todayLabel }: RedThreadProps) {
   const scopeRef = useRef<HTMLDivElement>(null);
   useRedThread(scopeRef);
 
@@ -35,12 +40,12 @@ export function RedThread() {
       <div data-rt-stage className="relative">
         {/* Zone A — meta + progression, kept clear of the fixed header */}
         <div className="pointer-events-none absolute top-24 left-[5%] z-30">
-          <p className="label text-steel">Parcours — le fil conducteur</p>
+          <p className="label text-steel">{threadLabel}</p>
           <p className="label mt-4 flex items-baseline gap-2 tabular">
             <span data-rt-counter className="text-2xl font-semibold text-ink">
               01
             </span>
-            <span className="text-steel">/ {String(CHAPTERS.length).padStart(2, "0")}</span>
+            <span className="text-steel">/ {String(chapters.length).padStart(2, "0")}</span>
           </p>
         </div>
         <div
@@ -54,13 +59,13 @@ export function RedThread() {
           />
         </div>
 
-        {CHAPTERS.map((chapter) => {
+        {chapters.map((chapter) => {
           const [primary, ...secondary] = chapter.entries;
           return (
             <section
               key={chapter.id}
               data-rt-scene={chapter.id}
-              aria-label={`${chapter.kind} — ${chapter.year || "Aujourd'hui"}`}
+              aria-label={`${chapter.kind} — ${chapter.year || todayLabel}`}
               className="relative min-h-[90svh] border-b border-line py-24 last:border-b-0"
             >
               {chapter.final ? (

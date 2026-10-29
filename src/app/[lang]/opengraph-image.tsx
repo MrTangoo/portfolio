@@ -2,8 +2,10 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { identity } from "@/content/profile";
+import { getDictionaryFor } from "@/i18n";
+import { DEFAULT_LOCALE, hasLocale } from "@/i18n/locales";
 
-export const alt = `${identity.fullName} — ${identity.jobTitle}, Suisse romande`;
+export const alt = "Maxime Derbigny — Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -23,7 +25,11 @@ const [sans, mono, portrait] = await Promise.all([
 ]);
 const portraitSrc = `data:image/png;base64,${portrait.toString("base64")}`;
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const dict = getDictionaryFor(hasLocale(lang) ? lang : DEFAULT_LOCALE);
+  const [lineA, lineB, lineC, lineD] = dict.og.lines;
+
   return new ImageResponse(
     <div
       style={{
@@ -65,19 +71,24 @@ export default function OpenGraphImage() {
             }}
           >
             <div style={{ width: 12, height: 12, background: COLORS.vermilion }} />
-            Développeur d&apos;applications — Suisse romande
+            {dict.og.eyebrow}
           </div>
           <div style={{ display: "flex", fontSize: 72, lineHeight: 1, letterSpacing: "-0.04em" }}>
-            Concevoir avec
+            {lineA}
           </div>
           <div style={{ display: "flex", fontSize: 72, lineHeight: 1, letterSpacing: "-0.04em" }}>
-            précision.
+            {lineB}
           </div>
           <div style={{ display: "flex", fontSize: 72, lineHeight: 1, letterSpacing: "-0.04em" }}>
-            Développer avec
+            {lineC}
           </div>
           <div style={{ display: "flex", fontSize: 72, lineHeight: 1, letterSpacing: "-0.04em" }}>
-            intention<span style={{ color: COLORS.vermilion }}>.</span>
+            {lineD ? (
+              <>
+                {lineD.replace(/\.$/, "")}
+                <span style={{ color: COLORS.vermilion }}>.</span>
+              </>
+            ) : null}
           </div>
         </div>
 
@@ -102,7 +113,7 @@ export default function OpenGraphImage() {
               color: COLORS.steel,
             }}
           >
-            {identity.location.city}, {identity.location.region} — CH
+            {dict.identity.location.city}, {dict.identity.location.region} - CH
           </div>
         </div>
       </div>

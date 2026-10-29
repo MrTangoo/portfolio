@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from "@/content/site";
+import { fr } from "@/i18n/dictionaries/fr";
+import { SITE_NAME } from "@/content/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: SITE_TITLE,
+    name: fr.meta.title,
     short_name: SITE_NAME,
-    description: SITE_DESCRIPTION,
+    description: fr.meta.description,
     lang: "fr-CH",
     start_url: "/",
     scope: "/",

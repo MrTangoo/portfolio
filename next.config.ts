@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   cacheComponents: true,
   partialPrefetching: true,
+  experimental: {
+    // The root layout lives under app/[lang]; this provides a 404 for
+    // requests that match no route at all.
+    globalNotFound: true,
+  },
   serverExternalPackages: ["nodemailer"],
   // Allows HMR when the dev server is reached through a proxy or IP alias.
   allowedDevOrigins: ["127.0.0.1"],

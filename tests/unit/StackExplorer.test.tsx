@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { StackExplorer } from "@/components/sections/stack/StackExplorer";
-import { stack } from "@/content/profile";
+import { fr } from "@/i18n/dictionaries/fr";
+
+const stack = fr.stack.categories;
 
 describe("StackExplorer", () => {
   it("shows the first category by default", () => {

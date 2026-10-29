@@ -1,8 +1,10 @@
 import { cacheLife } from "next/cache";
+import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Monogram } from "@/components/ui/Monogram";
 import { externalSocials, identity } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 
 /**
  * The year is the only time-dependent value on the site. Caching it with a
@@ -14,7 +16,7 @@ async function CurrentYear() {
   return <>{new Date().getFullYear()}</>;
 }
 
-export function Footer() {
+export function Footer({ dict }: { dict: Dictionary }) {
   return (
     <footer className="border-t border-line bg-paper">
       <div className="container-page grid-editorial items-start gap-y-8 py-10 lg:py-14">
@@ -23,11 +25,11 @@ export function Footer() {
           <p className="text-sm text-steel">
             {identity.fullName}
             <br />
-            {identity.jobTitle}
+            {dict.identity.jobTitle}
           </p>
         </div>
 
-        <nav aria-label="Liens externes" className="col-span-6 lg:col-span-4">
+        <nav aria-label={dict.footer.externalAriaLabel} className="col-span-6 lg:col-span-4">
           <ul className="flex flex-col gap-2">
             {externalSocials.map((social) => (
               <li key={social.id}>
@@ -44,7 +46,7 @@ export function Footer() {
             href="#main"
             className="group label inline-flex w-fit items-center gap-2.5 border border-line px-3.5 py-2.5 text-steel transition-colors duration-300 ease-out-expo hover:border-ink hover:text-ink"
           >
-            Retour en haut
+            {dict.footer.backToTop}
             <ArrowUp
               aria-hidden="true"
               className="size-3.5 transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:text-vermilion"
@@ -53,6 +55,12 @@ export function Footer() {
           <p>
             © <CurrentYear /> {identity.fullName}
           </p>
+          <Link
+            href={`/${dict.locale}/legal`}
+            className="label w-fit text-steel transition-colors duration-150 hover:text-ink"
+          >
+            {dict.footer.legalLabel}
+          </Link>
           <p className="label text-steel">Next.js · TypeScript · Tailwind CSS · Vercel</p>
         </div>
       </div>

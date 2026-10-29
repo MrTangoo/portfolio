@@ -4,7 +4,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Portrait } from "@/components/ui/Portrait";
 import { Section } from "@/components/ui/Section";
-import { about, identity, languages } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 
 const factIcons = {
   "map-pin": MapPin,
@@ -13,7 +13,9 @@ const factIcons = {
   award: Award,
 } as const;
 
-export function About() {
+export function About({ dict }: { dict: Dictionary }) {
+  const { about } = dict;
+
   return (
     <Section id="a-propos">
       <div className="grid-editorial gap-y-12">
@@ -33,7 +35,7 @@ export function About() {
             <Reveal delay={0.2} className="mt-12">
               <div className="relative">
                 <Portrait
-                  source={identity.portraitSecondary}
+                  source={dict.identity.portraitSecondary}
                   focal="50% 35%"
                   sizes="(min-width: 1024px) 36vw, 100vw"
                   className="aspect-[6/5] w-full"
@@ -59,7 +61,7 @@ export function About() {
           <Reveal delay={0.1} className="mt-14">
             <dl className="divide-y divide-line border-y border-line">
               {about.facts.map((fact) => {
-                const Icon = factIcons[fact.icon];
+                const Icon = factIcons[fact.icon as keyof typeof factIcons];
                 return (
                   <div
                     key={fact.label}
@@ -94,9 +96,9 @@ export function About() {
           </Reveal>
 
           <Reveal delay={0.15} className="mt-10">
-            <p className="label text-steel">Langues</p>
+            <p className="label text-steel">{about.languagesLabel}</p>
             <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-              {languages.map((language) => (
+              {dict.languages.map((language) => (
                 <li key={language.name} className="flex items-baseline gap-2">
                   {language.flag && (
                     <Image

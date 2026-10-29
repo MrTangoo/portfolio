@@ -5,14 +5,16 @@ import { Reveal } from "@/components/motion/Reveal";
 import { ContactForm } from "@/components/sections/contact/ContactForm";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Section } from "@/components/ui/Section";
-import { contact, externalSocials, identity } from "@/content/profile";
+import { externalSocials, identity } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 
 const socialIcons = {
   github: GithubIcon,
   linkedin: LinkedinIcon,
 } as const;
 
-export function Contact() {
+export function Contact({ dict }: { dict: Dictionary }) {
+  const { contact } = dict;
   const [title, period] = contact.title.endsWith(".")
     ? [contact.title.slice(0, -1), "."]
     : [contact.title, ""];
@@ -110,7 +112,7 @@ export function Contact() {
                     <span className="text-lg font-semibold">CV</span>
                   </span>
                   <span className="font-mono text-sm text-paper/65 group-hover:text-paper/85">
-                    Télécharger le PDF
+                    {contact.cvPdfLabel}
                   </span>
                 </span>
                 <ArrowUpRight

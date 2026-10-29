@@ -3,7 +3,7 @@
     "collect": {
       "startServerCommand": "pnpm start --port 3000",
       "startServerReadyPattern": "Ready",
-      "url": ["http://localhost:3000/"],
+      "url": ["http://localhost:3000/fr"],
       "numberOfRuns": 3,
       "settings": {
         "preset": "desktop"

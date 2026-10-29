@@ -2,7 +2,7 @@ import { AppWindow, Database, Monitor, Workflow } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { expertise } from "@/content/profile";
+import type { Dictionary } from "@/i18n";
 
 const areaIcons = {
   monitor: Monitor,
@@ -11,25 +11,27 @@ const areaIcons = {
   workflow: Workflow,
 } as const;
 
-export function Expertise() {
+export function Expertise({ dict }: { dict: Dictionary }) {
+  const { expertise } = dict;
+
   return (
     <Section id="expertise" tone="ink">
       <Reveal>
         <SectionHeading
           sectionId="expertise"
           index="02"
-          eyebrow="Expertise"
+          eyebrow={expertise.eyebrow}
           inverse
           title={
             <>
-              Quatre domaines, <span className="text-paper/50">une même exigence.</span>
+              {expertise.titleA} <span className="text-paper/50">{expertise.titleB}</span>
             </>
           }
         />
       </Reveal>
 
       <Stagger as="ol" className="mt-16 border-t border-line-inverse lg:mt-24" stagger={0.1}>
-        {expertise.map((area) => {
+        {expertise.areas.map((area) => {
           const Icon = area.icon ? areaIcons[area.icon as keyof typeof areaIcons] : null;
           return (
             <StaggerItem key={area.id} as="li" className="group border-b border-line-inverse">
@@ -48,7 +50,10 @@ export function Expertise() {
                   <p className="max-w-[56ch] text-base text-pretty text-paper/70 lg:text-lg">
                     {area.description}
                   </p>
-                  <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-2" aria-label="Mots-clés">
+                  <ul
+                    className="mt-5 flex flex-wrap gap-x-3 gap-y-2"
+                    aria-label={expertise.keywordsAria}
+                  >
                     {area.keywords.map((keyword) => (
                       <li
                         key={keyword}

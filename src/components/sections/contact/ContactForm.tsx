@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AtSign, LoaderCircle, MessageSquare, Send, Tag, User } from "lucide-react";
 import toast from "react-hot-toast";
+import { useDictionary, useLocale } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 
 const inputClasses =
@@ -10,7 +12,12 @@ const inputClasses =
 
 const labelClasses = "label flex items-center gap-2 text-paper/65";
 
+type ApiError = keyof ReturnType<typeof useDictionary>["contact"]["apiErrors"];
+
 export function ContactForm() {
+  const dict = useDictionary();
+  const locale = useLocale();
+  const { form, toasts, apiErrors } = dict.contact;
   const [pending, setPending] = useState(false);
   const mountedAt = useRef(0);
 
@@ -20,8 +27,8 @@ export function ContactForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
+    const formElement = event.currentTarget;
+    const data = new FormData(formElement);
 
     const send = async () => {
       const response = await fetch("/api/contact", {
@@ -36,23 +43,20 @@ export function ContactForm() {
           elapsedMs: Date.now() - mountedAt.current,
         }),
       });
-      const result = (await response.json()) as { ok: boolean; error?: string };
+      const result = (await response.json()) as { ok: boolean; error?: ApiError };
       if (!response.ok || !result.ok) {
-        throw new Error(result.error || "L'envoi a échoué.");
+        throw new Error((result.error && apiErrors[result.error]) || toasts.error);
       }
     };
 
     setPending(true);
     toast
       .promise(send(), {
-        loading: "Envoi en cours…",
-        success: "Message envoyé avec succès !",
-        error: (err) =>
-          err instanceof Error && err.message
-            ? err.message
-            : "L'envoi a échoué. Réessaie ou écris-moi par email.",
+        loading: toasts.loading,
+        success: toasts.success,
+        error: (err) => (err instanceof Error && err.message ? err.message : toasts.error),
       })
-      .then(() => form.reset())
+      .then(() => formElement.reset())
       .catch(() => {})
       .finally(() => setPending(false));
   }
@@ -61,7 +65,7 @@ export function ContactForm() {
     <form id="contact-form" onSubmit={handleSubmit} className="flex flex-col gap-8">
       {/* Honeypot — invisible pour les humains, rempli par les bots. */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-        <label htmlFor="contact-hp">Ne pas remplir</label>
+        <label htmlFor="contact-hp">{form.honeypotLabel}</label>
         <input id="contact-hp" name="_hp" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
@@ -69,7 +73,7 @@ export function ContactForm() {
         <div className="flex flex-col gap-2">
           <label htmlFor="contact-name" className={labelClasses}>
             <User aria-hidden="true" className="size-3.5 text-vermilion" />
-            Nom
+            {form.nameLabel}
           </label>
           <input
             id="contact-name"
@@ -78,7 +82,7 @@ export function ContactForm() {
             required
             maxLength={100}
             autoComplete="name"
-            placeholder="Ton nom"
+            placeholder={form.namePlaceholder}
             className={inputClasses}
           />
         </div>
@@ -86,7 +90,7 @@ export function ContactForm() {
         <div className="flex flex-col gap-2">
           <label htmlFor="contact-email" className={labelClasses}>
             <AtSign aria-hidden="true" className="size-3.5 text-vermilion" />
-            Email
+            {form.emailLabel}
           </label>
           <input
             id="contact-email"
@@ -95,7 +99,7 @@ export function ContactForm() {
             required
             maxLength={100}
             autoComplete="email"
-            placeholder="ton@email.ch"
+            placeholder={form.emailPlaceholder}
             className={inputClasses}
           />
         </div>
@@ -104,14 +108,15 @@ export function ContactForm() {
       <div className="flex flex-col gap-2">
         <label htmlFor="contact-subject" className={labelClasses}>
           <Tag aria-hidden="true" className="size-3.5 text-vermilion" />
-          Sujet <span className="text-paper/40 normal-case">(optionnel)</span>
+          {form.subjectLabel}{" "}
+          <span className="text-paper/40 normal-case">{form.subjectOptional}</span>
         </label>
         <input
           id="contact-subject"
           name="subject"
           type="text"
           maxLength={150}
-          placeholder="Une opportunité, une question…"
+          placeholder={form.subjectPlaceholder}
           className={inputClasses}
         />
       </div>
@@ -119,7 +124,7 @@ export function ContactForm() {
       <div className="flex flex-col gap-2">
         <label htmlFor="contact-message" className={labelClasses}>
           <MessageSquare aria-hidden="true" className="size-3.5 text-vermilion" />
-          Message
+          {form.messageLabel}
         </label>
         <textarea
           id="contact-message"
@@ -128,7 +133,7 @@ export function ContactForm() {
           minLength={10}
           maxLength={5000}
           rows={5}
-          placeholder="Écris ton message…"
+          placeholder={form.messagePlaceholder}
           className={cn(inputClasses, "resize-y")}
         />
       </div>
@@ -138,7 +143,7 @@ export function ContactForm() {
         disabled={pending}
         className="group/btn inline-flex min-h-12 w-fit items-center justify-center gap-3 border border-paper bg-paper px-6 py-3 text-sm font-medium tracking-[-0.005em] text-ink transition-[background-color,color,border-color] duration-300 ease-out-expo hover:border-vermilion hover:bg-vermilion hover:text-paper disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <span>{pending ? "Envoi en cours…" : "Envoyer le message"}</span>
+        <span>{pending ? form.sending : form.submit}</span>
         {pending ? (
           <LoaderCircle aria-hidden="true" className="size-4 shrink-0 animate-spin" />
         ) : (
@@ -148,6 +153,16 @@ export function ContactForm() {
           />
         )}
       </button>
+
+      <p className="max-w-[52ch] text-sm text-paper/50">
+        {form.privacyNotice}{" "}
+        <Link
+          href={`/${locale}/legal`}
+          className="underline underline-offset-4 transition-colors duration-150 hover:text-paper"
+        >
+          {form.privacyLinkLabel}
+        </Link>
+      </p>
     </form>
   );
 }

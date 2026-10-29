@@ -5,6 +5,7 @@ import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import type { StackCategory, StackCategoryId } from "@/content/profile";
+import { useDictionary } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -47,6 +48,7 @@ interface StackExplorerProps {
 }
 
 export function StackExplorer({ categories }: StackExplorerProps) {
+  const dict = useDictionary();
   const [activeId, setActiveId] = useState<StackCategoryId>(categories[0]?.id ?? "frontend");
   const baseId = useId();
   const tabRefs = useRef<Map<StackCategoryId, HTMLButtonElement>>(new Map());
@@ -82,7 +84,7 @@ export function StackExplorer({ categories }: StackExplorerProps) {
     <div className="grid-editorial gap-y-10">
       <div
         role="tablist"
-        aria-label="Catégories de technologies"
+        aria-label={dict.stack.categoriesAria}
         className="col-span-12 -mx-gutter flex gap-2 overflow-x-auto px-gutter pb-2 lg:col-span-4 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:border-t lg:border-line lg:px-0 lg:pb-0"
       >
         {categories.map((category, index) => {
@@ -176,12 +178,12 @@ export function StackExplorer({ categories }: StackExplorerProps) {
                       <span
                         className="size-1.5 shrink-0 rounded-full bg-vermilion"
                         role="img"
-                        aria-label="Technologie favorite"
+                        aria-label={dict.stack.favoriteTechAria}
                       />
                     )}
                     {technology.learning && (
                       <span className="label ml-auto border border-line px-1.5 py-0.5 text-steel">
-                        En cours
+                        {dict.stack.learningBadge}
                       </span>
                     )}
                   </div>
@@ -196,7 +198,7 @@ export function StackExplorer({ categories }: StackExplorerProps) {
                 aria-hidden="true"
                 className="inline-block size-1.5 rounded-full bg-vermilion"
               />
-              Technologies que j&apos;apprécie particulièrement.
+              {dict.stack.favoriteFootnote}
             </p>
           </m.div>
         </AnimatePresence>
