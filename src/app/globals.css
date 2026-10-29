@@ -13,7 +13,7 @@
   --color-paper-deep: #ebe9e3;
   --color-white: #ffffff;
   --color-vermilion: #e34234;
-  --color-vermilion-deep: #c9372b; /* AA-compliant on paper for small text */
+  --color-vermilion-deep: #c03024; /* AA-compliant on paper and paper-deep for small text */
   --color-steel: #626262; /* AA-compliant on paper and paper-deep (>= 4.5:1) */
   --color-steel-soft: #9a9a9a;
   --color-line: rgb(17 17 17 / 0.14);

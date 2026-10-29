@@ -1,9 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Internationalization", () => {
-  test("redirects / to the preferred locale", async ({ page }) => {
+  test("redirects / to the preferred locale", async ({ browser }) => {
+    // Explicit fr-CH context: the fallback behaviour must not depend on the
+    // runner's default Accept-Language (en-US in CI).
+    const context = await browser.newContext({ locale: "fr-CH" });
+    const page = await context.newPage();
     await page.goto("/");
     await expect(page).toHaveURL(/\/fr$/);
+    await context.close();
   });
 
   test("honours Accept-Language on the root redirect", async ({ browser }) => {
