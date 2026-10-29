@@ -3,10 +3,49 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { Check, ChevronDown, Languages } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { useDictionary, useLocale } from "@/i18n/provider";
-import { LOCALE_META, LOCALES } from "@/i18n/locales";
+import { LOCALE_META, LOCALES, type Locale } from "@/i18n/locales";
 import { cn } from "@/lib/utils";
+
+const FLAG_PATHS: Record<Locale, React.ReactNode> = {
+  fr: (
+    <>
+      <rect width="20" height="14" fill="#fff" />
+      <rect width="6.7" height="14" fill="#0055A4" />
+      <rect x="13.3" width="6.7" height="14" fill="#EF4135" />
+    </>
+  ),
+  en: (
+    <>
+      <rect width="20" height="14" fill="#012169" />
+      <path d="M0 0L20 14M20 0L0 14" stroke="#fff" strokeWidth="2.8" />
+      <path d="M0 0L20 14M20 0L0 14" stroke="#C8102E" strokeWidth="0.9" />
+      <path d="M10 0V14M0 7H20" stroke="#fff" strokeWidth="4.6" />
+      <path d="M10 0V14M0 7H20" stroke="#C8102E" strokeWidth="2.7" />
+    </>
+  ),
+  de: (
+    <>
+      <rect width="20" height="14" fill="#FFCE00" />
+      <rect width="20" height="4.7" fill="#000" />
+      <rect y="4.7" width="20" height="4.6" fill="#DD0000" />
+    </>
+  ),
+};
+
+function Flag({ locale, className }: { locale: Locale; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 20 14"
+      aria-hidden="true"
+      className={cn("h-2.5 w-3.5 shrink-0", className)}
+    >
+      {FLAG_PATHS[locale]}
+      <rect width="20" height="14" fill="none" stroke="currentColor" strokeOpacity="0.25" />
+    </svg>
+  );
+}
 
 /**
  * Dropdown language switcher. Routes live under `/[lang]`, so switching swaps
@@ -55,7 +94,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         onClick={() => setOpen((value) => !value)}
         className="flex items-center gap-1.5 border border-line px-3 py-1.5 text-steel transition-colors duration-150 hover:border-line-strong hover:text-ink"
       >
-        <Languages aria-hidden="true" className="size-3.5" />
+        <Flag locale={locale} />
         <span className="font-mono text-[11px] leading-none font-medium tracking-[0.08em] uppercase">
           {locale}
         </span>
@@ -100,7 +139,10 @@ export function LanguageSwitcher({ className }: { className?: string }) {
                   active ? "font-medium text-ink" : "text-steel hover:bg-paper-deep hover:text-ink",
                 )}
               >
-                {LOCALE_META[target].name}
+                <span className="flex items-center gap-2.5">
+                  <Flag locale={target} />
+                  {LOCALE_META[target].name}
+                </span>
                 {active && <Check aria-hidden="true" className="size-3.5 text-vermilion" />}
               </Link>
             </li>
