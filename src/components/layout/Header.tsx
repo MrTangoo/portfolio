@@ -125,12 +125,17 @@ export function Header() {
             <button
               type="button"
               onClick={openPalette}
-              aria-label={dict.header.openPalette}
+              // The visible shortcut text must be part of the accessible name
+              // (WCAG label-content-name-mismatch) — never in parentheses,
+              // which axe strips before comparing.
+              aria-label={`${dict.header.openPalette} ${modKey} K`}
               aria-keyshortcuts="Control+K Meta+K"
               className="flex items-center gap-2 border border-line px-3 py-1.5 text-steel transition-colors duration-150 hover:border-line-strong hover:text-ink"
             >
               <Search aria-hidden="true" className="size-3.5" />
-              <kbd className="font-mono text-[10px] leading-none">{modKey} K</kbd>
+              <kbd aria-hidden="true" className="font-mono text-[10px] leading-none">
+                {modKey} K
+              </kbd>
             </button>
             {externalSocials.map((social) => {
               const Icon = socialIcons[social.id as keyof typeof socialIcons];
@@ -156,7 +161,10 @@ export function Header() {
             <button
               type="button"
               onClick={openPalette}
-              aria-label={dict.header.openPalette}
+              // The visible shortcut text must be part of the accessible name
+              // (WCAG label-content-name-mismatch) — never in parentheses,
+              // which axe strips before comparing.
+              aria-label={`${dict.header.openPalette} ${modKey} K`}
               aria-keyshortcuts="Control+K Meta+K"
               className="flex size-12 items-center justify-center text-ink"
             >

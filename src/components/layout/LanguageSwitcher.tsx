@@ -48,7 +48,10 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         aria-expanded={open}
         aria-controls={menuId}
         aria-haspopup="menu"
-        aria-label={dict.switcher.label}
+        // The visible locale tag must be part of the accessible name (WCAG
+        // label-content-name-mismatch) — never in parentheses, which axe
+        // strips before comparing.
+        aria-label={`${dict.switcher.label} ${locale.toUpperCase()}`}
         onClick={() => setOpen((value) => !value)}
         className="flex items-center gap-1.5 border border-line px-3 py-1.5 text-steel transition-colors duration-150 hover:border-line-strong hover:text-ink"
       >
