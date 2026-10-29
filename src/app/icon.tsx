@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export const size = { width: 64, height: 64 };
+export const size = { width: 192, height: 192 };
 export const contentType = "image/png";
 
 /** "MD." monogram favicon — ink square, paper letters, vermilion period. */
@@ -20,9 +20,9 @@ export default function Icon() {
         background: "#111111",
         color: "#F5F4F0",
         fontFamily: "Geist",
-        fontSize: 34,
+        fontSize: 102,
         letterSpacing: "-0.06em",
-        paddingBottom: 2,
+        paddingBottom: 6,
       }}
     >
       MD<span style={{ color: "#E34234" }}>.</span>
