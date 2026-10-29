@@ -65,7 +65,7 @@ export function RedThread({ chapters, threadLabel, todayLabel }: RedThreadProps)
             <section
               key={chapter.id}
               data-rt-scene={chapter.id}
-              aria-label={`${chapter.kind} — ${chapter.year || todayLabel}`}
+              aria-label={`${chapter.kind} - ${chapter.year || todayLabel}`}
               className="relative min-h-[90svh] border-b border-line py-24 last:border-b-0"
             >
               {chapter.final ? (
@@ -162,7 +162,7 @@ export function RedThread({ chapters, threadLabel, todayLabel }: RedThreadProps)
                           </p>
                           {(primary.status || primary.badge) && (
                             <p className="label mt-3 text-vermilion-deep">
-                              {[primary.status, primary.badge].filter(Boolean).join(" — ")}
+                              {[primary.status, primary.badge].filter(Boolean).join(" - ")}
                             </p>
                           )}
                           {primary.summary && (
@@ -185,7 +185,7 @@ export function RedThread({ chapters, threadLabel, todayLabel }: RedThreadProps)
                                   className="size-4 shrink-0 self-center text-vermilion"
                                 />
                                 {entry.title}
-                                <span className="font-normal text-steel"> — {entry.org}</span>
+                                <span className="font-normal text-steel"> - {entry.org}</span>
                               </p>
                               {entry.logo && (
                                 <Image
@@ -205,7 +205,7 @@ export function RedThread({ chapters, threadLabel, todayLabel }: RedThreadProps)
                                     aria-hidden="true"
                                     className="block size-1.5 bg-vermilion"
                                   />
-                                  {[entry.status, entry.badge].filter(Boolean).join(" — ")}
+                                  {[entry.status, entry.badge].filter(Boolean).join(" - ")}
                                 </span>
                               )}
                               <span className="inline-flex items-center gap-2 text-steel">

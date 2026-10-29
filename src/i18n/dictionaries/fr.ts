@@ -305,7 +305,7 @@ const education: readonly Education[] = [
   },
   {
     id: "epsic",
-    degree: "CFC d'informaticien — Développement d'applications",
+    degree: "CFC d'informaticien - Développement d'applications",
     institution: "EPSIC",
     location: "Lausanne, Vaud",
     period: { start: { year: 2021, month: 8 }, end: { year: 2025, month: 7 } },
@@ -318,7 +318,7 @@ const education: readonly Education[] = [
       src: "/images/logo/epsic.png",
       width: 480,
       height: 320,
-      alt: "Logo de l'EPSIC — École Professionnelle Lausanne",
+      alt: "Logo de l'EPSIC - École Professionnelle Lausanne",
     },
   },
 ];
@@ -327,7 +327,7 @@ export const fr = {
   locale: "fr" as Locale,
 
   meta: {
-    title: "Maxime Derbigny — Développeur d'applications en Suisse",
+    title: "Maxime Derbigny - Développeur d'applications en Suisse",
     description:
       "Portfolio de Maxime Derbigny, développeur d'applications en Suisse romande. Découvrez son parcours, ses compétences en développement web et ses certifications.",
     keywords: [
@@ -345,8 +345,8 @@ export const fr = {
   },
 
   og: {
-    alt: "Maxime Derbigny — Développeur d'applications, Suisse romande",
-    eyebrow: "Développeur d'applications — Suisse romande",
+    alt: "Maxime Derbigny - Développeur d'applications, Suisse romande",
+    eyebrow: "Développeur d'applications - Suisse romande",
     lines: ["Concevoir avec", "précision.", "Développer avec", "intention."],
   },
 
@@ -370,7 +370,7 @@ export const fr = {
     openPalette: "Ouvrir la palette de commandes",
     openMenu: "Ouvrir le menu",
     closeMenu: "Fermer le menu",
-    monogramLabel: "Maxime Derbigny — retour en haut de page",
+    monogramLabel: "Maxime Derbigny - retour en haut de page",
   },
 
   footer: {
@@ -403,7 +403,7 @@ export const fr = {
 
   hero: {
     ariaLabel: "Introduction",
-    eyebrow: "Développeur d'applications — Suisse romande",
+    eyebrow: "Développeur d'applications - Suisse romande",
     title: ["Concevoir avec précision.", "Développer avec intention."],
     intro:
       "Je suis Maxime Derbigny, développeur d'applications en Suisse romande. Je conçois et fais évoluer des solutions web, avec un intérêt particulier pour les technologies modernes, l'architecture et la qualité logicielle.",
@@ -440,7 +440,7 @@ export const fr = {
       },
       {
         label: "Formation en cours",
-        value: "Brevet fédéral — ISEIG",
+        value: "Brevet fédéral - ISEIG",
         icon: "graduation-cap",
         href: "https://iseig.ch",
       },
@@ -495,7 +495,7 @@ export const fr = {
     titleB: "étape par étape.",
     description:
       "De l'apprentissage aux CFF à mon poste actuel, en passant par le CFC et le brevet fédéral en préparation.",
-    redThreadLabel: "Parcours — le fil conducteur",
+    redThreadLabel: "Parcours - le fil conducteur",
     timelineLabel: "Parcours",
     statuses: {
       current: "Poste actuel",
@@ -637,7 +637,7 @@ export const fr = {
         keywords: ["email", "mail", "copier", "contact"],
       },
       copySuccess: "Copié : {value}",
-      copyFailure: "La copie a échoué — réessayez.",
+      copyFailure: "La copie a échoué - réessayez.",
       openTerminal: {
         label: "Ouvrir le terminal",
         keywords: ["terminal", "console", "shell", "cli", "commande"],
@@ -661,7 +661,7 @@ export const fr = {
     restore: "Restaurer",
     restoreSize: "Restaurer la taille",
     restoreTerminal: "Restaurer le terminal",
-    inputAria: "Saisir une commande — tapez « help » pour la liste",
+    inputAria: "Saisir une commande - tapez « help » pour la liste",
     inputPlaceholder: "tapez « help »…",
     commands: [
       { name: "help", description: "Liste les commandes disponibles" },
@@ -673,24 +673,24 @@ export const fr = {
       { name: "cv", description: "Ouvre le CV au format PDF" },
       { name: "date", description: "Affiche la date et l'heure locales" },
       { name: "whoami", description: "Qui suis-je ?" },
-      { name: "echo", description: "echo <texte> — réaffiche le texte fourni" },
+      { name: "echo", description: "echo <texte> - réaffiche le texte fourni" },
       { name: "clear", description: "Efface l'historique du terminal" },
       { name: "exit", description: "Ferme le terminal" },
     ],
     welcome: {
-      intro: "Terminal simulé — les commandes sont limitées à une liste prédéfinie.",
+      intro: "Terminal simulé - les commandes sont limitées à une liste prédéfinie.",
       hint: "Tapez « help » pour les découvrir, « exit » pour quitter.",
     },
     outputs: {
       favoriteNote: "* technologie de prédilection",
       experienceFooter: "→ Détails dans la section ",
       sectionLink: "→ Section ",
-      noProjects: "Aucun projet n'est encore publié sur ce site — section en préparation.",
+      noProjects: "Aucun projet n'est encore publié sur ce site - section en préparation.",
       githubMeanwhile: "En attendant, mes dépôts sont sur ",
       openingCv: "Ouverture de ",
       sudoDenied: "Permission refusée : ce terminal est une simulation.",
       emailHint: "Pour m'écrire : « contact » ou « echo » pour afficher du texte.",
-      commandNotFound: "commande introuvable : « {command} » — tapez « help ».",
+      commandNotFound: "commande introuvable : « {command} » - tapez « help ».",
       emailLabel: "Email",
       atEmployer: "Actuellement chez",
     },

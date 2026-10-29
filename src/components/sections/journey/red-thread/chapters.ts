@@ -46,7 +46,7 @@ export function getChapters(dict: Dictionary): readonly Chapter[] {
     const end = period.end
       ? formatYearMonth(period.end, "long", dict.locale)
       : journey.statuses.today;
-    return `${start} — ${end}`;
+    return `${start} - ${end}`;
   };
 
   const detail = (location: string) => `${location}, ${dict.identity.location.country}`;

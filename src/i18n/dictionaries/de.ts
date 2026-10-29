@@ -8,7 +8,7 @@ export const de = {
   locale: "de",
 
   meta: {
-    title: "Maxime Derbigny — Applikationsentwickler in der Schweiz",
+    title: "Maxime Derbigny - Applikationsentwickler in der Schweiz",
     description:
       "Portfolio von Maxime Derbigny, Applikationsentwickler in der Westschweiz. Entdecken Sie seinen Werdegang, seine Kompetenzen in der Webentwicklung und seine Zertifizierungen.",
     keywords: [
@@ -26,8 +26,8 @@ export const de = {
   },
 
   og: {
-    alt: "Maxime Derbigny — Applikationsentwickler, Westschweiz",
-    eyebrow: "Applikationsentwickler — Westschweiz",
+    alt: "Maxime Derbigny - Applikationsentwickler, Westschweiz",
+    eyebrow: "Applikationsentwickler - Westschweiz",
     lines: ["Mit Präzision", "konzipieren.", "Mit Absicht", "entwickeln."],
   },
 
@@ -51,7 +51,7 @@ export const de = {
     openPalette: "Befehlspalette öffnen",
     openMenu: "Menü öffnen",
     closeMenu: "Menü schliessen",
-    monogramLabel: "Maxime Derbigny — zurück zum Seitenanfang",
+    monogramLabel: "Maxime Derbigny - zurück zum Seitenanfang",
   },
 
   footer: {
@@ -84,7 +84,7 @@ export const de = {
 
   hero: {
     ariaLabel: "Einleitung",
-    eyebrow: "Applikationsentwickler — Westschweiz",
+    eyebrow: "Applikationsentwickler - Westschweiz",
     title: ["Mit Präzision konzipieren.", "Mit Absicht entwickeln."],
     intro:
       "Ich bin Maxime Derbigny, Applikationsentwickler in der Westschweiz. Ich konzipiere und entwickle Weblösungen weiter, mit besonderem Interesse an modernen Technologien, Architektur und Softwarequalität.",
@@ -121,7 +121,7 @@ export const de = {
       },
       {
         label: "Laufende Ausbildung",
-        value: "Eidg. Diplom — ISEIG",
+        value: "Eidg. Diplom - ISEIG",
         icon: "graduation-cap",
         href: "https://iseig.ch",
       },
@@ -288,7 +288,7 @@ export const de = {
     titleB: "Schritt für Schritt aufgebaut.",
     description:
       "Von der Lehre bei den SBB zu meiner aktuellen Stelle, über das EFZ und das eidgenössische Diplom in Vorbereitung.",
-    redThreadLabel: "Werdegang — der rote Faden",
+    redThreadLabel: "Werdegang - der rote Faden",
     timelineLabel: "Werdegang",
     statuses: {
       current: "Aktuelle Stelle",
@@ -425,7 +425,7 @@ export const de = {
     form: {
       eyebrow: "Direkte Nachricht",
       intro:
-        "Lieber über ein Formular? Hinterlassen Sie mir eine Nachricht — sie landet direkt in meinem Posteingang.",
+        "Lieber über ein Formular? Hinterlassen Sie mir eine Nachricht - sie landet direkt in meinem Posteingang.",
       honeypotLabel: "Dieses Feld leer lassen",
       nameLabel: "Name",
       namePlaceholder: "Ihr Name",
@@ -546,7 +546,7 @@ export const de = {
     },
     {
       id: "epsic",
-      degree: "EFZ Informatiker — Applikationsentwicklung",
+      degree: "EFZ Informatiker - Applikationsentwicklung",
       institution: "EPSIC",
       location: "Lausanne, Waadt",
       period: { start: { year: 2021, month: 8 }, end: { year: 2025, month: 7 } },
@@ -559,7 +559,7 @@ export const de = {
         src: "/images/logo/epsic.png",
         width: 480,
         height: 320,
-        alt: "Logo der EPSIC — École Professionnelle Lausanne",
+        alt: "Logo der EPSIC - École Professionnelle Lausanne",
       },
     },
   ],
@@ -618,7 +618,7 @@ export const de = {
         keywords: ["email", "mail", "kopieren", "kontakt"],
       },
       copySuccess: "Kopiert: {value}",
-      copyFailure: "Kopieren fehlgeschlagen — bitte erneut versuchen.",
+      copyFailure: "Kopieren fehlgeschlagen - bitte erneut versuchen.",
       openTerminal: {
         label: "Terminal öffnen",
         keywords: ["terminal", "konsole", "shell", "cli", "befehl"],
@@ -642,7 +642,7 @@ export const de = {
     restore: "Wiederherstellen",
     restoreSize: "Grösse wiederherstellen",
     restoreTerminal: "Terminal wiederherstellen",
-    inputAria: "Befehl eingeben — « help » für die Liste",
+    inputAria: "Befehl eingeben - « help » für die Liste",
     inputPlaceholder: "« help » eingeben…",
     commands: [
       { name: "help", description: "Listet die verfügbaren Befehle" },
@@ -654,12 +654,12 @@ export const de = {
       { name: "cv", description: "Öffnet den Lebenslauf als PDF" },
       { name: "date", description: "Zeigt lokales Datum und Uhrzeit" },
       { name: "whoami", description: "Wer bin ich?" },
-      { name: "echo", description: "echo <text> — gibt den Text zurück" },
+      { name: "echo", description: "echo <text> - gibt den Text zurück" },
       { name: "clear", description: "Löscht den Terminal-Verlauf" },
       { name: "exit", description: "Schliesst das Terminal" },
     ],
     welcome: {
-      intro: "Simuliertes Terminal — die Befehle sind auf eine vordefinierte Liste beschränkt.",
+      intro: "Simuliertes Terminal - die Befehle sind auf eine vordefinierte Liste beschränkt.",
       hint: "« help » eingeben, um sie zu entdecken, « exit » zum Beenden.",
     },
     outputs: {
@@ -667,12 +667,12 @@ export const de = {
       experienceFooter: "→ Details im Abschnitt ",
       sectionLink: "→ Abschnitt ",
       noProjects:
-        "Noch sind keine Projekte auf dieser Website veröffentlicht — Abschnitt in Vorbereitung.",
+        "Noch sind keine Projekte auf dieser Website veröffentlicht - Abschnitt in Vorbereitung.",
       githubMeanwhile: "In der Zwischenzeit befinden sich meine Repositories auf ",
       openingCv: "Öffne ",
       sudoDenied: "Berechtigung verweigert: Dieses Terminal ist eine Simulation.",
       emailHint: "Um mir zu schreiben: « contact », oder « echo » zum Anzeigen von Text.",
-      commandNotFound: "Befehl nicht gefunden: « {command} » — « help » eingeben.",
+      commandNotFound: "Befehl nicht gefunden: « {command} » - « help » eingeben.",
       emailLabel: "E-Mail",
       atEmployer: "Derzeit bei",
     },

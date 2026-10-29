@@ -447,7 +447,7 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
               </button>
             </span>
             <p className="label min-w-0 flex-1 truncate text-paper/60 normal-case">
-              maxime@derbigny — zsh
+              maxime@derbigny - zsh
             </p>
             <button
               type="button"
@@ -542,7 +542,7 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
             <span className="size-2 rounded-full bg-[#febc2e]" />
             <span className="size-2 rounded-full bg-[#28c840]" />
           </span>
-          maxime@derbigny — zsh
+          maxime@derbigny - zsh
         </button>
       )}
     </>

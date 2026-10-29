@@ -21,7 +21,7 @@ export function Eyebrow({ children, index, inverse = false, className }: Eyebrow
     >
       <span aria-hidden="true" className="block size-2 shrink-0 bg-vermilion" />
       {index && <span className="tabular">{index}</span>}
-      {index && <span aria-hidden="true">—</span>}
+      {index && <span aria-hidden="true">-</span>}
       <span>{children}</span>
     </p>
   );

@@ -7,7 +7,7 @@ import { getDictionaryFor } from "@/i18n";
 import { matchLocale } from "@/i18n/locales";
 
 export const metadata: Metadata = {
-  title: "Page introuvable — Page not found",
+  title: "Page introuvable - Page not found",
   robots: { index: false },
 };
 

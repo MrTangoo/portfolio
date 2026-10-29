@@ -8,7 +8,7 @@ export const en = {
   locale: "en",
 
   meta: {
-    title: "Maxime Derbigny — Application Developer in Switzerland",
+    title: "Maxime Derbigny - Application Developer in Switzerland",
     description:
       "Portfolio of Maxime Derbigny, application developer in French-speaking Switzerland. Discover his background, web development skills and certifications.",
     keywords: [
@@ -26,8 +26,8 @@ export const en = {
   },
 
   og: {
-    alt: "Maxime Derbigny — Application Developer, French-speaking Switzerland",
-    eyebrow: "Application Developer — French-speaking Switzerland",
+    alt: "Maxime Derbigny - Application Developer, French-speaking Switzerland",
+    eyebrow: "Application Developer - French-speaking Switzerland",
     lines: ["Design with", "precision.", "Build with", "intent."],
   },
 
@@ -51,7 +51,7 @@ export const en = {
     openPalette: "Open the command palette",
     openMenu: "Open the menu",
     closeMenu: "Close the menu",
-    monogramLabel: "Maxime Derbigny — back to top",
+    monogramLabel: "Maxime Derbigny - back to top",
   },
 
   footer: {
@@ -84,7 +84,7 @@ export const en = {
 
   hero: {
     ariaLabel: "Introduction",
-    eyebrow: "Application Developer — French-speaking Switzerland",
+    eyebrow: "Application Developer - French-speaking Switzerland",
     title: ["Design with precision.", "Build with intent."],
     intro:
       "I'm Maxime Derbigny, an application developer in French-speaking Switzerland. I design and evolve web solutions, with a particular interest in modern technologies, architecture and software quality.",
@@ -121,7 +121,7 @@ export const en = {
       },
       {
         label: "Ongoing training",
-        value: "Federal diploma — ISEIG",
+        value: "Federal diploma - ISEIG",
         icon: "graduation-cap",
         href: "https://iseig.ch",
       },
@@ -280,7 +280,7 @@ export const en = {
     titleB: "step by step.",
     description:
       "From my apprenticeship at SBB to my current position, through the CFC diploma and the federal diploma in preparation.",
-    redThreadLabel: "Journey — the red thread",
+    redThreadLabel: "Journey - the red thread",
     timelineLabel: "Journey",
     statuses: {
       current: "Current position",
@@ -420,7 +420,7 @@ export const en = {
     cvPdfLabel: "Download the PDF",
     form: {
       eyebrow: "Direct message",
-      intro: "Prefer a form? Leave me a message — it lands straight in my inbox.",
+      intro: "Prefer a form? Leave me a message - it lands straight in my inbox.",
       honeypotLabel: "Leave this field empty",
       nameLabel: "Name",
       namePlaceholder: "Your name",
@@ -539,7 +539,7 @@ export const en = {
     },
     {
       id: "epsic",
-      degree: "CFC in IT — Application Development",
+      degree: "CFC in IT - Application Development",
       institution: "EPSIC",
       location: "Lausanne, Vaud",
       period: { start: { year: 2021, month: 8 }, end: { year: 2025, month: 7 } },
@@ -552,7 +552,7 @@ export const en = {
         src: "/images/logo/epsic.png",
         width: 480,
         height: 320,
-        alt: "EPSIC logo — École Professionnelle Lausanne",
+        alt: "EPSIC logo - École Professionnelle Lausanne",
       },
     },
   ],
@@ -608,7 +608,7 @@ export const en = {
         keywords: ["email", "mail", "copy", "contact"],
       },
       copySuccess: "Copied: {value}",
-      copyFailure: "Copy failed — please try again.",
+      copyFailure: "Copy failed - please try again.",
       openTerminal: {
         label: "Open the terminal",
         keywords: ["terminal", "console", "shell", "cli", "command"],
@@ -632,7 +632,7 @@ export const en = {
     restore: "Restore",
     restoreSize: "Restore the size",
     restoreTerminal: "Restore the terminal",
-    inputAria: "Enter a command — type « help » for the list",
+    inputAria: "Enter a command - type « help » for the list",
     inputPlaceholder: "type « help »…",
     commands: [
       { name: "help", description: "List the available commands" },
@@ -644,24 +644,24 @@ export const en = {
       { name: "cv", description: "Open the PDF CV" },
       { name: "date", description: "Show the local date and time" },
       { name: "whoami", description: "Who am I?" },
-      { name: "echo", description: "echo <text> — print the given text" },
+      { name: "echo", description: "echo <text> - print the given text" },
       { name: "clear", description: "Clear the terminal history" },
       { name: "exit", description: "Close the terminal" },
     ],
     welcome: {
-      intro: "Simulated terminal — commands are limited to a predefined list.",
+      intro: "Simulated terminal - commands are limited to a predefined list.",
       hint: "Type « help » to discover them, « exit » to quit.",
     },
     outputs: {
       favoriteNote: "* technology of choice",
       experienceFooter: "→ Details in the section ",
       sectionLink: "→ Section ",
-      noProjects: "No projects are published on this site yet — section in the works.",
+      noProjects: "No projects are published on this site yet - section in the works.",
       githubMeanwhile: "In the meantime, my repositories are on ",
       openingCv: "Opening ",
       sudoDenied: "Permission denied: this terminal is a simulation.",
       emailHint: "To write to me: « contact », or « echo » to print text.",
-      commandNotFound: "command not found: « {command} » — type « help ».",
+      commandNotFound: "command not found: « {command} » - type « help ».",
       emailLabel: "Email",
       atEmployer: "Currently at",
     },

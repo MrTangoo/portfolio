@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
     metadataBase: new URL(SITE_URL),
     title: {
       default: dict.meta.title,
-      template: `%s — ${SITE_NAME}`,
+      template: `%s - ${SITE_NAME}`,
     },
     description: dict.meta.description,
     applicationName: SITE_NAME,

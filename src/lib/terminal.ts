@@ -255,7 +255,7 @@ export function execute(rawInput: string, dict: Dictionary): ExecResult {
             { text: `  ${identity.fullName}`, tone: "strong" },
             {
               text:
-                ` — ${dict.identity.jobTitle}, ${dict.identity.location.display}. ` +
+                ` - ${dict.identity.jobTitle}, ${dict.identity.location.display}. ` +
                 `${dict.terminal.outputs.atEmployer} ${identity.employer}.`,
             },
           ],
@@ -286,7 +286,7 @@ export function execute(rawInput: string, dict: Dictionary): ExecResult {
 /** Welcome block shown when the terminal opens. */
 export function getWelcomeLines(dict: Dictionary): OutputLine[] {
   return [
-    [{ text: `  ${identity.fullName} — portfolio`, tone: "strong" }],
+    [{ text: `  ${identity.fullName} - portfolio`, tone: "strong" }],
     [{ text: `  ${dict.terminal.welcome.intro}`, tone: "muted" }],
     text(`  ${dict.terminal.welcome.hint}`),
   ];
