@@ -2,7 +2,6 @@
 
 import type { ReactNode, Ref } from "react";
 import * as m from "motion/react-m";
-import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -30,7 +29,7 @@ export function Reveal({
   const Component = m[as];
   return (
     <Component
-      className={cn("will-change-[transform,opacity]", className)}
+      className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, margin: "0px 0px -10% 0px" }}

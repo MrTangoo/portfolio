@@ -220,6 +220,10 @@ export function Terminal({ onClose, minimized, onMinimize }: TerminalProps) {
 
   const scrollToAnchor = (hash: string) => {
     onClose();
+    if (window.location.pathname !== `/${dict.locale}`) {
+      window.location.assign(`/${dict.locale}${hash}`);
+      return;
+    }
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document
       .getElementById(hash.slice(1))
