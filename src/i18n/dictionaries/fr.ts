@@ -373,6 +373,13 @@ export const fr = {
     monogramLabel: "Maxime Derbigny - retour en haut de page",
   },
 
+  applications: {
+    label: "Applications",
+    title: ["Vos prochaines", "applications préférées", "prennent forme."],
+    description: "Maxime est à l’œuvre pour leur donner vie. Revenez bientôt pour les découvrir.",
+    backHome: "Retour à l’accueil",
+  },
+
   footer: {
     externalAriaLabel: "Liens externes",
     backToTop: "Retour en haut",

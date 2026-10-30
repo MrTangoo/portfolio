@@ -17,7 +17,7 @@ export default async function NotFound() {
   const { notFound } = dict.errors;
 
   return (
-    <main id="main" className="container-page flex min-h-svh flex-col justify-between py-8">
+    <main id="main" tabIndex={-1} className="container-page flex min-h-svh flex-col justify-between py-8">
       <Monogram className="text-xl" />
       <div>
         <Eyebrow index="404">{notFound.title}</Eyebrow>

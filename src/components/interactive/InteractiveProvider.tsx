@@ -55,6 +55,52 @@ export function InteractiveProvider({ children }: { children: ReactNode }) {
     setTerminalMinimized(false);
   }, []);
 
+  // Same-page anchors (<a href="#id">) push history entries with
+  // `state: null`, which the app router's popstate handler silently
+  // ignores — traversing back to one leaves the previous route mounted
+  // while the URL changes. Intercept these clicks to write a managed
+  // entry carrying the router state, so traversals restore the tree.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+      const anchor =
+        event.target instanceof Element
+          ? event.target.closest<HTMLAnchorElement>('a[href^="#"]')
+          : null;
+      if (!anchor || anchor.target) return;
+      const hash = anchor.getAttribute("href");
+      if (!hash || hash === "#") return;
+
+      event.preventDefault();
+      window.history.pushState(window.history.state, "", hash);
+      const target = document.getElementById(hash.slice(1));
+      target?.scrollIntoView();
+      target?.focus({ preventScroll: true });
+    };
+    document.addEventListener("click", onClick);
+
+    // Entries written without router state (native anchors, older history)
+    // are ignored by the router — reload instead, like foreign entries.
+    const onPopState = () => {
+      if (window.history.state == null) window.location.reload();
+    };
+    window.addEventListener("popstate", onPopState);
+
+    return () => {
+      document.removeEventListener("click", onClick);
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, []);
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (

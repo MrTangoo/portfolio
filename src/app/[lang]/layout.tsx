@@ -106,6 +106,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
     <html
       lang={LOCALE_META[lang].htmlLang}
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
+      data-scroll-behavior="smooth"
     >
       <body className="flex min-h-full flex-col">
         <a

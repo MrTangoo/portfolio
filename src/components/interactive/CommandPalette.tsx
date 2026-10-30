@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import * as m from "motion/react-m";
 import { CornerDownLeft, Search, X } from "lucide-react";
@@ -35,13 +36,14 @@ function Kbd({ children }: { children: string }) {
  */
 export function CommandPalette({ onClose, context }: CommandPaletteProps) {
   const dict = useDictionary();
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const commands = useMemo(() => buildPaletteCommands(dict), [dict]);
+  const commands = useMemo(() => buildPaletteCommands(dict, router.push), [dict, router]);
   const visible = useMemo(() => filterCommands(commands, dict, query), [commands, dict, query]);
 
   const grouped = useMemo(

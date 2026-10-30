@@ -25,7 +25,7 @@ export function LegalPage({ dict }: { dict: Dictionary }) {
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <Header />
-      <main id="main" className="flex-1">
+      <main id="main" tabIndex={-1} className="flex-1">
         <Section id="legal" tone="white" className="pt-28 lg:pt-36">
           <Link
             href={homeHref}
