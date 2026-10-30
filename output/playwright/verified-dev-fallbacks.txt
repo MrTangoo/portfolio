@@ -1,0 +1,2 @@
+### Error
+Error: page.waitForURL: Target page, context or browser has been closed

@@ -1,0 +1,541 @@
+- generic [active] [ref=e1]:
+  - link "Aller au contenu" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - link "MD. Maxime Derbigny - retour en haut de page" [ref=e7] [cursor=pointer]:
+          - /url: "#top"
+          - generic [ref=e8]:
+            - text: MD.
+            - generic [ref=e9]: Maxime Derbigny - retour en haut de page
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - button "Choisir la langue FR" [ref=e12]:
+              - generic [ref=e18]: fr
+            - menu "Choisir la langue":
+              - menuitem "Français"
+              - menuitem "English"
+              - menuitem "Deutsch"
+          - button "Ouvrir la palette de commandes Ctrl K" [ref=e21]
+          - button "Ouvrir le menu" [ref=e25]
+      - generic [aria-hidden]:
+        - navigation:
+          - list:
+            - listitem:
+              - link:
+                - /url: "#a-propos"
+                - generic: À propos
+                - generic: "01"
+            - listitem:
+              - link:
+                - /url: "#expertise"
+                - generic: Expertise
+                - generic: "02"
+            - listitem:
+              - link:
+                - /url: "#stack"
+                - generic: Stack
+                - generic: "03"
+            - listitem:
+              - link:
+                - /url: "#parcours"
+                - generic: Parcours
+                - generic: "04"
+            - listitem:
+              - link:
+                - /url: "#certifications"
+                - generic: Certifications
+                - generic: "05"
+            - listitem:
+              - link:
+                - /url: "#approche"
+                - generic: Approche
+                - generic: "06"
+            - listitem:
+              - link:
+                - /url: "#contact"
+                - generic: Contact
+                - generic: "07"
+            - listitem:
+              - link:
+                - /url: /fr/applications
+                - generic:
+                  - text: Applications
+                  - generic: NEW
+                - generic: "08"
+        - generic:
+          - link:
+            - /url: mailto:maxime.derbigny@gmail.com
+            - text: Email
+          - link:
+            - /url: https://github.com/MrTangoo
+            - text: GitHub
+          - link:
+            - /url: https://www.linkedin.com/in/maxime-derbigny
+            - text: LinkedIn
+    - main [ref=e28]:
+      - region "Introduction" [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - paragraph [ref=e34]:
+                - generic [ref=e36]: Développeur d'applications - Suisse romande
+              - heading "Concevoir avec précision . Développer avec intention ." [level=1] [ref=e38]:
+                - generic [ref=e40]:
+                  - text: Concevoir avec précision
+                  - generic [ref=e41]: .
+                - generic [ref=e43]:
+                  - text: Développer avec intention
+                  - generic [ref=e44]: .
+              - paragraph [ref=e46]: Je suis Maxime Derbigny, développeur d'applications en Suisse romande. Je conçois et fais évoluer des solutions web, avec un intérêt particulier pour les technologies modernes, l'architecture et la qualité logicielle.
+              - generic [ref=e47]:
+                - link "Découvrir mon parcours" [ref=e48] [cursor=pointer]:
+                  - /url: "#parcours"
+                - link "Me contacter" [ref=e52] [cursor=pointer]:
+                  - /url: "#contact"
+                - link "Télécharger mon CV" [ref=e54] [cursor=pointer]:
+                  - /url: /cv.pdf
+            - generic [ref=e60]:
+              - figure [ref=e61]:
+                - img "Portrait en noir et blanc de Maxime Derbigny, souriant, devant un fond sombre ponctué d'un aplat vermillon." [ref=e62]
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - term [ref=e66]: Basé à
+                  - definition [ref=e70]: Attalens, Fribourg
+                - generic [ref=e71]:
+                  - term [ref=e72]: Actuellement
+                  - definition [ref=e76]: MICRO Informatic Systems SA
+          - generic [ref=e77]:
+            - paragraph [ref=e78]: CFC Informaticien · Brevet fédéral en cours
+            - list [ref=e79]:
+              - listitem [ref=e80]:
+                - link "GitHub" [ref=e81] [cursor=pointer]:
+                  - /url: https://github.com/MrTangoo
+              - listitem [ref=e85]:
+                - link "LinkedIn" [ref=e86] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/maxime-derbigny
+            - link "Défiler" [ref=e90] [cursor=pointer]:
+              - /url: "#a-propos"
+      - region [ref=e93]:
+        - generic [ref=e95]:
+          - generic [ref=e97]:
+            - paragraph [ref=e99]:
+              - generic [ref=e101]: "01"
+              - generic [aria-hidden] [ref=e102]: "-"
+              - generic [ref=e103]: À propos
+            - heading "Une approche polyvalente du développement logiciel." [level=2] [ref=e105]
+            - figure [ref=e108]:
+              - img "Maxime Derbigny de profil, regard tourné vers la lumière, sur fond sombre." [ref=e109]
+          - generic [ref=e111]:
+            - generic [ref=e112]:
+              - paragraph [ref=e114]: Développeur d'applications CFC, je travaille chez MICRO Informatic Systems SA tout en préparant le brevet fédéral d'informaticien de gestion à l'ISEIG.
+              - paragraph [ref=e116]: "Mon expérience m'a permis de développer une approche polyvalente du développement logiciel : du frontend aux bases de données, en passant par la logique applicative et la maintenance de solutions métier."
+              - paragraph [ref=e118]: J'apprécie comprendre les besoins derrière une application, concevoir des solutions pertinentes et chercher continuellement à améliorer leur qualité.
+              - paragraph [ref=e120]: Je m'intéresse particulièrement à React, Next.js, aux architectures modernes et aux outils qui permettent de développer des applications fiables, performantes et évolutives.
+            - generic [ref=e122]:
+              - generic [ref=e123]:
+                - term [ref=e124]: Basé à
+                - definition [ref=e128]:
+                  - link "Attalens, Fribourg" [ref=e129] [cursor=pointer]:
+                    - /url: https://www.google.com/maps/search/?api=1&query=Attalens%2C+FR%2C+Suisse
+              - generic [ref=e133]:
+                - term [ref=e134]: Actuellement
+                - definition [ref=e138]:
+                  - link "MICRO Informatic Systems SA" [ref=e139] [cursor=pointer]:
+                    - /url: https://www.microinformatic.ch/
+              - generic [ref=e143]:
+                - term [ref=e144]: Formation en cours
+                - definition [ref=e148]:
+                  - link "Brevet fédéral - ISEIG" [ref=e149] [cursor=pointer]:
+                    - /url: https://iseig.ch
+              - generic [ref=e153]:
+                - term [ref=e154]: Diplôme
+                - definition [ref=e158]: CFC Informaticien, dév. d'applications
+            - generic [ref=e159]:
+              - paragraph [ref=e160]: Langues
+              - list [ref=e161]:
+                - listitem [ref=e162]:
+                  - generic [ref=e164]: Français
+                - listitem [ref=e165]:
+                  - generic [ref=e167]: Anglais
+                - listitem [ref=e168]:
+                  - generic [ref=e170]: Allemand
+      - region [ref=e171]:
+        - generic [ref=e172]:
+          - generic [ref=e174]:
+            - paragraph [ref=e176]:
+              - generic [ref=e178]: "02"
+              - generic [aria-hidden] [ref=e179]: "-"
+              - generic [ref=e180]: Expertise
+            - heading "Quatre domaines, une même exigence." [level=2] [ref=e182]
+          - list [ref=e183]:
+            - listitem [ref=e184]:
+              - article [ref=e185]:
+                - paragraph [aria-hidden] [ref=e186]: "01"
+                - heading "Frontend Development" [level=3] [ref=e187]
+                - generic [ref=e190]:
+                  - paragraph [ref=e191]: Conception d'interfaces claires et réactives avec React, Next.js et TypeScript. Attention portée à la structure des composants, à l'accessibilité et à la cohérence visuelle.
+                  - list "Mots-clés" [ref=e192]:
+                    - listitem [ref=e193]: React
+                    - listitem [ref=e194]: Next.js
+                    - listitem [ref=e195]: AngularJS
+                    - listitem [ref=e196]: TypeScript
+                    - listitem [ref=e197]: JavaScript
+                    - listitem [ref=e198]: Tailwind CSS
+            - listitem [ref=e199]:
+              - article [ref=e200]:
+                - paragraph [aria-hidden] [ref=e201]: "02"
+                - heading "Application Development" [level=3] [ref=e202]
+                - generic [ref=e205]:
+                  - paragraph [ref=e206]: "Développement et évolution d'applications métier : analyse des besoins, implémentation de fonctionnalités, intégration d'API REST et maintenance corrective et évolutive."
+                  - list "Mots-clés" [ref=e207]:
+                    - listitem [ref=e208]: C# / .NET
+                    - listitem [ref=e209]: Node.js
+                    - listitem [ref=e210]: PHP
+                    - listitem [ref=e211]: API REST
+            - listitem [ref=e212]:
+              - article [ref=e213]:
+                - paragraph [aria-hidden] [ref=e214]: "03"
+                - heading "Databases & Data" [level=3] [ref=e215]
+                - generic [ref=e220]:
+                  - paragraph [ref=e221]: Modélisation et manipulation de bases de données relationnelles, écriture de requêtes SQL et T-SQL, adaptation de schémas existants et utilisation d'ORM modernes.
+                  - list "Mots-clés" [ref=e222]:
+                    - listitem [ref=e223]: PostgreSQL
+                    - listitem [ref=e224]: SQL Server
+                    - listitem [ref=e225]: MySQL
+                    - listitem [ref=e226]: Prisma ORM
+                    - listitem [ref=e227]: Neon
+            - listitem [ref=e228]:
+              - article [ref=e229]:
+                - paragraph [aria-hidden] [ref=e230]: "04"
+                - heading "Engineering Practices" [level=3] [ref=e231]
+                - generic [ref=e236]:
+                  - paragraph [ref=e237]: Qualité logicielle, versionnement, automatisation et méthodes Agile. Un intérêt marqué pour le Clean Code, les tests et les pipelines CI/CD.
+                  - list "Mots-clés" [ref=e238]:
+                    - listitem [ref=e239]: Git
+                    - listitem [ref=e240]: GitHub Actions
+                    - listitem [ref=e241]: Scrum
+                    - listitem [ref=e242]: Clean Code
+      - region [ref=e243]:
+        - generic [ref=e244]:
+          - generic [ref=e246]:
+            - paragraph [ref=e248]:
+              - generic [ref=e250]: "03"
+              - generic [aria-hidden] [ref=e251]: "-"
+              - generic [ref=e252]: Stack
+            - generic [ref=e253]:
+              - heading "Des outils choisis pour leur justesse." [level=2] [ref=e254]
+              - paragraph [ref=e255]: Les technologies rencontrées au fil de mon parcours, et celles que je privilégie aujourd'hui pour construire des applications fiables et évolutives.
+          - generic [ref=e257]:
+            - tablist "Catégories de technologies" [ref=e258]:
+              - tab "Frontend" [selected] [ref=e259]
+              - tab "Backend" [ref=e262]
+              - tab "Database & ORM" [ref=e265]
+              - tab "Tools & Engineering" [ref=e268]
+            - tabpanel "Frontend" [ref=e272]:
+              - paragraph [ref=e273]: Interfaces web modernes, typées et accessibles.
+              - list [ref=e274]:
+                - listitem [ref=e275]:
+                  - generic [ref=e276]:
+                    - generic [ref=e278]: React
+                    - img "Technologie favorite" [ref=e279]
+                  - paragraph [ref=e280]: Bibliothèque de référence pour mes interfaces.
+                - listitem [ref=e281]:
+                  - generic [ref=e282]:
+                    - generic [ref=e284]: Next.js
+                    - img "Technologie favorite" [ref=e285]
+                  - paragraph [ref=e286]: App Router, Server Components, rendu hybride.
+                - listitem [ref=e287]:
+                  - generic [ref=e288]:
+                    - generic [ref=e290]: TypeScript
+                    - img "Technologie favorite" [ref=e291]
+                  - paragraph [ref=e292]: Typage strict, du composant à la donnée.
+                - listitem [ref=e293]:
+                  - generic [ref=e294]: JavaScript
+                - listitem [ref=e297]:
+                  - generic [ref=e298]: HTML5
+                - listitem [ref=e301]:
+                  - generic [ref=e302]: CSS3
+                - listitem [ref=e305]:
+                  - generic [ref=e306]: Tailwind CSS
+                  - paragraph [ref=e309]: Design tokens et composition utilitaire.
+                - listitem [ref=e310]:
+                  - generic [ref=e311]: Bootstrap
+                - listitem [ref=e314]:
+                  - generic [ref=e315]: AngularJS
+                  - paragraph [ref=e318]: Rencontré sur des applications existantes.
+              - paragraph [ref=e319]: Technologies que j'apprécie particulièrement.
+          - complementary [ref=e322]:
+            - generic [ref=e323]:
+              - paragraph [ref=e324]: Combinaison favorite
+              - heading "Next.js · Prisma · Neon" [level=3] [ref=e325]
+            - paragraph [ref=e326]: "La combinaison que j'apprécie particulièrement pour construire des applications web complètes : un framework React full-stack, un ORM typé et une base PostgreSQL serverless."
+          - generic [ref=e328]:
+            - paragraph [ref=e329]: Compétences transversales
+            - list [ref=e330]:
+              - listitem [ref=e331]: Développement d'applications
+              - listitem [ref=e332]: Analyse des besoins
+              - listitem [ref=e333]: Résolution de problèmes techniques
+              - listitem [ref=e334]: Maintenance applicative
+              - listitem [ref=e335]: Gestion de bases de données
+              - listitem [ref=e336]: Intégration d'API
+              - listitem [ref=e337]: Qualité logicielle
+              - listitem [ref=e338]: Méthodes Agile
+              - listitem [ref=e339]: Scrum
+              - listitem [ref=e340]: Collaboration technique
+      - region [ref=e341]:
+        - generic [ref=e342]:
+          - generic [ref=e344]:
+            - paragraph [ref=e346]:
+              - generic [ref=e348]: "04"
+              - generic [aria-hidden] [ref=e349]: "-"
+              - generic [ref=e350]: Parcours
+            - generic [ref=e351]:
+              - heading "Un parcours construit étape par étape." [level=2] [ref=e352]
+              - paragraph [ref=e353]: De l'apprentissage aux CFF à mon poste actuel, en passant par le CFC et le brevet fédéral en préparation.
+          - list "Parcours" [ref=e355]:
+            - listitem [ref=e357]:
+              - article "Les fondations - 2021" [ref=e359]:
+                - paragraph [aria-hidden] [ref=e360]: "2021"
+                - paragraph [ref=e361]: 01 / Les fondations
+                - heading "Poser les fondations." [level=3] [ref=e362]
+                - generic [ref=e363]:
+                  - generic [ref=e364]:
+                    - generic [ref=e365]:
+                      - paragraph [ref=e366]: Apprenti développeur
+                      - paragraph [ref=e370]: SBB CFF FFS
+                    - img "Logo SBB CFF FFS" [ref=e371]
+                  - paragraph [ref=e372]:
+                    - generic [ref=e373]: août 2021 - août 2024
+                    - generic [ref=e376]: Berne, Suisse
+                  - paragraph [ref=e380]: Première expérience professionnelle en développement informatique, dans un environnement d'entreprise structuré.
+            - listitem [ref=e381]:
+              - article "L'évolution - 2024" [ref=e383]:
+                - paragraph [aria-hidden] [ref=e384]: "2024"
+                - paragraph [ref=e385]: 02 / L'évolution
+                - heading "Consolider la pratique." [level=3] [ref=e386]
+                - generic [ref=e387]:
+                  - generic [ref=e388]:
+                    - generic [ref=e389]:
+                      - paragraph [ref=e390]: Apprenti développeur
+                      - paragraph [ref=e394]: Groupement Romand de l'Informatique
+                    - img "Logo Groupement Romand de l'Informatique" [ref=e395]
+                  - paragraph [ref=e396]:
+                    - generic [ref=e397]: août 2024 - juillet 2025
+                    - generic [ref=e400]: Montagny-près-Yverdon, Vaud, Suisse
+                  - paragraph [ref=e404]: Dernière année d'apprentissage en environnement professionnel, conclue par la réalisation du Travail Pratique Individuel du CFC.
+            - listitem [ref=e405]:
+              - article "Le tournant - 2025" [ref=e407]:
+                - paragraph [aria-hidden] [ref=e408]: "2025"
+                - paragraph [ref=e409]: 03 / Le tournant
+                - heading "Un nouveau chapitre." [level=3] [ref=e410]
+                - generic [ref=e411]:
+                  - generic [ref=e412]:
+                    - generic [ref=e413]:
+                      - paragraph [ref=e414]: Développeur junior
+                      - paragraph [ref=e418]: MICRO Informatic Systems SA
+                    - img "Logo MICRO Informatic Systems SA" [ref=e419]
+                  - paragraph [ref=e420]:
+                    - generic [ref=e421]: septembre 2025 - Aujourd'hui
+                    - generic [ref=e424]: Montagny-près-Yverdon, Vaud, Suisse
+                  - paragraph [ref=e428]: Poste actuel
+                  - paragraph [ref=e430]: Développement et évolution d'applications métier, du frontend aux bases de données SQL.
+                - generic [ref=e431]:
+                  - generic [ref=e432]:
+                    - generic [ref=e433]:
+                      - paragraph [ref=e434]: CFC d'informaticien - Développement d'applications
+                      - paragraph [ref=e438]: EPSIC
+                    - img "Logo de l'EPSIC - École Professionnelle Lausanne" [ref=e439]
+                  - paragraph [ref=e440]:
+                    - generic [ref=e441]: juillet 2025
+                    - generic [ref=e444]: Lausanne, Vaud, Suisse
+                  - paragraph [ref=e448]: Diplôme obtenu
+            - listitem [ref=e450]:
+              - article "Élargir les perspectives - 2026" [ref=e452]:
+                - paragraph [aria-hidden] [ref=e453]: "2026"
+                - paragraph [ref=e454]: 04 / Élargir les perspectives
+                - heading "Élargir les perspectives." [level=3] [ref=e455]
+                - generic [ref=e456]:
+                  - generic [ref=e457]:
+                    - generic [ref=e458]:
+                      - paragraph [ref=e459]: Informaticien de gestion avec brevet fédéral
+                      - paragraph [ref=e463]: ISEIG
+                    - img "Logo de l'ISEIG" [ref=e464]
+                  - paragraph [ref=e465]:
+                    - generic [ref=e466]: février 2026 - avril 2027
+                    - generic [ref=e469]: Lausanne, Vaud, Suisse
+                  - paragraph [ref=e473]: En cours
+                  - paragraph [ref=e475]: Formation orientée gestion de projet, analyse des exigences et compréhension des besoins métier.
+                - generic [ref=e476]:
+                  - generic [ref=e477]:
+                    - generic [ref=e478]:
+                      - paragraph [ref=e479]: Professional Scrum Master I
+                      - paragraph [ref=e483]: Scrum.org
+                    - img "Badge Scrum.org Professional Scrum Master I" [ref=e484]
+                  - paragraph [ref=e485]:
+                    - generic [ref=e486]: septembre 2026
+            - listitem [ref=e489]:
+              - article "Next chapter - Aujourd'hui" [ref=e491]:
+                - paragraph [ref=e492]: NEXT CHAPTER_
+                - heading "La suite reste à écrire..." [level=3] [ref=e493]
+                - paragraph [ref=e494]: Continuer à apprendre. Construire avec exigence. Évoluer.
+                - paragraph [ref=e495]: Aujourd'hui, je poursuis mon évolution dans le développement logiciel, avec un intérêt croissant pour l'architecture, la qualité et les responsabilités techniques.
+      - region [ref=e496]:
+        - generic [ref=e497]:
+          - generic [ref=e499]:
+            - paragraph [ref=e501]:
+              - generic [ref=e503]: "05"
+              - generic [aria-hidden] [ref=e504]: "-"
+              - generic [ref=e505]: Certifications
+            - heading "Des acquis vérifiés." [level=2] [ref=e507]
+          - list [ref=e508]:
+            - listitem [ref=e509]:
+              - article [ref=e510]:
+                - img "Badge Scrum.org Professional Scrum Master I" [ref=e511]
+                - generic [ref=e512]:
+                  - paragraph [ref=e513]:
+                    - time [ref=e514]: septembre 2026
+                  - heading "Professional Scrum Master IPSM I" [level=3] [ref=e515]
+                  - paragraph [ref=e516]: Scrum.org
+                  - paragraph [ref=e517]: "Certification officielle attestant de la compréhension de Scrum : responsabilités, événements, artefacts et principes du cadre de travail."
+                - generic [ref=e518]:
+                  - paragraph [ref=e519]: 97,5 %
+                  - paragraph [ref=e520]: Résultat
+      - region [ref=e522]:
+        - generic [ref=e523]:
+          - generic [ref=e525]:
+            - paragraph [ref=e527]:
+              - generic [ref=e529]: "06"
+              - generic [aria-hidden] [ref=e530]: "-"
+              - generic [ref=e531]: Approche
+            - generic [ref=e532]:
+              - heading "Une ingénierie qui dure." [level=2] [ref=e533]
+              - paragraph [ref=e534]: Des pratiques que je cherche à appliquer au quotidien et à approfondir, plus que des certitudes.
+          - list [ref=e535]:
+            - listitem [ref=e536]:
+              - paragraph [aria-hidden] [ref=e537]: "01"
+              - heading "Qualité du code" [level=3] [ref=e538]
+              - paragraph [ref=e541]: Un code lisible, explicite et cohérent vaut mieux qu'un code astucieux. Je m'applique à écrire ce que je serais content de relire dans six mois.
+            - listitem [ref=e542]:
+              - paragraph [aria-hidden] [ref=e543]: "02"
+              - heading "Maintenabilité" [level=3] [ref=e544]
+              - paragraph [ref=e547]: Les applications vivent longtemps. Séparer les responsabilités et limiter la complexité facilite chaque évolution future.
+            - listitem [ref=e548]:
+              - paragraph [aria-hidden] [ref=e549]: "03"
+              - heading "Architecture" [level=3] [ref=e550]
+              - paragraph [ref=e555]: Comprendre le besoin avant de choisir la structure. Préférer des solutions simples, cohérentes et adaptées au périmètre réel.
+            - listitem [ref=e556]:
+              - paragraph [aria-hidden] [ref=e557]: "04"
+              - heading "Automatisation" [level=3] [ref=e558]
+              - paragraph [ref=e562]: "Ce qui peut être vérifié automatiquement doit l'être : formatage, lint, typage, tests et déploiement, via des pipelines CI/CD."
+            - listitem [ref=e563]:
+              - paragraph [aria-hidden] [ref=e564]: "05"
+              - heading "Tests" [level=3] [ref=e565]
+              - paragraph [ref=e568]: Des tests ciblés, qui protègent les comportements importants sans alourdir le développement.
+            - listitem [ref=e569]:
+              - paragraph [aria-hidden] [ref=e570]: "06"
+              - heading "Amélioration continue" [level=3] [ref=e571]
+              - paragraph [ref=e575]: Apprendre en pratiquant, mesurer, ajuster. Chaque itération est une occasion de faire un peu mieux.
+          - generic [ref=e577]:
+            - paragraph [ref=e578]: Ce site applique ces principes
+            - generic [ref=e579]:
+              - generic [ref=e580]: Next.js App Router
+              - generic [ref=e581]: TypeScript strict
+              - generic [ref=e582]: Tests Vitest & Playwright
+              - generic [ref=e583]: CI GitHub Actions
+              - generic [ref=e584]: Déploiement Vercel
+      - region [ref=e585]:
+        - generic [ref=e586]:
+          - paragraph [ref=e588]:
+            - generic [ref=e590]: "07"
+            - generic [aria-hidden] [ref=e591]: "-"
+            - generic [ref=e592]: Contact
+          - heading "Construisons la suite." [level=2] [ref=e594]
+          - generic [ref=e595]:
+            - paragraph [ref=e597]: Une question, une opportunité ou simplement envie d'échanger autour du développement logiciel ? N'hésite pas à me contacter.
+            - generic [ref=e598]:
+              - link "maxime.derbigny@gmail.com" [ref=e599] [cursor=pointer]:
+                - /url: mailto:maxime.derbigny@gmail.com
+              - list [ref=e604]:
+                - listitem [ref=e605]:
+                  - link "GitHub github.com/MrTangoo" [ref=e606] [cursor=pointer]:
+                    - /url: https://github.com/MrTangoo
+                    - generic [ref=e607]:
+                      - generic [ref=e608]: GitHub
+                      - generic [ref=e613]: github.com/MrTangoo
+                - listitem [ref=e617]:
+                  - link "LinkedIn linkedin.com/in/maxime-derbigny" [ref=e618] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/maxime-derbigny
+                    - generic [ref=e619]:
+                      - generic [ref=e620]: LinkedIn
+                      - generic [ref=e626]: linkedin.com/in/maxime-derbigny
+                - listitem [ref=e630]:
+                  - link "CV Télécharger le PDF" [ref=e631] [cursor=pointer]:
+                    - /url: /cv.pdf
+                    - generic [ref=e632]:
+                      - generic [ref=e633]: CV
+                      - generic [ref=e638]: Télécharger le PDF
+          - generic [ref=e643]:
+            - generic [ref=e644]:
+              - paragraph [ref=e645]:
+                - generic [ref=e647]: Message direct
+              - paragraph [ref=e648]: Tu préfères passer par un formulaire ? Laisse-moi un message, il arrive directement dans ma boîte mail.
+            - generic [ref=e650]:
+              - text: Ne pas remplir
+              - textbox [ref=e651]
+              - generic [ref=e652]:
+                - generic [ref=e653]:
+                  - generic [ref=e654]: Nom
+                  - textbox "Nom" [ref=e658]:
+                    - /placeholder: Ton nom
+                - generic [ref=e659]:
+                  - generic [ref=e660]: Email
+                  - textbox "Email" [ref=e664]:
+                    - /placeholder: ton@email.ch
+              - generic [ref=e665]:
+                - generic [ref=e666]:
+                  - text: Sujet
+                  - generic [ref=e670]: (optionnel)
+                - textbox "Sujet (optionnel)" [ref=e671]:
+                  - /placeholder: Une opportunité, une question…
+              - generic [ref=e672]:
+                - generic [ref=e673]: Message
+                - textbox "Message" [ref=e676]:
+                  - /placeholder: Écris ton message…
+              - button "Envoyer le message" [ref=e677]
+              - paragraph [ref=e682]:
+                - text: Tes données servent uniquement à traiter ta demande et te répondre.
+                - link "Mentions légales" [ref=e683] [cursor=pointer]:
+                  - /url: /fr/legal
+    - contentinfo [ref=e684]:
+      - generic [ref=e685]:
+        - generic [ref=e686]:
+          - generic [ref=e687]:
+            - text: MD.
+            - generic [ref=e688]: Maxime Derbigny
+          - paragraph [ref=e689]: Maxime DerbignyDéveloppeur d'applications
+        - navigation "Liens externes" [ref=e690]:
+          - list [ref=e691]:
+            - listitem [ref=e692]:
+              - link "GitHub" [ref=e693] [cursor=pointer]:
+                - /url: https://github.com/MrTangoo
+            - listitem [ref=e697]:
+              - link "LinkedIn" [ref=e698] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/maxime-derbigny
+        - generic [ref=e702]:
+          - link "Retour en haut" [ref=e703] [cursor=pointer]:
+            - /url: "#main"
+          - paragraph [ref=e706]: © 2026 Maxime Derbigny
+          - link "Mentions légales" [ref=e707] [cursor=pointer]:
+            - /url: /fr/legal
+          - paragraph [ref=e708]: Next.js · TypeScript · Tailwind CSS · Vercel
+      - generic [aria-hidden]:
+        - paragraph: MAXIME DERBIGNY.
+  - button "Open Next.js Dev Tools" [ref=e714] [cursor=pointer]:
+    - generic [ref=e717]:
+      - text: Compiling
+      - generic [ref=e718]:
+        - generic [ref=e719]: .
+        - generic [ref=e720]: .
+        - generic [ref=e721]: .

@@ -136,11 +136,42 @@ export function useRedThread(scopeRef: RefObject<HTMLDivElement | null>) {
           0,
         );
 
+        // Deep links (/fr#contact) scroll before the pin-spacer exists, so
+        // anchors below the stage land ~340vh too high. Once the pin is in
+        // place, re-measure and jump to the real position, then snap the
+        // scrubbed playhead to the landed progress — otherwise `scrub: 0.8`
+        // eases through every chapter for ~0.8s and a fast scroll-up reads
+        // stale frames (half-faded scenes, invisible years).
+        const hash = window.location.hash.slice(1);
+        let anchorFrame = 0;
+        let progressFrame = 0;
+        if (hash) {
+          anchorFrame = requestAnimationFrame(() => {
+            ScrollTrigger.refresh();
+            document.getElementById(hash)?.scrollIntoView({ behavior: "instant" });
+            // Next frame: the scroll event has retargeted the scrub tween,
+            // so st.progress already reflects the landed position.
+            progressFrame = requestAnimationFrame(() => {
+              const st = tl.scrollTrigger;
+              if (st) tl.progress(st.progress);
+            });
+          });
+        }
+
         return () => {
+          cancelAnimationFrame(anchorFrame);
+          cancelAnimationFrame(progressFrame);
           tl.scrollTrigger?.kill();
           tl.kill();
           scenes.forEach((scene) => {
             gsap.set(scene, { clearProps: "all" });
+          });
+          // Activity preserves these nodes. A reverted fromTo can leave its
+          // start transform behind; on re-entry GSAP parses the 108% offset
+          // as a pixel y that yPercent cannot reset. Clear the children too,
+          // including their cached transforms and reduced-motion fallbacks.
+          gsap.set(stage.querySelectorAll("[data-rt-year], [data-rt-content], [data-rt-screen]"), {
+            clearProps: "transform,opacity,clipPath",
           });
           gsap.set(stage, { clearProps: "all" });
           gsap.set(fill, { clearProps: "transform" });

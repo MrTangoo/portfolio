@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - link "Aller au contenu" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e808]:
+    - banner [ref=e809]:
+      - generic [ref=e811]:
+        - link "MD. Maxime Derbigny - retour en haut de page" [ref=e812] [cursor=pointer]:
+          - /url: /fr
+          - generic [ref=e813]:
+            - text: MD.
+            - generic [ref=e814]: Maxime Derbigny - retour en haut de page
+        - navigation "Navigation principale" [ref=e815]:
+          - list [ref=e816]:
+            - listitem [ref=e817]:
+              - link "À propos" [ref=e818] [cursor=pointer]:
+                - /url: /fr#a-propos
+            - listitem [ref=e819]:
+              - link "Expertise" [ref=e820] [cursor=pointer]:
+                - /url: /fr#expertise
+            - listitem [ref=e821]:
+              - link "Stack" [ref=e822] [cursor=pointer]:
+                - /url: /fr#stack
+            - listitem [ref=e823]:
+              - link "Parcours" [ref=e824] [cursor=pointer]:
+                - /url: /fr#parcours
+            - listitem [ref=e825]:
+              - link "Certifications" [ref=e826] [cursor=pointer]:
+                - /url: /fr#certifications
+            - listitem [ref=e827]:
+              - link "Approche" [ref=e828] [cursor=pointer]:
+                - /url: /fr#approche
+            - listitem [ref=e829]:
+              - link "Contact" [ref=e830] [cursor=pointer]:
+                - /url: /fr#contact
+            - listitem [ref=e831]:
+              - link "Applications NEW" [ref=e832] [cursor=pointer]:
+                - /url: /fr/applications
+                - text: Applications
+                - generic [ref=e833]: NEW
+        - generic [ref=e835]:
+          - button "Ouvrir la palette de commandes Ctrl K" [ref=e836]:
+            - generic [aria-hidden] [ref=e840]: Ctrl K
+          - link "GitHub" [ref=e841] [cursor=pointer]:
+            - /url: https://github.com/MrTangoo
+          - link "LinkedIn" [ref=e845] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/maxime-derbigny
+          - generic [ref=e850]:
+            - button "Choisir la langue FR" [ref=e851]:
+              - generic [ref=e857]: fr
+            - menu "Choisir la langue":
+              - menuitem "Français"
+              - menuitem "English"
+              - menuitem "Deutsch"
+    - main [ref=e860]:
+      - generic [ref=e861]:
+        - paragraph [ref=e863]:
+          - generic [ref=e865]: Applications
+        - heading "Vos prochaines applications préférées prennent forme ." [level=1] [ref=e867]:
+          - generic [ref=e868]: Vos prochaines
+          - generic [ref=e870]: applications préférées
+          - generic [ref=e873]:
+            - text: prennent forme
+            - generic [ref=e874]: .
+        - paragraph [ref=e876]: Maxime est à l’œuvre pour leur donner vie. Revenez bientôt pour les découvrir.
+        - link "Retour à l’accueil" [ref=e879] [cursor=pointer]:
+          - /url: /fr
+    - contentinfo [ref=e882]:
+      - generic [ref=e883]:
+        - generic [ref=e884]:
+          - generic [ref=e885]:
+            - text: MD.
+            - generic [ref=e886]: Maxime Derbigny
+          - paragraph [ref=e887]: Maxime DerbignyDéveloppeur d'applications
+        - navigation "Liens externes" [ref=e888]:
+          - list [ref=e889]:
+            - listitem [ref=e890]:
+              - link "GitHub" [ref=e891] [cursor=pointer]:
+                - /url: https://github.com/MrTangoo
+            - listitem [ref=e895]:
+              - link "LinkedIn" [ref=e896] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/maxime-derbigny
+        - generic [ref=e900]:
+          - link "Retour en haut" [ref=e901] [cursor=pointer]:
+            - /url: "#main"
+          - paragraph [ref=e904]: © 2026 Maxime Derbigny
+          - link "Mentions légales" [ref=e905] [cursor=pointer]:
+            - /url: /fr/legal
+          - paragraph [ref=e906]: Next.js · TypeScript · Tailwind CSS · Vercel
+      - generic [aria-hidden]:
+        - paragraph: MAXIME DERBIGNY.
+  - button "Open Next.js Dev Tools" [ref=e784] [cursor=pointer]
+  - alert [ref=e788]: Applications - Maxime Derbigny

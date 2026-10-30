@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { Search } from "lucide-react";
@@ -17,12 +18,25 @@ const socialIcons = {
   linkedin: LinkedinIcon,
 } as const;
 
+function NewBadge() {
+  return (
+    <span
+      lang="en"
+      className="applications-new-badge inline-flex items-center justify-center rounded-full bg-vermilion-deep px-1.5 py-0.5 font-sans text-[9px] leading-none font-semibold tracking-[0.08em] text-white"
+    >
+      NEW
+    </span>
+  );
+}
+
 export function Header() {
   const dict = useDictionary();
   const locale = useLocale();
   // Section anchors only exist on the home page — point back to it otherwise.
   const pathname = usePathname() ?? `/${locale}`;
   const onHome = pathname === `/${locale}`;
+  const applicationsHref = `/${locale}/applications`;
+  const onApplications = pathname === applicationsHref;
   const sectionHref = (id: string) => (onHome ? `#${id}` : `/${locale}#${id}`);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -65,7 +79,7 @@ export function Header() {
         toggleRef.current?.focus();
       }
     };
-    const mql = window.matchMedia("(min-width: 1024px)");
+    const mql = window.matchMedia("(min-width: 1280px)");
     const onChange = (event: MediaQueryListEvent) => event.matches && close();
 
     window.addEventListener("keydown", onKeyDown);
@@ -90,7 +104,7 @@ export function Header() {
             : "border-b border-transparent bg-transparent",
         )}
       >
-        <div className="container-page flex h-16 items-center justify-between lg:h-20">
+        <div className="container-page flex h-16 items-center justify-between gap-6 xl:h-20">
           <a
             href={onHome ? "#top" : `/${locale}`}
             className="inline-block text-xl leading-none transition-transform duration-300 ease-out-expo hover:scale-110"
@@ -99,10 +113,10 @@ export function Header() {
             <Monogram srLabel={dict.header.monogramLabel} />
           </a>
 
-          <nav aria-label={dict.header.navAriaLabel} className="hidden lg:block">
-            <ul className="flex items-center gap-8">
+          <nav aria-label={dict.header.navAriaLabel} className="hidden xl:block">
+            <ul className="flex items-center gap-5 2xl:gap-8">
               {dict.nav.map((item) => {
-                const isActive = active === item.id;
+                const isActive = onHome && active === item.id;
                 return (
                   <li key={item.id}>
                     <a
@@ -118,10 +132,25 @@ export function Header() {
                   </li>
                 );
               })}
+              <li className="pr-5">
+                <Link
+                  href={applicationsHref}
+                  aria-current={onApplications ? "page" : undefined}
+                  className={cn(
+                    "link-reveal py-2 text-sm font-medium tracking-[-0.005em] transition-colors duration-150",
+                    onApplications ? "text-ink" : "text-steel hover:text-ink",
+                  )}
+                >
+                  {dict.applications.label}
+                  <span className="absolute -top-1 -right-5 flex">
+                    <NewBadge />
+                  </span>
+                </Link>
+              </li>
             </ul>
           </nav>
 
-          <div className="hidden items-center gap-5 lg:flex">
+          <div className="hidden shrink-0 items-center gap-3 xl:flex 2xl:gap-5">
             <button
               type="button"
               onClick={openPalette}
@@ -156,7 +185,7 @@ export function Header() {
             <LanguageSwitcher />
           </div>
 
-          <div className="flex items-center lg:hidden">
+          <div className="flex items-center xl:hidden">
             <LanguageSwitcher />
             <button
               type="button"
@@ -202,7 +231,7 @@ export function Header() {
       <div
         id={menuId}
         className={cn(
-          "fixed inset-x-0 top-16 bottom-0 flex flex-col overflow-y-auto bg-paper transition-[opacity,transform] duration-300 ease-out-expo lg:hidden",
+          "fixed inset-x-0 top-16 bottom-0 flex flex-col overflow-y-auto bg-paper transition-[opacity,transform] duration-300 ease-out-expo xl:hidden",
           open
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none translate-y-2 opacity-0",
@@ -229,6 +258,24 @@ export function Header() {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                href={applicationsHref}
+                onClick={close}
+                aria-current={onApplications ? "page" : undefined}
+                className="group flex items-center justify-between gap-4 py-5"
+              >
+                <span className="relative mr-5 text-display-sm font-semibold tracking-[-0.02em]">
+                  {dict.applications.label}
+                  <span className="absolute -top-2 -right-5 flex">
+                    <NewBadge />
+                  </span>
+                </span>
+                <span className="label text-steel tabular transition-colors duration-150 group-hover:text-vermilion-deep">
+                  {String(dict.nav.length + 1).padStart(2, "0")}
+                </span>
+              </Link>
+            </li>
           </ol>
         </nav>
         <div className="container-page flex items-center justify-between gap-6 py-8">

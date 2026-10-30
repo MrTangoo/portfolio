@@ -1,0 +1,73 @@
+### Result
+{"origin":"http://localhost:3000","checks":12,"results":[{"label":"native-return","id":"2026","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"native-return","id":"2025","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"native-return","id":"2024","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"native-return","id":"2021","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-1","id":"2026","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-1","id":"2025","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-1","id":"2024","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-1","id":"2021","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-2","id":"2026","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-2","id":"2025","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-2","id":"2024","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1},{"label":"history-back-2","id":"2021","sceneOpacity":"1","visibility":"visible","yearOpacity":"1","transform":"matrix(1, 0, 0, 1, 0, 0)","offsetFromMask":0,"top":171.234375,"bottom":387.234375,"viewportHeight":900,"pins":1}]}
+### Ran Playwright code
+```js
+await (async (page) => {
+  const origin = new URL(page.url()).origin;
+  const results = [];
+  const nav = page.getByRole('navigation', { name: 'Navigation principale' });
+  const check = (condition, message) => { if (!condition) throw new Error(message); };
+  async function verifyYears(label) {
+    const bounds = await page.evaluate(() => {
+      const spacer = document.querySelector('.pin-spacer');
+      const stage = document.querySelector('[data-rt-stage]');
+      if (!spacer) throw new Error('Missing pin');
+      return { start: spacer.getBoundingClientRect().top + scrollY,
+        length: spacer.offsetHeight - stage.offsetHeight };
+    });
+    for (const [id, progress] of [['2026', 0.75], ['2025', 0.55], ['2024', 0.3], ['2021', 0.12]]) {
+      const target = bounds.start + progress * bounds.length;
+      await page.mouse.wheel(0, Math.round(target - await page.evaluate(() => scrollY)));
+      await page.waitForTimeout(1100);
+      const state = await page.evaluate(id => {
+        const scene = document.querySelector(`[data-rt-scene="${id}"]`);
+        const year = scene.querySelector('[data-rt-year]');
+        const rect = year.getBoundingClientRect();
+        const mask = year.parentElement.getBoundingClientRect();
+        return {
+          id, sceneOpacity: getComputedStyle(scene).opacity,
+          visibility: getComputedStyle(scene).visibility,
+          yearOpacity: getComputedStyle(year).opacity,
+          transform: getComputedStyle(year).transform,
+          offsetFromMask: rect.top - mask.top,
+          top: rect.top, bottom: rect.bottom,
+          viewportHeight: innerHeight,
+          pins: document.querySelectorAll('.pin-spacer').length,
+        };
+      }, id);
+      results.push({ label, ...state });
+      check(state.pins === 1, label + ': duplicate or missing pin');
+      check(state.sceneOpacity === '1' && state.visibility === 'visible', label + ': hidden scene ' + id);
+      check(state.yearOpacity === '1', label + ': hidden year ' + id);
+      check(Math.abs(state.offsetFromMask) < 1, label + ': year outside mask ' + JSON.stringify(state));
+      check(state.top >= 0 && state.bottom <= state.viewportHeight, label + ': year outside viewport');
+    }
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto(origin + '/fr');
+  await page.locator('.pin-spacer').waitFor();
+  await nav.getByRole('link', { name: 'Certifications', exact: true }).click();
+  await page.waitForTimeout(1300);
+  await nav.getByRole('link', { name: 'Applications NEW' }).click();
+  await page.waitForURL('**/fr/applications');
+  await nav.getByRole('link', { name: 'Certifications', exact: true }).click();
+  await page.waitForURL('**/fr#certifications');
+  await page.waitForTimeout(1200);
+  await verifyYears('native-return');
+  for (let cycle = 1; cycle <= 2; cycle++) {
+    await nav.getByRole('link', { name: 'Certifications', exact: true }).click();
+    await page.waitForTimeout(1300);
+    await nav.getByRole('link', { name: 'Applications NEW' }).click();
+    await page.waitForURL('**/fr/applications');
+    await page.goBack();
+    await page.waitForTimeout(1200);
+    await verifyYears('history-back-' + cycle);
+  }
+  await page.screenshot({ path: 'output/playwright/years-after.png' });
+  return { origin, checks: results.length, results };
+}
+)(page);
+```
+### Events
+- New console entries: .playwright-cli\console-2026-10-30T08-46-45-396Z.log#L155-L162

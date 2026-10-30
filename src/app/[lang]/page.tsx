@@ -21,7 +21,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
     <div className="flex min-h-full flex-1 flex-col">
       <JsonLd dict={dict} />
       <Header />
-      <main id="main" className="flex-1">
+      <main id="main" tabIndex={-1} className="flex-1">
         <Hero dict={dict} />
         <About dict={dict} />
         <Expertise dict={dict} />

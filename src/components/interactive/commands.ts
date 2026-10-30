@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { Copy, Download, Hash, Mail, SquareTerminal } from "lucide-react";
+import { AppWindow, Copy, Download, Hash, Mail, SquareTerminal } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { externalSocials, identity } from "@/content/profile";
 import { format } from "@/i18n/format";
@@ -30,9 +30,12 @@ export interface PaletteCommand {
   run: (context: PaletteCommandContext) => void | Promise<void>;
 }
 
-function scrollToSection(id: string) {
+function scrollToSection(id: string, locale: string, navigate: (href: string) => void) {
   const element = document.getElementById(id);
-  if (!element) return;
+  if (!element) {
+    navigate(`/${locale}#${id}`);
+    return;
+  }
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   element.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
 }
@@ -70,7 +73,10 @@ const socialIcons = {
 } as const;
 
 /** Builds the palette's commands for the active locale. */
-export function buildPaletteCommands(dict: Dictionary): PaletteCommand[] {
+export function buildPaletteCommands(
+  dict: Dictionary,
+  navigate: (href: string) => void,
+): PaletteCommand[] {
   const strings = dict.palette.commands;
 
   const navigationCommands: PaletteCommand[] = [
@@ -80,13 +86,7 @@ export function buildPaletteCommands(dict: Dictionary): PaletteCommand[] {
       category: "navigation",
       icon: Hash,
       keywords: strings.home.keywords,
-      run: () =>
-        window.scrollTo({
-          top: 0,
-          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-            ? "auto"
-            : "smooth",
-        }),
+      run: () => scrollToSection("top", dict.locale, navigate),
     },
     ...dict.nav.map((item): PaletteCommand => ({
       id: `nav-${item.id}`,
@@ -94,8 +94,16 @@ export function buildPaletteCommands(dict: Dictionary): PaletteCommand[] {
       category: "navigation",
       icon: Hash,
       keywords: [`#${item.id}`, ...strings.sectionKeywords],
-      run: () => scrollToSection(item.id),
+      run: () => scrollToSection(item.id, dict.locale, navigate),
     })),
+    {
+      id: "nav-applications",
+      label: dict.applications.label,
+      category: "navigation",
+      icon: AppWindow,
+      keywords: ["apps", "applications"],
+      run: () => navigate(`/${dict.locale}/applications`),
+    },
   ];
 
   const actionCommands: PaletteCommand[] = [
@@ -116,7 +124,7 @@ export function buildPaletteCommands(dict: Dictionary): PaletteCommand[] {
       run: () => {
         const form = document.getElementById("contact-form");
         if (!form) {
-          scrollToSection("contact");
+          scrollToSection("contact", dict.locale, navigate);
           return;
         }
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

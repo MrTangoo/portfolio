@@ -28,6 +28,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: languagesFor("") },
     })),
     ...LOCALES.map((locale) => ({
+      url: `${SITE_URL}/${locale}/applications`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+      alternates: { languages: languagesFor("/applications") },
+    })),
+    ...LOCALES.map((locale) => ({
       url: `${SITE_URL}/${locale}/legal`,
       lastModified: new Date(),
       changeFrequency: "yearly" as const,

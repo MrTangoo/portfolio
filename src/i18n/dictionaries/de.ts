@@ -54,6 +54,14 @@ export const de = {
     monogramLabel: "Maxime Derbigny - zurück zum Seitenanfang",
   },
 
+  applications: {
+    label: "Apps",
+    title: ["Deine nächsten", "Lieblingsapps", "nehmen Gestalt an."],
+    description:
+      "Maxime arbeitet daran, sie zum Leben zu erwecken. Schau bald wieder vorbei und entdecke sie.",
+    backHome: "Zurück zur Startseite",
+  },
+
   footer: {
     externalAriaLabel: "Externe Links",
     backToTop: "Nach oben",

@@ -54,6 +54,13 @@ export const en = {
     monogramLabel: "Maxime Derbigny - back to top",
   },
 
+  applications: {
+    label: "Applications",
+    title: ["Your next", "favourite apps", "are taking shape."],
+    description: "Maxime is working on bringing them to life. Come back soon to discover them.",
+    backHome: "Back to home",
+  },
+
   footer: {
     externalAriaLabel: "External links",
     backToTop: "Back to top",

@@ -20,7 +20,7 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <main id="main" className="container-page flex min-h-svh flex-col justify-between py-8">
+    <main id="main" tabIndex={-1} className="container-page flex min-h-svh flex-col justify-between py-8">
       <Monogram className="text-xl" />
       <div>
         <Eyebrow index="500">{strings.eyebrow}</Eyebrow>
