@@ -43,7 +43,7 @@ export function Header() {
   const menuId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
-  const active = useActiveSection(dict.nav.map((item) => item.id));
+  const active = useActiveSection(onHome ? dict.nav.map((item) => item.id) : []);
   const { openPalette } = useInteractive();
 
   // ⌘ on Apple platforms, Ctrl elsewhere — the server snapshot keeps the

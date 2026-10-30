@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { useDictionary, useLocale } from "@/i18n/provider";
 import { LOCALE_META, LOCALES, type Locale } from "@/i18n/locales";
@@ -36,11 +42,7 @@ const FLAG_PATHS: Record<Locale, React.ReactNode> = {
 
 function Flag({ locale, className }: { locale: Locale; className?: string }) {
   return (
-    <svg
-      viewBox="0 0 20 14"
-      aria-hidden="true"
-      className={cn("h-2.5 w-3.5 shrink-0", className)}
-    >
+    <svg viewBox="0 0 20 14" aria-hidden="true" className={cn("h-2.5 w-3.5 shrink-0", className)}>
       {FLAG_PATHS[locale]}
       <rect width="20" height="14" fill="none" stroke="currentColor" strokeOpacity="0.25" />
     </svg>
@@ -49,7 +51,7 @@ function Flag({ locale, className }: { locale: Locale; className?: string }) {
 
 /**
  * Dropdown language switcher. Routes live under `/[lang]`, so switching swaps
- * the first path segment — the current hash is preserved on click.
+ * the first path segment and starts the new page at the top.
  */
 export function LanguageSwitcher({ className }: { className?: string }) {
   const dict = useDictionary();
@@ -58,14 +60,20 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const menuId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    menuRef.current?.querySelector<HTMLElement>('[aria-current="true"]')?.focus();
     const onPointerDown = (event: PointerEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
     };
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
     };
     document.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("keydown", onKeyDown);
@@ -80,9 +88,36 @@ export function LanguageSwitcher({ className }: { className?: string }) {
     return `/${target}${rest}`;
   };
 
+  const onMenuKeyDown = (event: ReactKeyboardEvent<HTMLUListElement>) => {
+    const items = [
+      ...event.currentTarget.querySelectorAll<HTMLAnchorElement>('a[role="menuitem"]'),
+    ];
+    const index = items.findIndex((item) => item === document.activeElement);
+    let next: number;
+    switch (event.key) {
+      case "ArrowDown":
+        next = (index + 1) % items.length;
+        break;
+      case "ArrowUp":
+        next = (index - 1 + items.length) % items.length;
+        break;
+      case "Home":
+        next = 0;
+        break;
+      case "End":
+        next = items.length - 1;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    items[next]?.focus();
+  };
+
   return (
     <div ref={rootRef} className={cn("relative", className)}>
       <button
+        ref={toggleRef}
         type="button"
         aria-expanded={open}
         aria-controls={menuId}
@@ -92,6 +127,12 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         // strips before comparing.
         aria-label={`${dict.switcher.label} ${locale.toUpperCase()}`}
         onClick={() => setOpen((value) => !value)}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
+            setOpen(true);
+          }
+        }}
         className="flex items-center gap-1.5 border border-line px-3 py-1.5 text-steel transition-colors duration-150 hover:border-line-strong hover:text-ink"
       >
         <Flag locale={locale} />
@@ -105,9 +146,13 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       </button>
 
       <ul
+        ref={menuRef}
         id={menuId}
         role="menu"
         aria-label={dict.switcher.label}
+        aria-hidden={!open}
+        inert={!open}
+        onKeyDown={onMenuKeyDown}
         className={cn(
           "absolute top-[calc(100%+8px)] right-0 min-w-36 border border-line bg-paper py-1 shadow-lg transition-[opacity,transform] duration-200 ease-out-expo",
           open
@@ -120,6 +165,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
           return (
             <li key={target} role="none">
               <Link
+                prefetch={false}
                 role="menuitem"
                 href={hrefFor(target)}
                 hrefLang={LOCALE_META[target].htmlLang}

@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { cacheLife } from "next/cache";
 import { fr } from "@/i18n/dictionaries/fr";
 import { LOCALES } from "@/i18n/locales";
 import { SITE_URL } from "@/content/site";
@@ -14,14 +13,10 @@ const languagesFor = (path: string) =>
     ["x-default", `${SITE_URL}/fr${path}`],
   ]);
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  "use cache";
-  // `lastModified` reflects the deploy date and refreshes daily at most.
-  cacheLife("days");
+export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...LOCALES.map((locale) => ({
       url: `${SITE_URL}/${locale}`,
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 1,
       images: IMAGES,
@@ -29,14 +24,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     ...LOCALES.map((locale) => ({
       url: `${SITE_URL}/${locale}/applications`,
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.6,
       alternates: { languages: languagesFor("/applications") },
     })),
     ...LOCALES.map((locale) => ({
       url: `${SITE_URL}/${locale}/legal`,
-      lastModified: new Date(),
       changeFrequency: "yearly" as const,
       priority: 0.3,
       alternates: { languages: languagesFor("/legal") },

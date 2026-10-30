@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import {
   createContext,
   useCallback,
@@ -12,8 +13,11 @@ import {
 } from "react";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
-import { CommandPalette } from "@/components/interactive/CommandPalette";
-import { Terminal } from "@/components/interactive/Terminal";
+
+const CommandPalette = dynamic(() =>
+  import("./CommandPalette").then((module) => module.CommandPalette),
+);
+const Terminal = dynamic(() => import("./Terminal").then((module) => module.Terminal));
 
 interface InteractiveContextValue {
   openPalette: () => void;
@@ -41,6 +45,8 @@ export function InteractiveProvider({ children }: { children: ReactNode }) {
   const [terminalMinimized, setTerminalMinimized] = useState(false);
   const [toast, setToast] = useState<{ id: number; message: string } | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(toastTimer.current), []);
 
   const notify = useCallback((message: string) => {
     window.clearTimeout(toastTimer.current);

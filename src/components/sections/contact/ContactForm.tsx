@@ -6,6 +6,7 @@ import { AtSign, LoaderCircle, MessageSquare, Send, Tag, User } from "lucide-rea
 import toast from "react-hot-toast";
 import { useDictionary, useLocale } from "@/i18n/provider";
 import { cn } from "@/lib/utils";
+import { CONTACT_LIMITS } from "@/lib/contact";
 
 const inputClasses =
   "w-full rounded-none border-b border-line-inverse bg-transparent py-3 text-base text-paper placeholder:text-paper/35 transition-colors duration-300 ease-out-expo focus:border-vermilion focus:outline-none";
@@ -27,12 +28,14 @@ export function ContactForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending) return;
     const formElement = event.currentTarget;
     const data = new FormData(formElement);
 
     const send = async () => {
       const response = await fetch("/api/contact", {
         method: "POST",
+        signal: AbortSignal.timeout(20_000),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: data.get("name"),
@@ -42,23 +45,34 @@ export function ContactForm() {
           hp: data.get("_hp"),
           elapsedMs: Date.now() - mountedAt.current,
         }),
+      }).catch(() => {
+        throw new Error(toasts.error);
       });
-      const result = (await response.json()) as { ok: boolean; error?: ApiError };
-      if (!response.ok || !result.ok) {
-        throw new Error((result.error && apiErrors[result.error]) || toasts.error);
+      const result = (await response.json().catch(() => null)) as {
+        ok?: boolean;
+        error?: ApiError;
+      } | null;
+      if (!response.ok || result?.ok !== true) {
+        throw new Error(
+          (result?.error && Object.hasOwn(apiErrors, result.error) && apiErrors[result.error]) ||
+            toasts.error,
+        );
       }
     };
 
     setPending(true);
-    toast
-      .promise(send(), {
+    try {
+      await toast.promise(send(), {
         loading: toasts.loading,
         success: toasts.success,
         error: (err) => (err instanceof Error && err.message ? err.message : toasts.error),
-      })
-      .then(() => formElement.reset())
-      .catch(() => {})
-      .finally(() => setPending(false));
+      });
+      formElement.reset();
+    } catch {
+      // toast.promise displays the error; keep the message so it can be retried.
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -80,7 +94,7 @@ export function ContactForm() {
             name="name"
             type="text"
             required
-            maxLength={100}
+            maxLength={CONTACT_LIMITS.name}
             autoComplete="name"
             placeholder={form.namePlaceholder}
             className={inputClasses}
@@ -97,7 +111,7 @@ export function ContactForm() {
             name="email"
             type="email"
             required
-            maxLength={100}
+            maxLength={CONTACT_LIMITS.email}
             autoComplete="email"
             placeholder={form.emailPlaceholder}
             className={inputClasses}
@@ -115,7 +129,7 @@ export function ContactForm() {
           id="contact-subject"
           name="subject"
           type="text"
-          maxLength={150}
+          maxLength={CONTACT_LIMITS.subject}
           placeholder={form.subjectPlaceholder}
           className={inputClasses}
         />
@@ -130,8 +144,8 @@ export function ContactForm() {
           id="contact-message"
           name="message"
           required
-          minLength={10}
-          maxLength={5000}
+          minLength={CONTACT_LIMITS.minMessage}
+          maxLength={CONTACT_LIMITS.message}
           rows={5}
           placeholder={form.messagePlaceholder}
           className={cn(inputClasses, "resize-y")}

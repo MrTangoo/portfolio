@@ -1,9 +1,28 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+
+const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(onChange: () => void) {
+  const mql = window.matchMedia(reducedMotionQuery);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+}
+
 /**
  * Minimal monitor illustration for the final chapter: a screen where code
  * types itself, in a loop. Editorial line style — squared corners, thin ink
  * strokes, a single vermilion accent + blinking cursor.
  */
 export function DevScreen() {
+  // Server snapshot is `true` so SSR and hydration render no <animate>;
+  // the real preference replaces it after mount.
+  const reduceMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(reducedMotionQuery).matches,
+    () => true,
+  );
   const ink = "#111111";
   const red = "#E34234";
   const D = 9; // seconds for one full typing loop
@@ -36,13 +55,15 @@ export function DevScreen() {
       {/* typing code lines — each sweeps 0 → width during its window of the loop */}
       {lines.map((line, i) => (
         <rect key={i} x={line.x} y={line.y} height="4" width={line.w} fill={line.c}>
-          <animate
-            attributeName="width"
-            values={`0;0;${line.w};${line.w}`}
-            keyTimes={`0;${line.t[0]};${line.t[1]};1`}
-            dur={`${D}s`}
-            repeatCount="indefinite"
-          />
+          {!reduceMotion && (
+            <animate
+              attributeName="width"
+              values={`0;0;${line.w};${line.w}`}
+              keyTimes={`0;${line.t[0]};${line.t[1]};1`}
+              dur={`${D}s`}
+              repeatCount="indefinite"
+            />
+          )}
         </rect>
       ))}
       {/* stand */}

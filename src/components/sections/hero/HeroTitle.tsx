@@ -22,7 +22,7 @@ export function HeroTitle({ lines }: HeroTitleProps) {
         return (
           <span key={line} className="block overflow-hidden pb-[0.08em]">
             <m.span
-              className="block will-change-transform"
+              className="block"
               initial={{ y: "110%" }}
               animate={{ y: 0 }}
               transition={{ duration: 0.9, ease: EASE, delay: 0.15 + index * 0.12 }}

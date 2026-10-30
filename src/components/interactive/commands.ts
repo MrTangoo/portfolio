@@ -32,7 +32,7 @@ export interface PaletteCommand {
 
 function scrollToSection(id: string, locale: string, navigate: (href: string) => void) {
   const element = document.getElementById(id);
-  if (!element) {
+  if (!element || window.location.pathname !== `/${locale}`) {
     navigate(`/${locale}#${id}`);
     return;
   }
@@ -123,7 +123,7 @@ export function buildPaletteCommands(
       keywords: strings.sendEmail.keywords,
       run: () => {
         const form = document.getElementById("contact-form");
-        if (!form) {
+        if (!form || window.location.pathname !== `/${dict.locale}`) {
           scrollToSection("contact", dict.locale, navigate);
           return;
         }
@@ -201,7 +201,5 @@ export function filterCommands(
     else if (haystack.includes(q)) score = 2;
     if (score >= 0) scored.push({ command, score });
   }
-  return scored
-    .sort((a, b) => a.score - b.score || commands.indexOf(a.command) - commands.indexOf(b.command))
-    .map((entry) => entry.command);
+  return scored.sort((a, b) => a.score - b.score).map((entry) => entry.command);
 }

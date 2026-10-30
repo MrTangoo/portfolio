@@ -41,7 +41,8 @@ export function matchLocale(header: string | null): Locale {
     })
     .sort((a, b) => b.q - a.q);
 
-  for (const { tag } of ranked) {
+  for (const { tag, q } of ranked) {
+    if (!Number.isFinite(q) || q <= 0 || q > 1) continue;
     const language = tag.split("-")[0] ?? "";
     if (hasLocale(language)) return language;
     if (tag === "*") return DEFAULT_LOCALE;

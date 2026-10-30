@@ -3,12 +3,15 @@ import { describe, expect, it } from "vitest";
 import { InteractiveProvider } from "@/components/interactive/InteractiveProvider";
 import { Header } from "@/components/layout/Header";
 import { fr } from "@/i18n/dictionaries/fr";
+import { DictionaryProvider } from "@/i18n/provider";
 
 const renderHeader = () =>
   render(
-    <InteractiveProvider>
-      <Header />
-    </InteractiveProvider>,
+    <DictionaryProvider dict={fr}>
+      <InteractiveProvider>
+        <Header />
+      </InteractiveProvider>
+    </DictionaryProvider>,
   );
 
 describe("Header", () => {

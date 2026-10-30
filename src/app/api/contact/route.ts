@@ -1,132 +1,93 @@
 import nodemailer from "nodemailer";
+import { CONTACT_LIMITS, EMAIL_PATTERN } from "@/lib/contact";
+import { buildEmailHtml } from "@/lib/contact-email";
 
-const MAX_NAME = 100;
-const MAX_SUBJECT = 150;
-const MAX_MESSAGE = 5000;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Enough for escaped Unicode in all fields, without buffering arbitrary bodies.
+const MAX_BODY_BYTES = 64 * 1024;
+const SMTP_TIMEOUT_MS = 10_000;
 
-interface ContactPayload {
-  name: string;
-  email: string;
-  subject?: string;
-  message: string;
-  /** Honeypot — must stay empty. */
-  hp?: string;
-  /** Time between form mount and submit — bots are instant. */
-  elapsedMs?: number;
+function readText(value: unknown, max: number): string | null {
+  if (typeof value !== "string") return null;
+  const text = value.trim();
+  return text.length <= max ? text : null;
 }
 
-function sanitize(value: unknown, max: number): string {
-  return typeof value === "string" ? value.trim().slice(0, max) : "";
-}
-
-function escapeHtml(value: string): string {
-  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-}
-
-const mono =
-  "font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0.13em; text-transform: uppercase;";
-
-/** Template HTML du mail reçu — reprend le langage visuel du site. */
-export function buildEmailHtml(
-  name: string,
-  email: string,
-  subject: string,
-  message: string,
-): string {
-  const field = (label: string, value: string) => `
-    <tr>
-      <td style="padding: 10px 0; vertical-align: top; width: 90px; ${mono} color: #9a9a9a;">
-        ${label}
-      </td>
-      <td style="padding: 10px 0; font-size: 15px; color: #111111;">${value}</td>
-    </tr>`;
-
-  return `<!DOCTYPE html>
-<html lang="fr">
-  <body style="margin: 0; padding: 24px; background: #ebe9e3;">
-    <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 560px; margin: 0 auto; background: #f5f4f0; border: 1px solid rgba(17,17,17,0.14); font-family: ui-sans-serif, system-ui, sans-serif;">
-      <tr>
-        <td style="background: #111111; padding: 20px 28px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
-            <tr>
-              <td style="font-size: 22px; font-weight: 600; letter-spacing: -0.04em; color: #f5f4f0;">
-                MD<span style="color: #e34234;">.</span>
-              </td>
-              <td align="right" style="${mono} color: rgba(245,244,240,0.65);">
-                Contact - Formulaire
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 24px 28px 4px;">
-          <p style="margin: 0 0 14px; ${mono} color: #626262;">
-            <span style="display: inline-block; width: 8px; height: 8px; background: #e34234; margin-right: 10px;"></span>Nouveau message
-          </p>
-          <p style="margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: #111111;">
-            ${escapeHtml(name)}
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 12px 28px 8px;">
-          <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; border-top: 1px solid rgba(17,17,17,0.14);">
-            ${field("Email", `<a href="mailto:${escapeHtml(email)}" style="color: #c9372b; text-decoration: none;">${escapeHtml(email)}</a>`)}
-            ${subject ? field("Sujet", escapeHtml(subject)) : ""}
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 8px 28px 28px;">
-          <p style="margin: 0 0 8px; ${mono} color: #9a9a9a;">
-            Message
-          </p>
-          <div style="border-left: 2px solid #e34234; padding: 4px 0 4px 16px; font-size: 15px; line-height: 1.6; color: #111111; white-space: pre-wrap;">${escapeHtml(message)}</div>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 14px 28px; border-top: 1px solid rgba(17,17,17,0.14); ${mono} color: #9a9a9a;">
-          <a href="https://maxime-derbigny.ch" style="color: #626262; text-decoration: none;">maxime-derbigny.ch</a>
-          &nbsp;·&nbsp; Réponds directement à ce mail pour écrire à ${escapeHtml(name)}.
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>`;
+async function readBody(request: Request): Promise<unknown> {
+  const reader = request.body?.getReader();
+  if (!reader) return null;
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_BODY_BYTES) {
+        await reader.cancel();
+        throw new RangeError("Contact payload too large");
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  return JSON.parse(Buffer.concat(chunks).toString("utf8"));
 }
 
 export async function POST(request: Request) {
-  let body: ContactPayload;
+  const origin = request.headers.get("origin");
+  if (origin && origin !== new URL(request.url).origin) {
+    return Response.json({ ok: false, error: "invalid" }, { status: 403 });
+  }
+  if (request.headers.get("content-type")?.split(";")[0]?.trim() !== "application/json") {
+    return Response.json({ ok: false, error: "invalid" }, { status: 415 });
+  }
+  if (Number(request.headers.get("content-length")) > MAX_BODY_BYTES) {
+    return Response.json({ ok: false, error: "invalid" }, { status: 413 });
+  }
+
+  let body: unknown;
   try {
-    body = await request.json();
-  } catch {
+    body = await readBody(request);
+  } catch (error) {
+    return Response.json(
+      { ok: false, error: "invalid" },
+      {
+        status: error instanceof RangeError ? 413 : 400,
+      },
+    );
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return Response.json({ ok: false, error: "invalid" }, { status: 400 });
+  }
+  const fields = body as Record<string, unknown>;
+
+  // Honeypot filled or instant submit: acknowledge without sending email.
+  if (fields.hp || (typeof fields.elapsedMs === "number" && fields.elapsedMs < 1500)) {
+    return Response.json({ ok: true });
+  }
+  if (typeof fields.elapsedMs !== "number" || !Number.isFinite(fields.elapsedMs)) {
     return Response.json({ ok: false, error: "invalid" }, { status: 400 });
   }
 
-  // Honeypot filled or instant submit → silently pretend success.
-  if (body.hp) {
-    console.warn("[contact] Honeypot déclenché — envoi ignoré");
-    return Response.json({ ok: true });
-  }
-  if (typeof body.elapsedMs !== "number" || body.elapsedMs < 1500) {
-    console.warn(`[contact] Soumission suspecte (elapsedMs=${body.elapsedMs}) — envoi ignoré`);
-    return Response.json({ ok: true });
-  }
-
-  const name = sanitize(body.name, MAX_NAME);
-  const email = sanitize(body.email, MAX_NAME);
-  const subject = sanitize(body.subject, MAX_SUBJECT);
-  const message = sanitize(body.message, MAX_MESSAGE);
-
-  if (!name || !EMAIL_PATTERN.test(email) || message.length < 10) {
+  const name = readText(fields.name, CONTACT_LIMITS.name);
+  const email = readText(fields.email, CONTACT_LIMITS.email);
+  const subject = readText(fields.subject ?? "", CONTACT_LIMITS.subject);
+  const message = readText(fields.message, CONTACT_LIMITS.message);
+  if (
+    !name ||
+    !email ||
+    !EMAIL_PATTERN.test(email) ||
+    subject === null ||
+    !message ||
+    message.length < CONTACT_LIMITS.minMessage
+  ) {
     return Response.json({ ok: false, error: "invalid" }, { status: 400 });
   }
 
   const { SMTP_USER, SMTP_PASS, CONTACT_EMAIL } = process.env;
   if (!SMTP_USER || !SMTP_PASS) {
-    console.error("[contact] SMTP_USER / SMTP_PASS manquants");
+    console.error("[contact] SMTP configuration is missing");
     return Response.json({ ok: false, error: "unconfigured" }, { status: 500 });
   }
 
@@ -135,26 +96,26 @@ export async function POST(request: Request) {
     port: 465,
     secure: true,
     auth: { user: SMTP_USER, pass: SMTP_PASS.replaceAll(" ", "") },
+    connectionTimeout: SMTP_TIMEOUT_MS,
+    greetingTimeout: SMTP_TIMEOUT_MS,
+    socketTimeout: SMTP_TIMEOUT_MS,
   });
-
-  const headerName = name.replaceAll(/["\r\n]/g, " ");
+  const headerName = name.replaceAll(/[\r\n]/g, " ");
 
   try {
     await transporter.sendMail({
-      from: `"Portfolio - ${headerName}" <${SMTP_USER}>`,
+      from: { name: `Portfolio - ${headerName}`, address: SMTP_USER },
       to: CONTACT_EMAIL || SMTP_USER,
-      replyTo: email,
+      replyTo: { name: headerName, address: email },
       subject: subject
         ? `[Portfolio] ${subject.replaceAll(/[\r\n]/g, " ")}`
         : `[Portfolio] Message de ${headerName}`,
-      text: `Nom : ${name}\nEmail : ${email}\n\n${message}`,
+      text: `Nom : ${name}\nEmail : ${email}\nSujet : ${subject}\n\n${message}`,
       html: buildEmailHtml(name, email, subject, message),
     });
-    console.info("[contact] Message envoyé");
-  } catch (error) {
-    console.error("[contact] Échec d'envoi SMTP :", error);
+  } catch {
+    console.error("[contact] SMTP delivery failed");
     return Response.json({ ok: false, error: "send_failed" }, { status: 502 });
   }
-
   return Response.json({ ok: true });
 }
