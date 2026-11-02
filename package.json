@@ -25,12 +25,17 @@
     "@gsap/react": "2.1.2",
     "gsap": "3.13.0",
     "lucide-react": "1.64.0",
-    "motion": "14.4.0",
+    "motion": "14.8.0",
     "next": "16.4.3",
     "nodemailer": "^10.2.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-hot-toast": "^2.6.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "minimatch": "11.0.4"
+    }
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
