@@ -232,3 +232,21 @@
   opacity: 1 !important;
   transform: none !important;
 }
+
+/*
+ * They also render with a viewport as tall as the page, so "full screen"
+ * heights balloon: the hero became ~9000px tall with its title centred far
+ * below the fold, and Google's screenshot showed an empty page. Let those
+ * sections size to their content instead.
+ */
+[data-crawler],
+[data-crawler] body,
+[data-crawler] [class~="min-h-svh"],
+[data-crawler] [class~="min-h-[80svh]"] {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+[data-crawler] [data-rt-scene] {
+  min-height: 56rem !important;
+}
