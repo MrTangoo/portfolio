@@ -17,7 +17,11 @@ export function proxy(request: NextRequest) {
   const locale = matchLocale(request.headers.get("accept-language"));
   const url = request.nextUrl.clone();
   url.pathname = `/${locale}${pathname}`;
-  return NextResponse.redirect(url);
+  const response = NextResponse.redirect(url);
+  // The target depends on Accept-Language: caches (and crawlers) must not
+  // reuse one visitor's redirect for another.
+  response.headers.set("Vary", "Accept-Language");
+  return response;
 }
 
 export const config = {
