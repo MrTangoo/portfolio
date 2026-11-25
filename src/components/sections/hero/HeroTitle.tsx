@@ -22,6 +22,7 @@ export function HeroTitle({ lines }: HeroTitleProps) {
         return (
           <span key={line} className="block overflow-hidden pb-[0.08em]">
             <m.span
+              data-reveal
               className="block"
               initial={{ y: "110%" }}
               animate={{ y: 0 }}
@@ -30,6 +31,7 @@ export function HeroTitle({ lines }: HeroTitleProps) {
               {text}
               {endsWithPeriod && (
                 <m.span
+                  data-reveal
                   className={isLast ? "text-vermilion" : undefined}
                   initial={{ opacity: 0, scale: 0.4 }}
                   animate={{ opacity: 1, scale: 1 }}

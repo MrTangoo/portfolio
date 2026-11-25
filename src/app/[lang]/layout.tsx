@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { InteractiveProvider } from "@/components/interactive/InteractiveProvider";
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { CRAWLER_FLAG_SCRIPT } from "@/components/seo/crawler";
 import { DictionaryProvider } from "@/i18n/provider";
 import { getDictionaryFor } from "@/i18n";
 import { hasLocale, LOCALE_META, LOCALES } from "@/i18n/locales";
@@ -107,7 +108,12 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       lang={LOCALE_META[lang].htmlLang}
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
       data-scroll-behavior="smooth"
+      // `data-crawler` may be set by the inline script before hydration.
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: CRAWLER_FLAG_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"
