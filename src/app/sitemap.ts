@@ -28,11 +28,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: { languages: languagesFor("/applications") },
     })),
-    ...LOCALES.map((locale) => ({
-      url: `${SITE_URL}/${locale}/legal`,
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-      alternates: { languages: languagesFor("/legal") },
-    })),
   ];
 }

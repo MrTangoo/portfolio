@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LegalPage } from "@/components/legal/LegalPage";
 import { getDictionaryFor } from "@/i18n";
-import { hasLocale, LOCALES } from "@/i18n/locales";
+import { hasLocale } from "@/i18n/locales";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/legal">): Promise<Metadata> {
   const { lang } = await params;
@@ -12,13 +12,10 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/legal">): 
   return {
     title: dict.legal.meta.title,
     description: dict.legal.meta.description,
-    alternates: {
-      canonical: `/${lang}/legal`,
-      languages: Object.fromEntries([
-        ...LOCALES.map((locale) => [locale, `/${locale}/legal`]),
-        ["x-default", "/fr/legal"],
-      ]),
-    },
+    alternates: { canonical: `/${lang}/legal` },
+    // Required by law, but of no use in search results: keep it out of the
+    // index while still letting crawlers follow its links.
+    robots: { index: false, follow: true },
   };
 }
 
