@@ -222,3 +222,13 @@
 @utility tabular {
   font-variant-numeric: tabular-nums;
 }
+
+/*
+ * Crawlers (flagged by CRAWLER_FLAG_SCRIPT) snapshot the page without
+ * scrolling or running animations: show every reveal in its final state.
+ * `!important` beats both Motion's inline styles and running animations.
+ */
+[data-crawler] [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
