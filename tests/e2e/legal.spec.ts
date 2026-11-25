@@ -12,6 +12,10 @@ test.describe("Legal page", () => {
       await page.goto(`/${locale}/legal`);
       await expect(page.getByRole("heading", { level: 1 })).toContainText(title);
       await expect(page.locator("html")).toHaveAttribute("lang", htmlLang);
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+        "content",
+        "noindex, follow",
+      );
       // Every section renders its title.
       await expect(page.getByRole("heading", { level: 2 })).toHaveCount(6);
     });
