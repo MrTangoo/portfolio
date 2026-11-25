@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isCrawler } from "@/components/motion/useRevealTrigger";
+import { CRAWLER_FLAG_SCRIPT, isCrawler } from "@/components/seo/crawler";
 
 describe("isCrawler", () => {
   it.each([
@@ -17,5 +17,16 @@ describe("isCrawler", () => {
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0",
   ])("leaves visitors alone: %s", (ua) => {
     expect(isCrawler(ua)).toBe(false);
+  });
+});
+
+describe("CRAWLER_FLAG_SCRIPT", () => {
+  it.each([
+    ["Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)", true],
+    ["Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0", false],
+  ])("flags <html> for %s → %s", (userAgent, flagged) => {
+    document.documentElement.removeAttribute("data-crawler");
+    new Function("navigator", CRAWLER_FLAG_SCRIPT)({ userAgent });
+    expect(document.documentElement.hasAttribute("data-crawler")).toBe(flagged);
   });
 });
