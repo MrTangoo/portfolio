@@ -2,6 +2,7 @@
 
 import type { ReactNode, Ref } from "react";
 import * as m from "motion/react-m";
+import { useRevealTrigger } from "./useRevealTrigger";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -27,12 +28,12 @@ export function Reveal({
   once = true,
 }: RevealProps) {
   const Component = m[as];
+  const trigger = useRevealTrigger({ opacity: 1, y: 0 }, once);
   return (
     <Component
       className={className}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, margin: "0px 0px -10% 0px" }}
+      {...trigger}
       transition={{ duration: 0.7, ease: EASE, delay }}
     >
       {children}
@@ -51,12 +52,12 @@ interface StaggerProps {
 /** Container whose direct `StaggerItem` children animate one after the other. */
 export function Stagger({ children, className, stagger = 0.08, as = "div" }: StaggerProps) {
   const Component = m[as];
+  const trigger = useRevealTrigger("visible");
   return (
     <Component
       className={className}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      {...trigger}
       transition={{ staggerChildren: stagger }}
     >
       {children}

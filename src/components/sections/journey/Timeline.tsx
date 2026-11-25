@@ -3,6 +3,7 @@
 import { useRef, type ReactNode } from "react";
 import { useScroll, useSpring, useTransform } from "motion/react";
 import * as m from "motion/react-m";
+import { useRevealTrigger } from "@/components/motion/useRevealTrigger";
 
 interface TimelineProps {
   children: ReactNode;
@@ -22,6 +23,7 @@ export function Timeline({ children, label }: TimelineProps) {
   });
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
   const scaleY = useTransform(progress, [0, 1], [0, 1]);
+  const trigger = useRevealTrigger("visible");
 
   return (
     <m.ol
@@ -29,8 +31,7 @@ export function Timeline({ children, label }: TimelineProps) {
       aria-label={label}
       className="relative border-t border-line"
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      {...trigger}
       transition={{ staggerChildren: 0.12 }}
     >
       <span aria-hidden="true" className="absolute top-0 bottom-0 left-[3px] w-px bg-line" />
