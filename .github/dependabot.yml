@@ -1,5 +1,8 @@
 version: 2
 updates:
+  # npm: every minor/patch update lands in ONE weekly PR, merged automatically
+  # once CI is green (see .github/workflows/dependabot-auto-merge.yml).
+  # Major updates get their own PR and always wait for a human review.
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -8,14 +11,20 @@ updates:
       time: "06:00"
       timezone: Europe/Zurich
     open-pull-requests-limit: 5
+    labels: ["dependencies"]
     groups:
-      next:
-        patterns: ["next", "eslint-config-next", "react", "react-dom", "@types/react*"]
-      testing:
-        patterns:
-          ["vitest", "@vitejs/*", "@testing-library/*", "jsdom", "@playwright/test", "@axe-core/*"]
-      tooling:
-        patterns: ["eslint*", "prettier*", "typescript", "tailwindcss", "@tailwindcss/*"]
+      npm-minor-patch:
+        update-types: ["minor", "patch"]
+        patterns: ["*"]
+    ignore:
+      # Types must match the Node.js runtime pinned in .nvmrc (22): bump them
+      # together with .nvmrc, not on their own.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # typescript-eslint (via eslint-config-next) does not support TypeScript 7
+      # yet. Remove this rule once it does.
+      - dependency-name: "typescript"
+        versions: [">=7"]
     commit-message:
       prefix: "chore(deps)"
 
@@ -27,6 +36,7 @@ updates:
       time: "06:00"
       timezone: Europe/Zurich
     open-pull-requests-limit: 5
+    labels: ["dependencies"]
     groups:
       actions:
         patterns: ["*"]
