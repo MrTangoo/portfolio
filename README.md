@@ -1,5 +1,6 @@
-[![CI](https://github.com/MrTangoo/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/MrTangoo/portfolio/actions/workflows/ci.yml)
 # Portfolio — Maxime Derbigny
+
+[![CI](https://github.com/MrTangoo/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/MrTangoo/portfolio/actions/workflows/ci.yml)
 
 **En ligne : [maxime-derbigny.ch](https://maxime-derbigny.ch)**
 
